@@ -5,6 +5,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
+import { Toc } from "@/components/layout/toc";
 import { mdxComponents } from "@/components/mdx-components";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -71,52 +72,55 @@ export default async function DocPage({ params }: DocPageProps) {
   }
 
   return (
-    <main className="mx-auto w-full max-w-4xl">
-      <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
-        <header className="space-y-5 border-b border-border/70 pb-8">
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{doc.category}</Badge>
-            {doc.tags.map((tag) => (
-              <Badge key={tag} variant="outline">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <div className="space-y-3">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              {doc.title}
-            </h1>
-            <p className="max-w-3xl text-base leading-8 text-muted-foreground">
-              {doc.description}
-            </p>
-          </div>
-        </header>
+    <div className="mx-auto flex w-full max-w-[1180px] gap-8">
+      <main className="min-w-0 flex-1">
+        <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
+          <header className="space-y-5 border-b border-border/70 pb-8">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary">{doc.category}</Badge>
+              {doc.tags.map((tag) => (
+                <Badge key={tag} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <div className="space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                {doc.title}
+              </h1>
+              <p className="max-w-3xl text-base leading-8 text-muted-foreground">
+                {doc.description}
+              </p>
+            </div>
+          </header>
 
-        <div className="prose prose-zinc mt-10 max-w-none dark:prose-invert prose-headings:font-semibold prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
-          <MDXRemote
-            source={doc.content}
-            components={mdxComponents}
-            options={{
-              mdxOptions: {
-                remarkPlugins: [remarkGfm],
-                rehypePlugins: [
-                  rehypeSlug,
-                  [
-                    rehypeAutolinkHeadings,
-                    {
-                      behavior: "append",
-                      properties: {
-                        className: ["heading-anchor"],
-                        "aria-label": "섹션 바로가기",
+          <div className="prose prose-zinc mt-10 max-w-none dark:prose-invert prose-headings:font-semibold prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
+            <MDXRemote
+              source={doc.content}
+              components={mdxComponents}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                  rehypePlugins: [
+                    rehypeSlug,
+                    [
+                      rehypeAutolinkHeadings,
+                      {
+                        behavior: "append",
+                        properties: {
+                          className: ["heading-anchor"],
+                          "aria-label": "섹션 바로가기",
+                        },
                       },
-                    },
+                    ],
                   ],
-                ],
-              },
-            }}
-          />
-        </div>
-      </article>
-    </main>
+                },
+              }}
+            />
+          </div>
+        </article>
+      </main>
+      <Toc headings={doc.headings} />
+    </div>
   );
 }

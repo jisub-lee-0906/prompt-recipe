@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import { Sidebar } from "@/components/layout/sidebar";
-import { Toc } from "@/components/layout/toc";
 
 export default function DocsLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,9 +9,6 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
         <Sidebar />
       </div>
       <div className="min-w-0 flex-1">{children}</div>
-      <div className="hidden xl:block xl:w-64 xl:shrink-0">
-        <Toc />
-      </div>
     </div>
   );
 }

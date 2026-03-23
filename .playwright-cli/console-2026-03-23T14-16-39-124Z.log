@@ -1,0 +1,10 @@
+[   29408ms] [ERROR] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at SheetClose (http://127.0.0.1:3000/_next/static/chunks/_0gvinjo._.js:142:214)
+    at http://127.0.0.1:3000/_next/static/chunks/_0gvinjo._.js:346:234
+    at Array.map (<anonymous>)
+    at SidebarNav (http://127.0.0.1:3000/_next/static/chunks/_0gvinjo._.js:334:33)
+    at http://127.0.0.1:3000/_next/static/chunks/_0gvinjo._.js:584:254
+    at Array.map (<anonymous>)
+    at MobileNav (http://127.0.0.1:3000/_next/static/chunks/_0gvinjo._.js:579:70)
+    at Header (about://React/Server/D:%5Cworkspace%5Cprompt-recipe%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0v-5uva._.js?22:360:276)
+    at RootLayout (about://React/Server/D:%5Cworkspace%5Cprompt-recipe%5C.next%5Cdev%5Cserver%5Cchunks%5Cssr%5C%5Broot-of-the-server%5D__0v-5uva._.js?0:600:284) @ http://127.0.0.1:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272

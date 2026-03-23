@@ -1,6 +1,7 @@
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DOC_CATEGORIES, getAllDocsMeta, type DocCategory } from "@/lib/mdx";
+import { cn } from "@/lib/utils";
 
 const CATEGORY_LABELS: Record<DocCategory, string> = {
   "ui-ux": "UI/UX",
@@ -8,11 +9,22 @@ const CATEGORY_LABELS: Record<DocCategory, string> = {
   backend: "백엔드",
 };
 
-export function Sidebar() {
+type SidebarProps = {
+  mobile?: boolean;
+};
+
+export function Sidebar({ mobile = false }: SidebarProps) {
   const docs = getAllDocsMeta();
 
   return (
-    <aside className="sticky top-[calc(var(--header-height)+1rem)] h-[calc(100vh-var(--header-height)-1.5rem)] rounded-3xl border border-border/70 bg-card/70 backdrop-blur">
+    <aside
+      className={cn(
+        "rounded-3xl border border-border/70 bg-card/70 backdrop-blur",
+        mobile
+          ? "h-full"
+          : "sticky top-[calc(var(--header-height)+1rem)] h-[calc(100vh-var(--header-height)-1.5rem)]",
+      )}
+    >
       <ScrollArea className="h-full">
         <div className="space-y-8 p-4">
           <div className="space-y-2 px-3">

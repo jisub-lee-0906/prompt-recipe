@@ -1,0 +1,62 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - button "문서 메뉴 열기" [active] [ref=e118]:
+            - img
+          - link "AI" [ref=e119] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e8]: AI
+        - generic [ref=e9]:
+          - button "문서 검색" [ref=e120]:
+            - generic [ref=e11]:
+              - img
+              - generic [ref=e12]: 문서 검색...
+          - button "테마 전환" [ref=e121]:
+            - img
+    - main [ref=e125]:
+      - article [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e129]: ui-ux
+            - generic [ref=e130]: 피드백
+            - generic [ref=e131]: 알림
+            - generic [ref=e132]: 상태 메시지
+          - generic [ref=e133]:
+            - heading "토스트 (Toast)" [level=1] [ref=e134]
+            - paragraph [ref=e135]: 짧은 상태 변화를 화면 한쪽에서 가볍게 알려주는 피드백 메시지입니다.
+        - generic [ref=e136]:
+          - heading "토스트섹션 바로가기" [level=1] [ref=e137]:
+            - text: 토스트
+            - link "섹션 바로가기":
+              - /url: "#토스트"
+          - heading "개념 설명섹션 바로가기" [level=2] [ref=e138]:
+            - text: 개념 설명
+            - link "섹션 바로가기":
+              - /url: "#개념-설명"
+          - paragraph [ref=e139]: 토스트는 사용자의 작업을 방해하지 않으면서 결과를 짧게 알려주는 메시지입니다. 저장 완료, 복사 성공, 오류 발생처럼 즉시 확인만 필요할 때 사용합니다.
+          - heading "언제 사용하는지섹션 바로가기" [level=2] [ref=e140]:
+            - text: 언제 사용하는지
+            - link "섹션 바로가기":
+              - /url: "#언제-사용하는지"
+          - paragraph [ref=e141]: 토스트는 사용자가 이미 요청한 액션의 결과를 알려줄 때 적합합니다. 별도 확인 버튼 없이도 맥락이 유지되어야 하는 상황에서 유용합니다.
+          - heading "사용 시 주의점섹션 바로가기" [level=3] [ref=e142]:
+            - text: 사용 시 주의점
+            - link "섹션 바로가기":
+              - /url: "#사용-시-주의점"
+          - paragraph [ref=e143]: 중요한 의사결정이 필요한 경고에는 토스트를 쓰면 안 됩니다. 사용자가 반드시 읽고 선택해야 하는 메시지는 모달이나 인라인 경고가 더 적합합니다.
+          - heading "실무 맥락 예시섹션 바로가기" [level=2] [ref=e144]:
+            - text: 실무 맥락 예시
+            - link "섹션 바로가기":
+              - /url: "#실무-맥락-예시"
+          - paragraph [ref=e145]: 기획자가 "복사 버튼을 눌렀을 때 바로 성공 여부를 알려 달라"고 말한다면, 화면 전체를 막는 팝업보다 자동으로 사라지는 토스트가 더 자연스럽습니다.
+          - heading "AI에게 요청하는 좋은 프롬프트 예시섹션 바로가기" [level=2] [ref=e146]:
+            - text: AI에게 요청하는 좋은 프롬프트 예시
+            - link "섹션 바로가기":
+              - /url: "#ai에게-요청하는-좋은-프롬프트-예시"
+          - paragraph [ref=e147]: 프롬프트 복사 버튼을 누르면 우측 상단에 토스트가 나타나게 해주세요. 메시지는 "프롬프트가 복사되었습니다."로 표시하고, 약 2초 뒤 자동으로 사라지게 해주세요. 복사 실패 시에는 오류 토스트를 따로 보여주세요.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e72] [cursor=pointer]:
+    - img [ref=e73]
+  - alert [ref=e76]: 토스트 (Toast) | AI 프롬프팅 가이드

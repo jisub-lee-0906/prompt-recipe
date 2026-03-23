@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans_KR } from "next/font/google";
 
 import { Header } from "@/components/layout/header";
+import { SearchProvider } from "@/components/search/search-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { getSearchIndex } from "@/lib/mdx";
 import "./globals.css";
 
 const notoSansKr = Noto_Sans_KR({
@@ -27,9 +29,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const searchIndex = getSearchIndex();
+
   return (
     <html
       lang="ko"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${notoSansKr.variable} ${geistMono.variable} h-full antialiased`}
     >
@@ -40,11 +45,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background">
-            <Header />
-            <div className="pt-[var(--header-height)]">{children}</div>
-          </div>
-          <Toaster richColors position="top-right" />
+          <SearchProvider searchIndex={searchIndex}>
+            <div className="min-h-screen bg-background">
+              <Header />
+              <div className="pt-[var(--header-height)]">{children}</div>
+            </div>
+            <Toaster richColors position="top-right" />
+          </SearchProvider>
         </ThemeProvider>
       </body>
     </html>

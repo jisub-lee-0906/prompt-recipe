@@ -9,9 +9,14 @@ import { cn } from "@/lib/utils";
 type SidebarNavProps = {
   categoryLabel: string;
   items: DocEntry[];
+  onNavigate?: () => void;
 };
 
-export function SidebarNav({ categoryLabel, items }: SidebarNavProps) {
+export function SidebarNav({
+  categoryLabel,
+  items,
+  onNavigate,
+}: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
@@ -27,6 +32,7 @@ export function SidebarNav({ categoryLabel, items }: SidebarNavProps) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "flex rounded-xl px-3 py-2 text-sm leading-6 transition-colors",
                 isActive
