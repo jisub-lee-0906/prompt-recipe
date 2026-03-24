@@ -9,7 +9,10 @@
     "start": "next start",
     "preview": "next start --hostname localhost --port 3000",
     "lint": "eslint",
-    "audit:docs": "node scripts/audit-docs.mjs"
+    "audit:docs": "node scripts/audit-docs.mjs",
+    "rebuild:inventory": "node scripts/rebuild-inventory.mjs",
+    "smoke:preview": "node scripts/smoke-preview.mjs",
+    "capture:preview": "node scripts/capture-preview.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

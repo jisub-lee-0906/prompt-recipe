@@ -54,6 +54,7 @@ export type SearchRecord = Pick<
   | "difficulty"
   | "roleTargets"
   | "aliases"
+  | "updatedAt"
 >;
 
 export type DocDocument = DocEntry & {
@@ -236,7 +237,7 @@ function getInventoryMetaMap() {
 
     const slug = slugColumn.slice(1, -1);
     const prerequisites =
-      prerequisitesColumn === "없음" || prerequisitesColumn === "?놁쓬"
+      prerequisitesColumn === "없음"
         ? []
         : prerequisitesColumn
             .split(",")
@@ -405,6 +406,7 @@ export function getSearchIndex(): SearchRecord[] {
       difficulty,
       roleTargets,
       aliases,
+      updatedAt,
     }) => ({
       title,
       description,
@@ -417,6 +419,7 @@ export function getSearchIndex(): SearchRecord[] {
       difficulty,
       roleTargets,
       aliases,
+      updatedAt,
     }),
   );
 }

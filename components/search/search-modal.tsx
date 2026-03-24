@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Command } from "cmdk";
-import { FileText, Search, Sparkles } from "lucide-react";
+import { CalendarDays, FileText, Search, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -24,12 +24,50 @@ function getPriorityRank(priority: SearchRecord["priority"]) {
   return priority === "P1" ? 0 : priority === "P2" ? 1 : 2;
 }
 
+const STARTER_HREFS = new Set([
+  "/docs/ui-ux/modal",
+  "/docs/frontend/component",
+  "/docs/backend/api",
+  "/docs/ui-ux/user-flow",
+  "/docs/ui-ux/information-architecture",
+]);
+
+const ROLE_QUERY_MAP = {
+  기획자: ["기획자", "pm", "po", "프로덕트"],
+  디자이너: ["디자이너", "ux", "ui", "프로덕트 디자이너"],
+  "주니어 개발자": ["주니어 개발자", "프론트엔드", "개발자", "엔지니어"],
+} as const;
+
+function getRoleWeight(item: SearchRecord, query: string) {
+  const normalizedQuery = normalize(query);
+
+  if (!normalizedQuery) {
+    return item.priority === "P1" ? 12 : 0;
+  }
+
+  let weight = 0;
+
+  for (const [role, aliases] of Object.entries(ROLE_QUERY_MAP)) {
+    if (
+      aliases.some((alias) => normalize(alias).includes(normalizedQuery)) &&
+      item.roleTargets.includes(role as SearchRecord["roleTargets"][number])
+    ) {
+      weight += 80;
+    }
+  }
+
+  return weight;
+}
+
 export function SearchModal({
   open,
   onOpenChange,
   items,
 }: SearchModalProps) {
   const [query, setQuery] = React.useState("");
+  const [selectedRole, setSelectedRole] = React.useState<
+    "전체" | SearchRecord["roleTargets"][number]
+  >("전체");
   const router = useRouter();
 
   React.useEffect(() => {
@@ -51,25 +89,15 @@ export function SearchModal({
   React.useEffect(() => {
     if (!open) {
       setQuery("");
+      setSelectedRole("전체");
     }
   }, [open]);
 
   const filteredItems = React.useMemo(() => {
     const normalizedQuery = normalize(query);
-    const starterHrefs = new Set([
-      "/docs/ui-ux/modal",
-      "/docs/frontend/component",
-      "/docs/backend/api",
-      "/docs/ui-ux/user-flow",
-      "/docs/ui-ux/information-architecture",
-    ]);
 
     return items
       .map((item) => {
-        if (!normalizedQuery) {
-          return { item, score: 0 };
-        }
-
         const title = normalize(item.title);
         const description = normalize(item.description);
         const tags = item.tags.map(normalize);
@@ -78,28 +106,41 @@ export function SearchModal({
         const roles = item.roleTargets.map(normalize);
         let score = 0;
 
-        if (title === normalizedQuery) score += 120;
-        if (aliases.includes(normalizedQuery)) score += 100;
-        if (title.startsWith(normalizedQuery)) score += 90;
-        if (title.includes(normalizedQuery)) score += 70;
-        if (tags.some((tag) => tag.includes(normalizedQuery))) score += 50;
-        if (aliases.some((alias) => alias.includes(normalizedQuery))) score += 45;
-        if (description.includes(normalizedQuery)) score += 30;
-        if (roles.some((role) => role.includes(normalizedQuery))) score += 25;
-        if (prereqs.some((prereq) => prereq.includes(normalizedQuery))) score += 20;
-        if (normalize(item.category).includes(normalizedQuery)) score += 10;
+        if (normalizedQuery) {
+          if (title === normalizedQuery) score += 120;
+          if (aliases.includes(normalizedQuery)) score += 100;
+          if (title.startsWith(normalizedQuery)) score += 90;
+          if (title.includes(normalizedQuery)) score += 70;
+          if (tags.some((tag) => tag.includes(normalizedQuery))) score += 50;
+          if (aliases.some((alias) => alias.includes(normalizedQuery))) score += 45;
+          if (description.includes(normalizedQuery)) score += 30;
+          if (roles.some((role) => role.includes(normalizedQuery))) score += 25;
+          if (prereqs.some((prereq) => prereq.includes(normalizedQuery))) score += 20;
+          if (normalize(item.category).includes(normalizedQuery)) score += 10;
+        }
+
+        score += getRoleWeight(item, query);
 
         return { item, score };
       })
-      .filter(({ score }) => !normalizedQuery || score > 0)
+      .filter(({ item, score }) => {
+        const roleMatched =
+          selectedRole === "전체" || item.roleTargets.includes(selectedRole);
+
+        if (!roleMatched) {
+          return false;
+        }
+
+        return !normalizedQuery || score > 0;
+      })
       .sort((left, right) => {
         if (left.score !== right.score) {
           return right.score - left.score;
         }
 
         const starterDiff =
-          Number(starterHrefs.has(right.item.href)) -
-          Number(starterHrefs.has(left.item.href));
+          Number(STARTER_HREFS.has(right.item.href)) -
+          Number(STARTER_HREFS.has(left.item.href));
 
         if (starterDiff !== 0) {
           return starterDiff;
@@ -115,7 +156,7 @@ export function SearchModal({
         return left.item.order - right.item.order;
       })
       .map(({ item }) => item);
-  }, [items, query]);
+  }, [items, query, selectedRole]);
 
   const suggestedItems = React.useMemo(
     () => items.filter((item) => item.priority === "P1").slice(0, 5),
@@ -157,6 +198,20 @@ export function SearchModal({
           </Button>
         </div>
 
+        <div className="flex flex-wrap gap-2 border-b border-border/70 px-4 py-3">
+          {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map((role) => (
+            <Button
+              key={role}
+              type="button"
+              variant={selectedRole === role ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedRole(role)}
+            >
+              {role}
+            </Button>
+          ))}
+        </div>
+
         <Command.List className="max-h-[28rem] overflow-y-auto p-3">
           <Command.Empty className="space-y-4 px-3 py-10 text-center text-sm text-muted-foreground">
             <p>검색 결과가 없습니다.</p>
@@ -181,7 +236,7 @@ export function SearchModal({
             {(query ? filteredItems : suggestedItems).map((item) => (
               <Command.Item
                 key={item.href}
-                value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")}`}
+                value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")} ${item.updatedAt}`}
                 onSelect={() => {
                   onOpenChange(false);
                   router.push(item.href);
@@ -217,6 +272,11 @@ export function SearchModal({
                     <span>{DOC_CATEGORY_LABELS[item.category]}</span>
                     <span>·</span>
                     <span>대상: {item.roleTargets.join(", ")}</span>
+                    <span>·</span>
+                    <span className="inline-flex items-center gap-1">
+                      <CalendarDays className="size-3" />
+                      {item.updatedAt}
+                    </span>
                     {item.prerequisites.length > 0 ? (
                       <>
                         <span>·</span>
