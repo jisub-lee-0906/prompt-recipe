@@ -27,7 +27,7 @@ export function SearchTrigger({
       <span className="flex items-center gap-2">
         <Search className="size-4" />
         <span className={compact ? "sm:hidden" : ""}>
-          {compact ? "검색" : "문서 검색..."}
+          {compact ? "검색" : "문서 검색"}
         </span>
       </span>
       <span className="hidden rounded-md border border-border/80 bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground/80 sm:inline-flex">

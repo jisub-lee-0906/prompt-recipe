@@ -1,13 +1,8 @@
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { DOC_CATEGORIES, getAllDocsMeta, type DocCategory } from "@/lib/mdx";
+import { DOC_CATEGORIES, DOC_CATEGORY_LABELS } from "@/lib/docs-config";
+import { getAllDocsMeta } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
-
-const CATEGORY_LABELS: Record<DocCategory, string> = {
-  "ui-ux": "UI/UX",
-  frontend: "프론트엔드",
-  backend: "백엔드",
-};
 
 type SidebarProps = {
   mobile?: boolean;
@@ -45,7 +40,8 @@ export function Sidebar({ mobile = false }: SidebarProps) {
             return (
               <SidebarNav
                 key={category}
-                categoryLabel={CATEGORY_LABELS[category]}
+                category={category}
+                categoryLabel={DOC_CATEGORY_LABELS[category]}
                 items={items}
               />
             );

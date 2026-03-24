@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { Command } from "cmdk";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
 import type { SearchRecord } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,11 @@ type SearchModalProps = {
 };
 
 function normalize(value: string) {
-  return value.toLowerCase();
+  return value.toLowerCase().trim();
+}
+
+function getPriorityRank(priority: SearchRecord["priority"]) {
+  return priority === "P1" ? 0 : priority === "P2" ? 1 : 2;
 }
 
 export function SearchModal({
@@ -50,20 +55,72 @@ export function SearchModal({
   }, [open]);
 
   const filteredItems = React.useMemo(() => {
-    const normalizedQuery = normalize(query.trim());
+    const normalizedQuery = normalize(query);
+    const starterHrefs = new Set([
+      "/docs/ui-ux/modal",
+      "/docs/frontend/component",
+      "/docs/backend/api",
+      "/docs/ui-ux/user-flow",
+      "/docs/ui-ux/information-architecture",
+    ]);
 
-    if (!normalizedQuery) {
-      return items;
-    }
+    return items
+      .map((item) => {
+        if (!normalizedQuery) {
+          return { item, score: 0 };
+        }
 
-    return items.filter((item) => {
-      const haystack = normalize(
-        [item.title, item.description, item.category, ...item.tags].join(" "),
-      );
+        const title = normalize(item.title);
+        const description = normalize(item.description);
+        const tags = item.tags.map(normalize);
+        const aliases = item.aliases.map(normalize);
+        const prereqs = item.prerequisites.map(normalize);
+        const roles = item.roleTargets.map(normalize);
+        let score = 0;
 
-      return haystack.includes(normalizedQuery);
-    });
+        if (title === normalizedQuery) score += 120;
+        if (aliases.includes(normalizedQuery)) score += 100;
+        if (title.startsWith(normalizedQuery)) score += 90;
+        if (title.includes(normalizedQuery)) score += 70;
+        if (tags.some((tag) => tag.includes(normalizedQuery))) score += 50;
+        if (aliases.some((alias) => alias.includes(normalizedQuery))) score += 45;
+        if (description.includes(normalizedQuery)) score += 30;
+        if (roles.some((role) => role.includes(normalizedQuery))) score += 25;
+        if (prereqs.some((prereq) => prereq.includes(normalizedQuery))) score += 20;
+        if (normalize(item.category).includes(normalizedQuery)) score += 10;
+
+        return { item, score };
+      })
+      .filter(({ score }) => !normalizedQuery || score > 0)
+      .sort((left, right) => {
+        if (left.score !== right.score) {
+          return right.score - left.score;
+        }
+
+        const starterDiff =
+          Number(starterHrefs.has(right.item.href)) -
+          Number(starterHrefs.has(left.item.href));
+
+        if (starterDiff !== 0) {
+          return starterDiff;
+        }
+
+        const priorityDiff =
+          getPriorityRank(left.item.priority) - getPriorityRank(right.item.priority);
+
+        if (priorityDiff !== 0) {
+          return priorityDiff;
+        }
+
+        return left.item.order - right.item.order;
+      })
+      .map(({ item }) => item);
   }, [items, query]);
+
+  const suggestedItems = React.useMemo(
+    () => items.filter((item) => item.priority === "P1").slice(0, 5),
+    [items],
+  );
 
   if (!open) {
     return null;
@@ -86,7 +143,7 @@ export function SearchModal({
           <Command.Input
             value={query}
             onValueChange={setQuery}
-            placeholder="문서 제목, 설명, 태그로 검색하세요"
+            placeholder="문서 제목, 설명, 태그, 별칭, 선행 개념으로 검색해보세요"
             className="h-10 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           <Button
@@ -100,15 +157,31 @@ export function SearchModal({
           </Button>
         </div>
 
-        <Command.List className="max-h-[26rem] overflow-y-auto p-3">
-          <Command.Empty className="px-3 py-10 text-center text-sm text-muted-foreground">
-            검색 결과가 없습니다.
+        <Command.List className="max-h-[28rem] overflow-y-auto p-3">
+          <Command.Empty className="space-y-4 px-3 py-10 text-center text-sm text-muted-foreground">
+            <p>검색 결과가 없습니다.</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {suggestedItems.slice(0, 3).map((item) => (
+                <Button
+                  key={item.href}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onOpenChange(false);
+                    router.push(item.href);
+                  }}
+                >
+                  {item.title}
+                </Button>
+              ))}
+            </div>
           </Command.Empty>
-          <Command.Group heading="문서">
-            {filteredItems.map((item) => (
+          <Command.Group heading={query ? "검색 결과" : "추천 시작 문서"}>
+            {(query ? filteredItems : suggestedItems).map((item) => (
               <Command.Item
                 key={item.href}
-                value={`${item.title} ${item.description} ${item.category} ${item.tags.join(" ")}`}
+                value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")}`}
                 onSelect={() => {
                   onOpenChange(false);
                   router.push(item.href);
@@ -122,13 +195,35 @@ export function SearchModal({
                   <FileText className="size-4" />
                 </div>
                 <div className="min-w-0 space-y-1">
-                  <p className="font-medium text-foreground">{item.title}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-medium text-foreground">{item.title}</p>
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                      {item.priority}
+                    </span>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {item.difficulty}
+                    </span>
+                    {item.priority === "P1" ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+                        <Sparkles className="size-3" />
+                        입문 추천
+                      </span>
+                    ) : null}
+                  </div>
                   <p className="line-clamp-2 text-muted-foreground">
                     {item.description}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.category} · {item.tags.join(", ")}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span>{DOC_CATEGORY_LABELS[item.category]}</span>
+                    <span>·</span>
+                    <span>대상: {item.roleTargets.join(", ")}</span>
+                    {item.prerequisites.length > 0 ? (
+                      <>
+                        <span>·</span>
+                        <span>선행: {item.prerequisites.join(", ")}</span>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </Command.Item>
             ))}

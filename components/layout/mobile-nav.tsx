@@ -14,13 +14,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { DocCategory, DocEntry } from "@/lib/mdx";
-
-const CATEGORY_LABELS: Record<DocCategory, string> = {
-  "ui-ux": "UI/UX",
-  frontend: "프론트엔드",
-  backend: "백엔드",
-};
+import { DOC_CATEGORIES, DOC_CATEGORY_LABELS } from "@/lib/docs-config";
+import type { DocEntry } from "@/lib/mdx";
 
 type MobileNavProps = {
   docs: DocEntry[];
@@ -48,7 +43,7 @@ export function MobileNav({ docs }: MobileNavProps) {
         <SheetHeader className="border-b border-border/70 px-4 py-4">
           <SheetTitle>문서 메뉴</SheetTitle>
           <SheetDescription>
-            카테고리별 문서를 빠르게 이동할 수 있습니다.
+            카테고리별로 문서를 빠르게 탐색할 수 있습니다.
           </SheetDescription>
         </SheetHeader>
         <div className="min-h-0 flex-1 p-4">
@@ -63,7 +58,7 @@ export function MobileNav({ docs }: MobileNavProps) {
                     용어를 카테고리별로 빠르게 찾아보세요.
                   </p>
                 </div>
-                {(Object.keys(CATEGORY_LABELS) as DocCategory[]).map((category) => {
+                {DOC_CATEGORIES.map((category) => {
                   const items = docs.filter((doc) => doc.category === category);
 
                   if (items.length === 0) {
@@ -73,7 +68,8 @@ export function MobileNav({ docs }: MobileNavProps) {
                   return (
                     <SidebarNav
                       key={category}
-                      categoryLabel={CATEGORY_LABELS[category]}
+                      category={category}
+                      categoryLabel={DOC_CATEGORY_LABELS[category]}
                       items={items}
                       onNavigate={() => setOpen(false)}
                     />

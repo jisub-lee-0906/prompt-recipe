@@ -7,23 +7,36 @@ import type { DocEntry } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 
 type SidebarNavProps = {
+  category: DocEntry["category"];
   categoryLabel: string;
   items: DocEntry[];
   onNavigate?: () => void;
 };
 
 export function SidebarNav({
+  category,
   categoryLabel,
   items,
   onNavigate,
 }: SidebarNavProps) {
   const pathname = usePathname();
+  const isCategoryActive =
+    pathname === `/docs/${category}` || pathname.startsWith(`/docs/${category}/`);
 
   return (
     <section className="space-y-3">
-      <h2 className="px-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <Link
+        href={`/docs/${category}`}
+        onClick={onNavigate}
+        className={cn(
+          "block rounded-xl px-3 text-xs font-semibold uppercase tracking-[0.18em] transition-colors",
+          isCategoryActive
+            ? "text-foreground"
+            : "text-muted-foreground hover:text-foreground",
+        )}
+      >
         {categoryLabel}
-      </h2>
+      </Link>
       <nav className="space-y-1">
         {items.map((item) => {
           const isActive = pathname === item.href;

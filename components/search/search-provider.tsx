@@ -49,7 +49,9 @@ export function useSearchModal() {
   const context = React.useContext(SearchContext);
 
   if (!context) {
-    throw new Error("useSearchModal은 SearchProvider 안에서만 사용할 수 있습니다.");
+    throw new Error(
+      "useSearchModal은 SearchProvider 내부에서만 사용할 수 있습니다.",
+    );
   }
 
   return context;

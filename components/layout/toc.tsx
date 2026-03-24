@@ -75,7 +75,7 @@ export function Toc({ headings }: TocProps) {
     <aside className="hidden xl:block xl:w-64 xl:shrink-0">
       <div className="sticky top-[calc(var(--header-height)+1rem)] h-[calc(100vh-var(--header-height)-1.5rem)] rounded-3xl border border-border/70 bg-card/70 backdrop-blur">
         <div className="border-b border-border/70 px-5 py-4">
-          <h2 className="text-sm font-semibold tracking-tight">On This Page</h2>
+          <h2 className="text-sm font-semibold tracking-tight">이 페이지에서</h2>
         </div>
         <ScrollArea className="h-[calc(100%-57px)]">
           <nav className="space-y-1 p-4">
