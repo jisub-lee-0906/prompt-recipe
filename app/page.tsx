@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Blocks,
   BookOpenCheck,
+  BookOpenText,
   BrushCleaning,
   DatabaseZap,
   Sparkles,
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
 import { getAllDocsMeta, getDocsBySlugs } from "@/lib/mdx";
+import { getPlaybooks } from "@/lib/playbooks";
 import { CATEGORY_META, ROLE_PATHS, SITE_NAME } from "@/lib/site-config";
 
 const CATEGORY_ICONS = {
@@ -43,6 +45,7 @@ const COMPARISON_LINKS = [
 
 export default function Home() {
   const docs = getAllDocsMeta();
+  const playbooks = getPlaybooks().slice(0, 3);
   const firstDoc = docs[0];
   const starterPaths = Object.entries(CATEGORY_META).map(([category, meta]) => ({
     category,
@@ -82,6 +85,11 @@ export default function Home() {
                 </Button>
               </Link>
               <HomeSearchButton />
+              <Link href="/playbooks">
+                <Button variant="outline" size="lg">
+                  플레이북
+                </Button>
+              </Link>
               <Link href="/compare">
                 <Button variant="outline" size="lg">
                   비교 허브
@@ -127,6 +135,44 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
+        <div className="space-y-4 pb-6">
+          <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
+            Playbooks
+          </p>
+          <h2 className="text-3xl font-semibold tracking-tight">
+            AI IDE 협업 플레이북
+          </h2>
+          <p className="max-w-3xl text-base leading-8 text-muted-foreground">
+            용어를 아는 단계에서 끝나지 않고, 실제 기능을 어떤 순서와 표현으로
+            요청할지까지 다루는 교과서형 섹션입니다.
+          </p>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-3">
+          {playbooks.map((playbook) => (
+            <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`}>
+              <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="secondary">{playbook.role}</Badge>
+                    <Badge variant="outline">{playbook.level}</Badge>
+                  </div>
+                  <CardTitle className="text-xl">{playbook.title}</CardTitle>
+                  <p className="text-sm leading-7 text-muted-foreground">
+                    {playbook.summary}
+                  </p>
+                </CardHeader>
+                <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                  <BookOpenText className="size-4" />
+                  플레이북 보기
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -263,7 +309,10 @@ export default function Home() {
             ))}
           </CardContent>
           <div className="px-6 pb-6">
-            <Link href="/compare" className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+            <Link
+              href="/compare"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary"
+            >
               비교 허브 전체 보기
               <ArrowRight className="size-4" />
             </Link>

@@ -4,11 +4,18 @@ import { execSync, spawn } from "node:child_process";
 
 const projectRoot = process.cwd();
 const outputDir = path.join(projectRoot, "output", "playwright");
-const port = Number(process.env.CAPTURE_PORT ?? 3013);
+const port =
+  Number(process.env.CAPTURE_PORT) ||
+  3300 + Math.floor(Math.random() * 200);
 const baseUrl = `http://localhost:${port}`;
 const routes = [
   { url: `${baseUrl}/`, file: "capture-home.png" },
   { url: `${baseUrl}/compare`, file: "capture-compare.png" },
+  { url: `${baseUrl}/playbooks`, file: "capture-playbooks.png" },
+  {
+    url: `${baseUrl}/playbooks/planner-signup-page`,
+    file: "capture-playbook-signup.png",
+  },
   { url: `${baseUrl}/docs/ui-ux`, file: "capture-category-ui-ux.png" },
   { url: `${baseUrl}/docs/frontend/component`, file: "capture-component-doc.png" },
   { url: `${baseUrl}/docs/backend/api`, file: "capture-api-doc.png" },

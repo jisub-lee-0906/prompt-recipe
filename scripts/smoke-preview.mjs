@@ -3,6 +3,8 @@ import { spawn } from "node:child_process";
 const routes = [
   "/",
   "/compare",
+  "/playbooks",
+  "/playbooks/planner-signup-page",
   "/docs/ui-ux",
   "/docs/frontend",
   "/docs/backend",
@@ -12,7 +14,9 @@ const routes = [
   "/robots.txt",
 ];
 
-const port = Number(process.env.SMOKE_PORT ?? 3012);
+const port =
+  Number(process.env.SMOKE_PORT) ||
+  3100 + Math.floor(Math.random() * 200);
 const baseUrl = `http://localhost:${port}`;
 
 function wait(ms) {

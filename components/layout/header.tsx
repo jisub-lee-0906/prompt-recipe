@@ -24,6 +24,12 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center gap-2">
+          <Link
+            href="/playbooks"
+            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 lg:inline-flex"
+          >
+            플레이북
+          </Link>
           <SearchTrigger className="h-9 w-auto min-w-0 justify-between gap-3 px-3 text-muted-foreground sm:min-w-64" />
           <ThemeToggle />
         </div>

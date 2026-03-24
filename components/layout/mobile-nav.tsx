@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Menu } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
@@ -57,6 +58,22 @@ export function MobileNav({ docs }: MobileNavProps) {
                   <p className="text-sm leading-6 text-muted-foreground">
                     용어를 카테고리별로 빠르게 찾아보세요.
                   </p>
+                </div>
+                <div className="grid gap-2 px-3">
+                  <Link
+                    href="/playbooks"
+                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
+                    onClick={() => setOpen(false)}
+                  >
+                    플레이북 보기
+                  </Link>
+                  <Link
+                    href="/compare"
+                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
+                    onClick={() => setOpen(false)}
+                  >
+                    비교 허브 보기
+                  </Link>
                 </div>
                 {DOC_CATEGORIES.map((category) => {
                   const items = docs.filter((doc) => doc.category === category);

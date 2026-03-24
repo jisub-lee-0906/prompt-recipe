@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 
 import { DOC_CATEGORIES, type DocCategory } from "@/lib/docs-config";
+import { getPlaybooks } from "@/lib/playbooks";
 import { ROLE_PATHS, SITE_UPDATED_AT } from "@/lib/site-config";
 
 export type DocFrontmatter = {
@@ -42,21 +43,22 @@ export type DocEntry = DocFrontmatter &
     aliases: string[];
   };
 
-export type SearchRecord = Pick<
-  DocEntry,
-  | "title"
-  | "description"
-  | "category"
-  | "tags"
-  | "href"
-  | "priority"
-  | "prerequisites"
-  | "order"
-  | "difficulty"
-  | "roleTargets"
-  | "aliases"
-  | "updatedAt"
->;
+export type SearchRecord = {
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  href: string;
+  priority: DocPriority;
+  prerequisites: string[];
+  order: number;
+  difficulty: DocDifficulty;
+  roleTargets: DocRoleTarget[];
+  aliases: string[];
+  updatedAt: string;
+  kind: "docs" | "playbooks";
+  categoryLabel: string;
+};
 
 export type DocDocument = DocEntry & {
   content: string;
@@ -394,7 +396,7 @@ export function getDocBySlug(
 }
 
 export function getSearchIndex(): SearchRecord[] {
-  return getAllDocsMeta().map(
+  const docs = getAllDocsMeta().map(
     ({
       title,
       description,
@@ -421,8 +423,36 @@ export function getSearchIndex(): SearchRecord[] {
       roleTargets,
       aliases,
       updatedAt,
+      kind: "docs" as const,
+      categoryLabel: category,
     }),
   );
+
+  const playbooks = getPlaybooks().map((playbook, index) => ({
+    title: playbook.title,
+    description: playbook.summary,
+    category: "playbooks" as const,
+    tags: [playbook.role, playbook.level, "플레이북", "실전 시나리오"],
+    href: `/playbooks/${playbook.slug}`,
+    priority: playbook.level === "입문" ? ("P1" as const) : ("P2" as const),
+    prerequisites: playbook.docs,
+    order: 10_000 + index,
+    difficulty: playbook.level,
+    roleTargets: [playbook.role],
+    aliases: [
+      playbook.slug,
+      ...playbook.docs,
+      playbook.role,
+      "AI IDE",
+      "협업 교과서",
+      "실전 플레이북",
+    ],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "playbooks" as const,
+    categoryLabel: "플레이북",
+  }));
+
+  return [...docs, ...playbooks];
 }
 
 export function getAdjacentDocs(category: DocCategory, slug: string): AdjacentDocs {

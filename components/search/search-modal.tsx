@@ -6,7 +6,6 @@ import { CalendarDays, FileText, Search, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
 import type { SearchRecord } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +23,8 @@ const STARTER_HREFS = new Set([
   "/docs/backend/api",
   "/docs/ui-ux/user-flow",
   "/docs/ui-ux/information-architecture",
+  "/playbooks/planner-signup-page",
+  "/playbooks/junior-api-integration",
 ]);
 
 const ROLE_QUERY_MAP = {
@@ -273,7 +274,7 @@ export function SearchModal({
                     {item.description}
                   </p>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <span>{DOC_CATEGORY_LABELS[item.category]}</span>
+                    <span>{item.categoryLabel}</span>
                     <span>·</span>
                     <span>대상 {item.roleTargets.join(", ")}</span>
                     <span>·</span>
