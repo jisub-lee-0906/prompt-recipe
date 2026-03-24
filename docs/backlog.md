@@ -6,21 +6,16 @@ P1 미작성 문서를 우선 추가하고, 이후 기존 `작성됨` 문서를 
 
 ## 현재 배치
 
-아래 5개는 이번 턴에 추가 완료되었습니다.
+아래 2개는 이번 턴에 추가 완료되었습니다.
 
-- 아코디언 `accordion`
-- 팝오버 `popover`
-- 이벤트 처리 `event-handling`
-- 조건부 렌더링 `conditional-rendering`
-- 리스트 렌더링 `list-rendering`
+- 롤백 `rollback`
+- 멱등성 `idempotency`
 
 ## 다음 배치 후보
 
-- filter-bar 고도화 `filter-bar`
-- search-bar 고도화 `search-bar`
-- confirmation-flow 고도화 `confirmation-flow`
-- props 고도화 `props`
-- session 고도화 `session`
+- 전체 96개 기준 문서 완성 후 교차 링크 밀도 점검
+- 카테고리 랜딩과 정렬 체계 고도화
+- 문서별 비교 표와 체크리스트 표현 통일
 
 ## 작업 규칙
 
