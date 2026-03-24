@@ -82,6 +82,11 @@ export default function Home() {
                 </Button>
               </Link>
               <HomeSearchButton />
+              <Link href="/compare">
+                <Button variant="outline" size="lg">
+                  비교 허브
+                </Button>
+              </Link>
               <Link href="/updates">
                 <Button variant="ghost" size="lg">
                   최근 업데이트
@@ -257,6 +262,12 @@ export default function Home() {
               </Link>
             ))}
           </CardContent>
+          <div className="px-6 pb-6">
+            <Link href="/compare" className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              비교 허브 전체 보기
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
         </Card>
       </section>
 
