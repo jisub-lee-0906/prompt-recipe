@@ -1,8 +1,12 @@
 import { spawn } from "node:child_process";
+import net from "node:net";
 
 const routes = [
   "/",
   "/compare",
+  "/tracks",
+  "/guides",
+  "/guides/signup-feature",
   "/playbooks",
   "/playbooks/planner-signup-page",
   "/docs/ui-ux",
@@ -14,13 +18,29 @@ const routes = [
   "/robots.txt",
 ];
 
-const port =
-  Number(process.env.SMOKE_PORT) ||
-  3100 + Math.floor(Math.random() * 200);
-const baseUrl = `http://localhost:${port}`;
-
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getAvailablePort() {
+  return new Promise((resolve, reject) => {
+    const preferred = Number(process.env.SMOKE_PORT) || 0;
+    const server = net.createServer();
+
+    server.unref();
+    server.on("error", reject);
+    server.listen(preferred, "127.0.0.1", () => {
+      const address = server.address();
+
+      if (!address || typeof address === "string") {
+        reject(new Error("사용 가능한 포트를 찾지 못했습니다."));
+        return;
+      }
+
+      const { port } = address;
+      server.close(() => resolve(port));
+    });
+  });
 }
 
 async function waitForServer(url, retries = 60) {
@@ -40,12 +60,24 @@ async function waitForServer(url, retries = 60) {
   throw new Error(`프리뷰 서버가 ${url}에서 응답하지 않습니다.`);
 }
 
-const server = spawn("cmd.exe", ["/c", "npx", "next", "start", "--hostname", "localhost", "--port", String(port)], {
-  cwd: process.cwd(),
-  stdio: "ignore",
-});
-
 const failures = [];
+
+const port = await getAvailablePort();
+const baseUrl = `http://localhost:${port}`;
+
+const server = spawn(
+  "cmd.exe",
+  [
+    "/d",
+    "/s",
+    "/c",
+    `node_modules\\.bin\\next.cmd start --hostname localhost --port ${port}`,
+  ],
+  {
+    cwd: process.cwd(),
+    stdio: "ignore",
+  },
+);
 
 try {
   await waitForServer(`${baseUrl}/`);

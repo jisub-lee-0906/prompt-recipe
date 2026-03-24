@@ -61,6 +61,20 @@ export function MobileNav({ docs }: MobileNavProps) {
                 </div>
                 <div className="grid gap-2 px-3">
                   <Link
+                    href="/tracks"
+                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
+                    onClick={() => setOpen(false)}
+                  >
+                    학습 트랙 보기
+                  </Link>
+                  <Link
+                    href="/guides"
+                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
+                    onClick={() => setOpen(false)}
+                  >
+                    기능 가이드 보기
+                  </Link>
+                  <Link
                     href="/playbooks"
                     className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
                     onClick={() => setOpen(false)}

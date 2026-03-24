@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 
 import { DOC_CATEGORIES, type DocCategory } from "@/lib/docs-config";
+import { getFeatureGuides } from "@/lib/guides";
 import { getPlaybooks } from "@/lib/playbooks";
 import { ROLE_PATHS, SITE_UPDATED_AT } from "@/lib/site-config";
 
@@ -56,7 +57,7 @@ export type SearchRecord = {
   roleTargets: DocRoleTarget[];
   aliases: string[];
   updatedAt: string;
-  kind: "docs" | "playbooks";
+  kind: "docs" | "playbooks" | "guides";
   categoryLabel: string;
 };
 
@@ -452,7 +453,24 @@ export function getSearchIndex(): SearchRecord[] {
     categoryLabel: "플레이북",
   }));
 
-  return [...docs, ...playbooks];
+  const guides = getFeatureGuides().map((guide, index) => ({
+    title: guide.title,
+    description: guide.summary,
+    category: "guides" as const,
+    tags: [...guide.audience, guide.level, "기능 가이드"],
+    href: `/guides/${guide.slug}`,
+    priority: guide.level === "입문" ? ("P1" as const) : ("P2" as const),
+    prerequisites: guide.docs,
+    order: 20_000 + index,
+    difficulty: guide.level,
+    roleTargets: guide.audience,
+    aliases: [guide.slug, ...guide.docs, ...guide.playbooks, "기능 가이드", "구현 가이드"],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "guides" as const,
+    categoryLabel: "기능 가이드",
+  }));
+
+  return [...docs, ...playbooks, ...guides];
 }
 
 export function getAdjacentDocs(category: DocCategory, slug: string): AdjacentDocs {

@@ -25,6 +25,8 @@ const STARTER_HREFS = new Set([
   "/docs/ui-ux/information-architecture",
   "/playbooks/planner-signup-page",
   "/playbooks/junior-api-integration",
+  "/guides/signup-feature",
+  "/guides/auth-feature",
 ]);
 
 const ROLE_QUERY_MAP = {

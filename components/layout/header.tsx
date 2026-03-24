@@ -25,10 +25,22 @@ export function Header() {
         </div>
         <div className="flex items-center gap-2">
           <Link
+            href="/tracks"
+            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 lg:inline-flex"
+          >
+            학습 트랙
+          </Link>
+          <Link
             href="/playbooks"
             className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 lg:inline-flex"
           >
             플레이북
+          </Link>
+          <Link
+            href="/guides"
+            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 xl:inline-flex"
+          >
+            기능 가이드
           </Link>
           <SearchTrigger className="h-9 w-auto min-w-0 justify-between gap-3 px-3 text-muted-foreground sm:min-w-64" />
           <ThemeToggle />

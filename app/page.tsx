@@ -3,9 +3,11 @@ import {
   ArrowRight,
   Blocks,
   BookOpenCheck,
+  BookMarked,
   BookOpenText,
   BrushCleaning,
   DatabaseZap,
+  Layers3,
   Sparkles,
   SplitSquareVertical,
 } from "lucide-react";
@@ -15,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
+import { getFeatureGuides } from "@/lib/guides";
 import { getAllDocsMeta, getDocsBySlugs } from "@/lib/mdx";
 import { getPlaybooks } from "@/lib/playbooks";
 import { CATEGORY_META, ROLE_PATHS, SITE_NAME } from "@/lib/site-config";
@@ -46,6 +49,7 @@ const COMPARISON_LINKS = [
 export default function Home() {
   const docs = getAllDocsMeta();
   const playbooks = getPlaybooks().slice(0, 3);
+  const guides = getFeatureGuides().slice(0, 3);
   const firstDoc = docs[0];
   const starterPaths = Object.entries(CATEGORY_META).map(([category, meta]) => ({
     category,
@@ -88,6 +92,16 @@ export default function Home() {
               <Link href="/playbooks">
                 <Button variant="outline" size="lg">
                   플레이북
+                </Button>
+              </Link>
+              <Link href="/tracks">
+                <Button variant="outline" size="lg">
+                  학습 트랙
+                </Button>
+              </Link>
+              <Link href="/guides">
+                <Button variant="outline" size="lg">
+                  기능 가이드
                 </Button>
               </Link>
               <Link href="/compare">
@@ -135,6 +149,74 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
+        <Card className="rounded-[2rem] border border-border/70 bg-card/80">
+          <CardHeader className="space-y-4">
+            <div className="flex items-center gap-2">
+              <BookMarked className="size-5 text-primary" />
+              <CardTitle className="text-2xl">역할별 학습 트랙 허브</CardTitle>
+            </div>
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+              기획자, 디자이너, 주니어 개발자가 문서, 플레이북, 기능 가이드를
+              어떤 순서로 읽으면 좋은지 한 페이지에서 볼 수 있는 허브입니다.
+            </p>
+          </CardHeader>
+          <CardContent className="flex flex-wrap items-center gap-3">
+            <Link href="/tracks">
+              <Button>
+                학습 트랙 보기
+                <ArrowRight className="size-4" />
+              </Button>
+            </Link>
+            <Link href="/tracks">
+              <Button variant="outline">역할별 추천 순서 확인</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
+        <div className="space-y-4 pb-6">
+          <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
+            Feature Guides
+          </p>
+          <h2 className="text-3xl font-semibold tracking-tight">
+            기능 단위 구현 가이드
+          </h2>
+          <p className="max-w-3xl text-base leading-8 text-muted-foreground">
+            로그인, 검색, 관리자, 결제처럼 여러 문서와 플레이북을 한 번에 묶어
+            보는 교과서형 섹션입니다.
+          </p>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-3">
+          {guides.map((guide) => (
+            <Link key={guide.slug} href={`/guides/${guide.slug}`}>
+              <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="secondary">{guide.level}</Badge>
+                    {guide.audience.slice(0, 2).map((role) => (
+                      <Badge key={role} variant="outline">
+                        {role}
+                      </Badge>
+                    ))}
+                  </div>
+                  <CardTitle className="text-xl">{guide.title}</CardTitle>
+                  <p className="text-sm leading-7 text-muted-foreground">
+                    {guide.summary}
+                  </p>
+                </CardHeader>
+                <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                  <Layers3 className="size-4" />
+                  기능 가이드 보기
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </section>
 

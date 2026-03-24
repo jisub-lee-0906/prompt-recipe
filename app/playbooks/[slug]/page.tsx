@@ -9,7 +9,11 @@ import { PromptCodeBlock } from "@/components/mdx/PromptCodeBlock";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDocsBySlugs } from "@/lib/mdx";
-import { getPlaybookBySlug, getPlaybooks } from "@/lib/playbooks";
+import {
+  getPlaybookBySlug,
+  getPlaybooks,
+  getRelatedPlaybooks,
+} from "@/lib/playbooks";
 
 type PlaybookPageProps = {
   params: Promise<{
@@ -58,6 +62,7 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
   }
 
   const relatedDocs = getDocsBySlugs(playbook.docs);
+  const relatedPlaybooks = getRelatedPlaybooks(playbook.slug);
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12">
@@ -131,6 +136,34 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
               ))}
             </div>
           </div>
+
+          {relatedPlaybooks.length > 0 ? (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-semibold tracking-tight">
+                이어서 보기 좋은 플레이북
+              </h2>
+              <div className="grid gap-4 md:grid-cols-2">
+                {relatedPlaybooks.map((item) => (
+                  <Link key={item.slug} href={`/playbooks/${item.slug}`}>
+                    <Card className="rounded-[1.5rem] border border-border/70 bg-background/70 transition-colors hover:bg-muted/60">
+                      <CardHeader className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary">{item.role}</Badge>
+                          <Badge variant="outline">{item.level}</Badge>
+                        </div>
+                        <CardTitle className="text-xl">{item.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm leading-7 text-muted-foreground">
+                          {item.summary}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold tracking-tight">
