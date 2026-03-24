@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CHANGELOG_ENTRIES, SITE_NAME } from "@/lib/site-config";
+import { CHANGELOG_ENTRIES } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: `업데이트 | ${SITE_NAME}`,
-  description: "문서 사이트의 최근 업데이트와 변경 내역을 확인할 수 있습니다.",
+  title: "업데이트",
+  description: "문서 사이트의 최근 업데이트와 변경 이력을 확인할 수 있습니다.",
 };
 
 export default function UpdatesPage() {

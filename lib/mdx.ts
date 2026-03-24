@@ -29,17 +29,18 @@ export type TocHeading = {
   level: 2 | 3;
 };
 
-export type DocEntry = DocFrontmatter & {
-  slug: string;
-  href: string;
-  order: number;
-  difficulty: DocDifficulty;
-  roleTargets: DocRoleTarget[];
-  relatedSlugs: string[];
-  updatedAt: string;
-  readingTime: number;
-  aliases: string[];
-} & InventoryMeta;
+export type DocEntry = DocFrontmatter &
+  InventoryMeta & {
+    slug: string;
+    href: string;
+    order: number;
+    difficulty: DocDifficulty;
+    roleTargets: DocRoleTarget[];
+    relatedSlugs: string[];
+    updatedAt: string;
+    readingTime: number;
+    aliases: string[];
+  };
 
 export type SearchRecord = Pick<
   DocEntry,
@@ -82,11 +83,11 @@ const DOC_ALIAS_MAP: Record<string, string[]> = {
   toast: ["알림", "토스트 메시지", "피드백 메시지"],
   dialog: ["확인창", "대화상자"],
   drawer: ["슬라이드 패널", "사이드 패널"],
-  dropdown: ["셀렉트 메뉴", "펼침 메뉴"],
+  dropdown: ["선택 메뉴", "드롭다운 메뉴"],
   "search-bar": ["검색창", "검색 입력"],
   "state-management": ["상태값", "state", "상태 관리"],
-  "auth-flow": ["인증", "로그인 흐름", "인증 절차"],
-  api: ["엔드포인트", "서버 통신"],
+  "auth-flow": ["인증", "로그인 흐름", "인증 플로우"],
+  api: ["백엔드", "서버 통신"],
   token: ["액세스 토큰", "jwt", "인증 토큰"],
   rbac: ["권한", "역할 기반 권한"],
   "request-response-schema": ["요청 응답", "스키마", "응답 구조"],
@@ -130,9 +131,9 @@ function priorityToDifficulty(priority: DocPriority): DocDifficulty {
 }
 
 function getRoleTargets(slug: string): DocRoleTarget[] {
-  const targets = ROLE_PATHS.filter((path) =>
-    path.slugs.some((item) => item === slug),
-  ).map((path) => path.role) as DocRoleTarget[];
+  const targets = ROLE_PATHS.filter((pathItem) =>
+    pathItem.slugs.some((item) => item === slug),
+  ).map((pathItem) => pathItem.role) as DocRoleTarget[];
 
   return targets.length > 0 ? targets : ["주니어 개발자"];
 }

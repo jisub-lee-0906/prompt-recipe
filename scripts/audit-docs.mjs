@@ -32,35 +32,35 @@ for (const category of fs.readdirSync(contentRoot)) {
     if (h2Count < 8) {
       failures.push({
         filePath,
-        reason: `주요 섹션 개수 부족: ${h2Count}`,
+        reason: `주요 섹션 개수 부족 ${h2Count}`,
       });
     }
 
     if (calloutCount < 2) {
       failures.push({
         filePath,
-        reason: `Callout 개수 부족: ${calloutCount}`,
+        reason: `Callout 개수 부족 ${calloutCount}`,
       });
     }
 
     if (promptCardCount < 1) {
       failures.push({
         filePath,
-        reason: `PromptCard 개수 부족: ${promptCardCount}`,
+        reason: `PromptCard 개수 부족 ${promptCardCount}`,
       });
     }
 
     if (promptCodeBlockCount < 2) {
       failures.push({
         filePath,
-        reason: `PromptCodeBlock 개수 부족: ${promptCodeBlockCount}`,
+        reason: `PromptCodeBlock 개수 부족 ${promptCodeBlockCount}`,
       });
     }
 
     if (relatedLinkCount < 2) {
       failures.push({
         filePath,
-        reason: `관련 문서 링크 부족: ${relatedLinkCount}`,
+        reason: `관련 문서 링크 부족 ${relatedLinkCount}`,
       });
     }
   }

@@ -16,13 +16,7 @@ type SearchModalProps = {
   items: SearchRecord[];
 };
 
-function normalize(value: string) {
-  return value.toLowerCase().trim();
-}
-
-function getPriorityRank(priority: SearchRecord["priority"]) {
-  return priority === "P1" ? 0 : priority === "P2" ? 1 : 2;
-}
+type RoleFilter = "전체" | SearchRecord["roleTargets"][number];
 
 const STARTER_HREFS = new Set([
   "/docs/ui-ux/modal",
@@ -35,8 +29,16 @@ const STARTER_HREFS = new Set([
 const ROLE_QUERY_MAP = {
   기획자: ["기획자", "pm", "po", "프로덕트"],
   디자이너: ["디자이너", "ux", "ui", "프로덕트 디자이너"],
-  "주니어 개발자": ["주니어 개발자", "프론트엔드", "개발자", "엔지니어"],
+  "주니어 개발자": ["주니어 개발자", "프론트엔드", "개발자", "주니어"],
 } as const;
+
+function normalize(value: string) {
+  return value.toLowerCase().trim();
+}
+
+function getPriorityRank(priority: SearchRecord["priority"]) {
+  return priority === "P1" ? 0 : priority === "P2" ? 1 : 2;
+}
 
 function getRoleWeight(item: SearchRecord, query: string) {
   const normalizedQuery = normalize(query);
@@ -65,9 +67,7 @@ export function SearchModal({
   items,
 }: SearchModalProps) {
   const [query, setQuery] = React.useState("");
-  const [selectedRole, setSelectedRole] = React.useState<
-    "전체" | SearchRecord["roleTargets"][number]
-  >("전체");
+  const [selectedRole, setSelectedRole] = React.useState<RoleFilter>("전체");
   const router = useRouter();
 
   React.useEffect(() => {
@@ -102,7 +102,7 @@ export function SearchModal({
         const description = normalize(item.description);
         const tags = item.tags.map(normalize);
         const aliases = item.aliases.map(normalize);
-        const prereqs = item.prerequisites.map(normalize);
+        const prerequisites = item.prerequisites.map(normalize);
         const roles = item.roleTargets.map(normalize);
         let score = 0;
 
@@ -115,7 +115,9 @@ export function SearchModal({
           if (aliases.some((alias) => alias.includes(normalizedQuery))) score += 45;
           if (description.includes(normalizedQuery)) score += 30;
           if (roles.some((role) => role.includes(normalizedQuery))) score += 25;
-          if (prereqs.some((prereq) => prereq.includes(normalizedQuery))) score += 20;
+          if (prerequisites.some((value) => value.includes(normalizedQuery))) {
+            score += 20;
+          }
           if (normalize(item.category).includes(normalizedQuery)) score += 10;
         }
 
@@ -184,7 +186,7 @@ export function SearchModal({
           <Command.Input
             value={query}
             onValueChange={setQuery}
-            placeholder="문서 제목, 설명, 태그, 별칭, 선행 개념으로 검색해보세요"
+            placeholder="문서 제목, 설명, 태그, 별칭, 선행 개념으로 검색해보세요."
             className="h-10 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           <Button
@@ -199,17 +201,19 @@ export function SearchModal({
         </div>
 
         <div className="flex flex-wrap gap-2 border-b border-border/70 px-4 py-3">
-          {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map((role) => (
-            <Button
-              key={role}
-              type="button"
-              variant={selectedRole === role ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedRole(role)}
-            >
-              {role}
-            </Button>
-          ))}
+          {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map(
+            (role) => (
+              <Button
+                key={role}
+                type="button"
+                variant={selectedRole === role ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedRole(role)}
+              >
+                {role}
+              </Button>
+            ),
+          )}
         </div>
 
         <Command.List className="max-h-[28rem] overflow-y-auto p-3">
@@ -271,7 +275,7 @@ export function SearchModal({
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                     <span>{DOC_CATEGORY_LABELS[item.category]}</span>
                     <span>·</span>
-                    <span>대상: {item.roleTargets.join(", ")}</span>
+                    <span>대상 {item.roleTargets.join(", ")}</span>
                     <span>·</span>
                     <span className="inline-flex items-center gap-1">
                       <CalendarDays className="size-3" />

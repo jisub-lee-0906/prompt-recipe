@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { ArrowLeft, ArrowRight, CalendarDays, Clock3, Heart } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Clock3,
+  Heart,
+  SplitSquareVertical,
+} from "lucide-react";
 import { notFound } from "next/navigation";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
@@ -22,7 +29,7 @@ import {
   getDocsBySlugs,
   getRecommendedNextDocs,
 } from "@/lib/mdx";
-import { FEEDBACK_URL, REQUEST_TERM_URL, SITE_NAME } from "@/lib/site-config";
+import { FEEDBACK_URL, REQUEST_TERM_URL } from "@/lib/site-config";
 
 type DocPageProps = {
   params: Promise<{
@@ -48,21 +55,17 @@ export async function generateMetadata({
   const { category, slug } = await params;
 
   if (!isDocCategory(category)) {
-    return {
-      title: `문서를 찾을 수 없습니다 | ${SITE_NAME}`,
-    };
+    return { title: "문서를 찾을 수 없습니다" };
   }
 
   const doc = getDocBySlug(category, slug);
 
   if (!doc) {
-    return {
-      title: `문서를 찾을 수 없습니다 | ${SITE_NAME}`,
-    };
+    return { title: "문서를 찾을 수 없습니다" };
   }
 
   return {
-    title: `${doc.title} | ${SITE_NAME}`,
+    title: doc.title,
     description: `${doc.description} 난이도 ${doc.difficulty}, 우선순위 ${doc.priority} 문서입니다.`,
     alternates: {
       canonical: doc.href,
@@ -143,7 +146,7 @@ export default async function DocPage({ params }: DocPageProps) {
               <div className="flex flex-wrap gap-2">
                 {doc.roleTargets.map((role) => (
                   <Badge key={role} variant="outline">
-                    대상: {role}
+                    대상 {role}
                   </Badge>
                 ))}
               </div>
@@ -182,7 +185,7 @@ export default async function DocPage({ params }: DocPageProps) {
                   다음 추천 학습
                 </h2>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  현재 문서를 읽은 뒤 이어서 보면 좋은 문서를 추천합니다.
+                  현재 문서를 읽은 뒤 이어서 보면 좋은 문서입니다.
                 </p>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
@@ -209,11 +212,12 @@ export default async function DocPage({ params }: DocPageProps) {
           {relatedDocs.length > 0 ? (
             <section className="mt-12 border-t border-border/70 pt-8">
               <div className="space-y-3 pb-5">
-                <h2 className="text-2xl font-semibold tracking-tight">
+                <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+                  <SplitSquareVertical className="size-5 text-primary" />
                   같이 읽으면 좋은 문서
                 </h2>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  헷갈리기 쉬운 개념이나 바로 이어서 보면 이해가 쉬운 문서입니다.
+                  헷갈리기 쉬운 개념이거나 바로 이어서 읽으면 이해가 쉬운 문서입니다.
                 </p>
               </div>
               <div className="grid gap-4 md:grid-cols-2">
@@ -243,8 +247,7 @@ export default async function DocPage({ params }: DocPageProps) {
             <div className="space-y-3 pb-5">
               <h2 className="text-2xl font-semibold tracking-tight">피드백</h2>
               <p className="text-sm leading-7 text-muted-foreground">
-                문서가 도움이 되었는지, 누락된 용어가 있는지 알려주시면 다음
-                업데이트에 반영합니다.
+                문서가 유용했는지, 빠진 용어가 있는지 알려주시면 다음 업데이트에 반영하겠습니다.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

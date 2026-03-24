@@ -12,7 +12,7 @@ import {
   type DocCategory,
 } from "@/lib/docs-config";
 import { getDocsByCategory, getDocsBySlugs } from "@/lib/mdx";
-import { CATEGORY_META, SITE_NAME } from "@/lib/site-config";
+import { CATEGORY_META } from "@/lib/site-config";
 
 type CategoryPageProps = {
   params: Promise<{
@@ -35,12 +35,12 @@ export async function generateMetadata({
 
   if (!isDocCategory(category)) {
     return {
-      title: `카테고리를 찾을 수 없습니다 | ${SITE_NAME}`,
+      title: "카테고리를 찾을 수 없습니다",
     };
   }
 
   return {
-    title: `${DOC_CATEGORY_LABELS[category]} 문서 | ${SITE_NAME}`,
+    title: `${DOC_CATEGORY_LABELS[category]} 문서`,
     description: CATEGORY_META[category].description,
     alternates: {
       canonical: `/docs/${category}`,

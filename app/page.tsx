@@ -6,6 +6,7 @@ import {
   BrushCleaning,
   DatabaseZap,
   Sparkles,
+  SplitSquareVertical,
 } from "lucide-react";
 
 import { HomeSearchButton } from "@/components/search/home-search-button";
@@ -22,6 +23,24 @@ const CATEGORY_ICONS = {
   backend: DatabaseZap,
 } as const;
 
+const COMPARISON_LINKS = [
+  {
+    title: "모달 vs 다이얼로그 vs 드로어",
+    href: "/docs/ui-ux/modal",
+    description: "겹쳐 뜨는 UI를 구분해서 요청할 때 가장 먼저 보는 비교 축입니다.",
+  },
+  {
+    title: "SSR vs CSR vs 하이드레이션",
+    href: "/docs/frontend/ssr",
+    description: "렌더링 방식과 초기 화면 동작을 설명할 때 기준이 되는 묶음입니다.",
+  },
+  {
+    title: "API vs 엔드포인트 vs 요청/응답 구조",
+    href: "/docs/backend/api",
+    description: "백엔드 요구사항을 구체적인 계약 언어로 바꿀 때 유용한 시작점입니다.",
+  },
+] as const;
+
 export default function Home() {
   const docs = getAllDocsMeta();
   const firstDoc = docs[0];
@@ -30,9 +49,9 @@ export default function Home() {
     ...meta,
     docs: docs.filter((doc) => doc.category === category).slice(0, 3),
   }));
-  const rolePaths = ROLE_PATHS.map((path) => ({
-    ...path,
-    docs: getDocsBySlugs([...path.slugs]),
+  const rolePaths = ROLE_PATHS.map((pathItem) => ({
+    ...pathItem,
+    docs: getDocsBySlugs([...pathItem.slugs]),
   }));
 
   return (
@@ -50,8 +69,8 @@ export default function Home() {
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
                   기획자, 디자이너, 주니어 개발자가 웹 개발과 UI/UX 용어를 빠르게
-                  이해하고 AI IDE에 더 구체적인 요청을 전달할 수 있도록 돕는
-                  레퍼런스 문서 사이트입니다.
+                  이해하고 AI IDE에 더 구체적인 요청을 전달하도록 돕는 레퍼런스
+                  문서 사이트입니다.
                 </p>
               </div>
             </div>
@@ -91,7 +110,11 @@ export default function Home() {
                       </div>
                     </CardHeader>
                     <CardContent className="border-t border-border/70 px-6 py-4 text-sm font-medium text-muted-foreground">
-                      {DOC_CATEGORY_LABELS[item.category as keyof typeof DOC_CATEGORY_LABELS]}{" "}
+                      {
+                        DOC_CATEGORY_LABELS[
+                          item.category as keyof typeof DOC_CATEGORY_LABELS
+                        ]
+                      }{" "}
                       문서 보기
                     </CardContent>
                   </Card>
@@ -115,22 +138,24 @@ export default function Home() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
-          {starterPaths.map((path) => (
+          {starterPaths.map((pathItem) => (
             <Card
-              key={path.category}
+              key={pathItem.category}
               className="rounded-[1.75rem] border border-border/70 bg-card/80"
             >
               <CardHeader className="space-y-4">
                 <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-xl">{path.title} 시작</CardTitle>
-                  <Badge variant="secondary">{path.docs.length}개 추천</Badge>
+                  <CardTitle className="text-xl">
+                    {pathItem.title} 시작
+                  </CardTitle>
+                  <Badge variant="secondary">{pathItem.docs.length}개 추천</Badge>
                 </div>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  {path.description}
+                  {pathItem.description}
                 </p>
               </CardHeader>
               <CardContent className="space-y-3">
-                {path.docs.map((doc, index) => (
+                {pathItem.docs.map((doc, index) => (
                   <Link
                     key={doc.slug}
                     href={doc.href}
@@ -155,7 +180,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-6 pb-20">
+      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
         <div className="space-y-4 pb-6">
           <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
             Role Paths
@@ -168,25 +193,25 @@ export default function Home() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
-          {rolePaths.map((path) => (
+          {rolePaths.map((pathItem) => (
             <Card
-              key={path.role}
+              key={pathItem.role}
               className="rounded-[1.75rem] border border-border/70 bg-card/80"
             >
               <CardHeader className="space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Sparkles className="size-4 text-primary" />
-                    {path.role}
+                    {pathItem.role}
                   </CardTitle>
-                  <Badge variant="secondary">{path.docs.length}개 경로</Badge>
+                  <Badge variant="secondary">{pathItem.docs.length}개 경로</Badge>
                 </div>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  {path.description}
+                  {pathItem.description}
                 </p>
               </CardHeader>
               <CardContent className="space-y-3">
-                {path.docs.map((doc, index) => (
+                {pathItem.docs.map((doc, index) => (
                   <Link
                     key={doc.slug}
                     href={doc.href}
@@ -210,34 +235,59 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
+        <Card className="rounded-[2rem] border border-border/70 bg-card/80">
+          <CardHeader className="space-y-4">
+            <div className="flex items-center gap-2">
+              <SplitSquareVertical className="size-5 text-primary" />
+              <CardTitle className="text-2xl">헷갈리기 쉬운 비교 묶음</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-3">
+            {COMPARISON_LINKS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-2xl border border-border/70 bg-background/70 p-5 transition-colors hover:bg-muted/60"
+              >
+                <p className="font-semibold">{item.title}</p>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                  {item.description}
+                </p>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mx-auto w-full max-w-7xl px-6 pb-24">
         <Card className="rounded-[2rem] border border-border/70 bg-card/80">
           <CardHeader className="space-y-4">
             <div className="flex items-center gap-2">
               <BookOpenCheck className="size-5 text-primary" />
-              <CardTitle className="text-2xl">문서 사이트 활용 팁</CardTitle>
+              <CardTitle className="text-2xl">문서 사이트 사용 팁</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl border border-border/70 bg-background/70 p-5">
               <p className="font-semibold">정확한 용어부터 찾기</p>
               <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                검색창에서 한국어 표현이나 실무 별칭으로 먼저 찾고, 대표 문서에서
-                정확한 용어를 익히는 흐름이 가장 빠릅니다.
+                검색창에서 실무 표현이나 별칭으로 먼저 찾고, 상세 문서에서 정확한
+                용어를 통일하면 작업 맥락이 더 빨리 잡힙니다.
               </p>
             </div>
             <div className="rounded-2xl border border-border/70 bg-background/70 p-5">
               <p className="font-semibold">선행 개념 따라가기</p>
               <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                문서 헤더의 선행 개념 배지와 문서 하단의 추천 학습을 따라가면
-                용어를 끊기지 않고 이어서 공부할 수 있습니다.
+                문서 헤더의 선행 개념 배지와 문서 하단 추천 학습을 따라가면 용어를
+                끊기지 않고 이어서 공부할 수 있습니다.
               </p>
             </div>
             <div className="rounded-2xl border border-border/70 bg-background/70 p-5">
               <p className="font-semibold">프롬프트 예시 바로 복사하기</p>
               <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                각 문서의 프롬프트 블록은 AI IDE에 바로 붙여 넣을 수 있게
-                작성되어 있어, 개념 학습과 실전 요청을 동시에 연습할 수 있습니다.
+                각 문서의 프롬프트 블록은 AI IDE에 바로 붙여 넣을 수 있게 작성돼
+                있어 개념 학습과 실전 요청을 동시에 연습할 수 있습니다.
               </p>
             </div>
           </CardContent>
