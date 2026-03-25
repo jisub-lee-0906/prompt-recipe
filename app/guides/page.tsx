@@ -9,7 +9,7 @@ import { getFeatureGuides } from "@/lib/guides";
 export const metadata: Metadata = {
   title: "기능 가이드",
   description:
-    "로그인, 검색, 관리자, 결제 같은 기능을 화면, 상태, API, 프롬프트 묶음으로 정리한 실전 가이드입니다.",
+    "로그인, 검색, 관리자, 업로드처럼 실제 기능을 화면, 상태, API 흐름으로 묶어 정리한 기능 가이드입니다.",
 };
 
 export default function GuidesPage() {
@@ -20,7 +20,7 @@ export default function GuidesPage() {
       <section className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
         <div className="space-y-4">
           <Badge variant="secondary" className="w-fit">
-            Feature Guides
+            기능 가이드
           </Badge>
           <div className="space-y-3">
             <h1 className="flex items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -28,8 +28,8 @@ export default function GuidesPage() {
               기능 단위 AI IDE 가이드
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
-              용어 문서와 플레이북을 넘어, 실제 기능을 여러 문서와 상태 흐름으로
-              묶어 보는 교과서형 섹션입니다.
+              용어와 플레이북을 넘어, 실제 기능을 화면·상태·API 흐름으로 묶어서
+              요청할 수 있게 정리한 교과서형 섹션입니다.
             </p>
           </div>
         </div>
@@ -43,24 +43,18 @@ export default function GuidesPage() {
           </h2>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          <div>
-            <p className="font-medium">1. 기능 목표 확인</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              이 가이드가 해결하려는 기능 범위를 먼저 확인합니다.
-            </p>
-          </div>
-          <div>
-            <p className="font-medium">2. 단계별 흐름 확인</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              화면, 상태, API가 어떤 단계로 이어지는지 먼저 봅니다.
-            </p>
-          </div>
-          <div>
-            <p className="font-medium">3. 프롬프트와 체크리스트 적용</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              빠른 요청과 고급 요청을 비교하면서 실제 지시문으로 바꿉니다.
-            </p>
-          </div>
+          <GuideTip
+            title="기능 목표 확인"
+            description="이 가이드가 해결하려는 기능 범위를 먼저 확인합니다."
+          />
+          <GuideTip
+            title="화면과 상태 흐름 읽기"
+            description="화면 구조, 상태 변화, API 연결이 어떤 순서로 이어지는지 확인합니다."
+          />
+          <GuideTip
+            title="프롬프트로 바로 실험하기"
+            description="가이드 안의 프롬프트를 AI IDE에 넣어보고 결과를 비교합니다."
+          />
         </div>
       </section>
 
@@ -99,5 +93,22 @@ export default function GuidesPage() {
         ))}
       </section>
     </main>
+  );
+}
+
+function GuideTip({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div>
+      <p className="font-medium">{title}</p>
+      <p className="mt-2 text-sm leading-7 text-muted-foreground">
+        {description}
+      </p>
+    </div>
   );
 }

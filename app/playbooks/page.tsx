@@ -13,18 +13,18 @@ import {
 export const metadata: Metadata = {
   title: "플레이북",
   description:
-    "기획자, 디자이너, 주니어 개발자가 AI IDE에 기능을 실제로 시킬 때 참고할 수 있는 실전 시나리오 모음입니다.",
+    "기획자, 디자이너, 주니어 개발자가 AI IDE에 실제 기능을 어떻게 시켜야 하는지 보여주는 실전 플레이북입니다.",
 };
 
 const ROLE_ORDER: PlaybookRole[] = ["기획자", "디자이너", "주니어 개발자"];
 
 const ROLE_DESCRIPTIONS: Record<PlaybookRole, string> = {
   기획자:
-    "요구사항과 사용자 흐름을 구현 언어로 번역하는 패턴을 먼저 익히는 트랙입니다.",
+    "요구사항과 사용자 흐름을 구현 가능한 문장으로 바꾸는 플레이북입니다.",
   디자이너:
-    "화면 구조, 상태 표현, 카피와 시각 위계를 AI IDE에 구체적으로 전달하는 트랙입니다.",
+    "화면 구조, 상태 표현, 카피와 시각 우선순위를 전달하는 플레이북입니다.",
   "주니어 개발자":
-    "데이터, 상태, API, 보호 로직처럼 구현 흐름을 안정적으로 요청하는 트랙입니다.",
+    "상태, API, 라우팅, 예외 처리를 안정적으로 요청하는 플레이북입니다.",
 };
 
 export default function PlaybooksPage() {
@@ -40,46 +40,16 @@ export default function PlaybooksPage() {
       <section className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
         <div className="space-y-4">
           <Badge variant="secondary" className="w-fit">
-            AI IDE Playbooks
+            플레이북
           </Badge>
           <div className="space-y-3">
             <h1 className="flex items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               <BookOpenText className="size-7 text-primary" />
-              역할별 AI IDE 협업 플레이북
+              역할별 AI IDE 작업 플레이북
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
-              용어를 아는 것에서 끝나지 않고, 실제 기능을 어떤 순서와 표현으로
-              시킬지까지 다루는 실전형 교과서 섹션입니다. 빠른 프롬프트,
-              개선된 요청, 체크리스트를 한 흐름으로 볼 수 있습니다.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
-        <div className="flex items-center gap-2">
-          <Sparkles className="size-5 text-primary" />
-          <h2 className="text-xl font-semibold tracking-tight">
-            플레이북을 읽는 순서
-          </h2>
-        </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          <div>
-            <p className="font-medium">1. 지금 상황과 가장 비슷한 항목 찾기</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              역할과 기능을 기준으로 가장 가까운 시나리오를 먼저 고릅니다.
-            </p>
-          </div>
-          <div>
-            <p className="font-medium">2. 빠른 프롬프트로 기본 틀 잡기</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              최소 요청 예시를 보고 빠져 있는 조건을 바로 파악합니다.
-            </p>
-          </div>
-          <div>
-            <p className="font-medium">3. 체크리스트로 실전 요청 완성하기</p>
-            <p className="mt-2 text-sm leading-7 text-muted-foreground">
-              마지막에 체크리스트를 보며 누락 조건을 보강합니다.
+              용어를 아는 단계에서 멈추지 않고, 실제 기능을 어떤 순서와 표현으로
+              요청해야 하는지 보여주는 실전 시나리오 모음입니다.
             </p>
           </div>
         </div>
@@ -117,56 +87,84 @@ export default function PlaybooksPage() {
         ))}
       </section>
 
-      <section className="mt-8 space-y-6">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            역할별 시작 트랙
-          </h2>
-          <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-            같은 역할 안에서도 입문에서 중급으로 넘어가는 순서를 따라 읽을 수
-            있게 정리했습니다.
-          </p>
-        </div>
+      <section className="mt-8 grid gap-5 lg:grid-cols-3">
+        {roleSections.map((section) => (
+          <Card
+            key={section.role}
+            className="rounded-[1.75rem] border border-border/70 bg-card/80"
+          >
+            <CardHeader className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <CardTitle className="text-xl">{section.role}</CardTitle>
+                <Badge variant="secondary">{section.items.length}개</Badge>
+              </div>
+              <p className="text-sm leading-7 text-muted-foreground">
+                {section.description}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {section.items.map((playbook, index) => (
+                <Link
+                  key={playbook.slug}
+                  href={`/playbooks/${playbook.slug}`}
+                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                >
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">
+                      {String(index + 1).padStart(2, "0")}
+                    </Badge>
+                    <Badge variant="outline">{playbook.level}</Badge>
+                  </div>
+                  <p className="mt-3 font-semibold">{playbook.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    {playbook.summary}
+                  </p>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+        ))}
+      </section>
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {roleSections.map((section) => (
-            <Card
-              key={section.role}
-              className="rounded-[1.75rem] border border-border/70 bg-card/80"
-            >
-              <CardHeader className="space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-xl">{section.role}</CardTitle>
-                  <Badge variant="secondary">{section.items.length}개</Badge>
-                </div>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {section.description}
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {section.items.map((playbook, index) => (
-                  <Link
-                    key={playbook.slug}
-                    href={`/playbooks/${playbook.slug}`}
-                    className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline">
-                        {String(index + 1).padStart(2, "0")}
-                      </Badge>
-                      <Badge variant="outline">{playbook.level}</Badge>
-                    </div>
-                    <p className="mt-3 font-semibold">{playbook.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                      {playbook.summary}
-                    </p>
-                  </Link>
-                ))}
-              </CardContent>
-            </Card>
-          ))}
+      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+        <div className="flex items-center gap-2">
+          <Sparkles className="size-5 text-primary" />
+          <h2 className="text-xl font-semibold tracking-tight">
+            플레이북 읽는 순서
+          </h2>
+        </div>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          <GuideTip
+            title="상황과 역할에 맞는 플레이북 선택"
+            description="지금 맡은 역할과 가장 가까운 시나리오부터 시작하면 표현을 빠르게 익힐 수 있습니다."
+          />
+          <GuideTip
+            title="짧은 요청과 긴 요청 비교"
+            description="빠른 요청과 고급 요청을 나란히 보면서 무엇이 추가되면 결과가 좋아지는지 확인하세요."
+          />
+          <GuideTip
+            title="관련 문서와 함께 읽기"
+            description="플레이북에서 연결된 문서와 가이드까지 보면 개념과 실전이 더 잘 연결됩니다."
+          />
         </div>
       </section>
     </main>
+  );
+}
+
+function GuideTip({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div>
+      <p className="font-medium">{title}</p>
+      <p className="mt-2 text-sm leading-7 text-muted-foreground">
+        {description}
+      </p>
+    </div>
   );
 }

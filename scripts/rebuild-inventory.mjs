@@ -77,11 +77,11 @@ const docs = getDocs();
 let output = "";
 output += "# AI 프롬프팅 가이드 마스터 인벤토리\n\n";
 output +=
-  "이 문서는 레퍼런스형 문서 사이트의 전체 문서 목록과 상태를 관리하기 위한 기준 문서입니다.\n\n";
+  "이 문서는 레퍼런스 문서 사이트의 전체 문서 목록과 상태를 관리하기 위한 기준 문서입니다.\n\n";
 output += "상태 정의:\n\n";
 output += "- `미작성`: 아직 문서 파일이 없는 상태\n";
-output += "- `작성됨`: 문서가 있으나 기준 문서 수준 검수가 더 필요한 상태\n";
-output += "- `기준 문서`: 레퍼런스 템플릿 기준을 충족한 문서\n\n";
+output += "- `작성됨`: 문서가 있으나 기준 문서 수준으로 더 다듬을 여지가 있는 상태\n";
+output += "- `기준 문서`: 교과서 템플릿 기준을 충족한 문서\n\n";
 
 for (const category of categoryOrder) {
   output += `## ${categoryTitles[category]}\n\n`;

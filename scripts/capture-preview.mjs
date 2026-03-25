@@ -7,15 +7,17 @@ const projectRoot = process.cwd();
 const outputDir = path.join(projectRoot, "output", "playwright");
 const routes = [
   { route: "/", file: "capture-home.png" },
-  { route: "/compare", file: "capture-compare.png" },
   { route: "/tracks", file: "capture-tracks.png" },
+  { route: "/playbooks", file: "capture-playbooks.png" },
+  { route: "/playbooks/planner-signup-page", file: "capture-playbook-signup.png" },
   { route: "/guides", file: "capture-guides.png" },
   { route: "/guides/signup-feature", file: "capture-guide-signup.png" },
-  { route: "/playbooks", file: "capture-playbooks.png" },
-  {
-    route: "/playbooks/planner-signup-page",
-    file: "capture-playbook-signup.png",
-  },
+  { route: "/casebooks", file: "capture-casebooks.png" },
+  { route: "/casebooks/signup-project", file: "capture-casebook-signup.png" },
+  { route: "/workouts", file: "capture-workouts.png" },
+  { route: "/workouts/signup-request-fix", file: "capture-workout-signup.png" },
+  { route: "/compare", file: "capture-compare.png" },
+  { route: "/scenarios", file: "capture-scenarios.png" },
   { route: "/docs/ui-ux", file: "capture-category-ui-ux.png" },
   { route: "/docs/frontend/component", file: "capture-component-doc.png" },
   { route: "/docs/backend/api", file: "capture-api-doc.png" },
@@ -29,22 +31,32 @@ function wait(ms) {
 
 function getAvailablePort() {
   return new Promise((resolve, reject) => {
-    const preferred = Number(process.env.CAPTURE_PORT) || 0;
-    const server = net.createServer();
+    const explicitPort = Number(process.env.CAPTURE_PORT);
+    const candidates = explicitPort
+      ? [explicitPort]
+      : Array.from({ length: 40 }, (_, index) => 4500 + index);
 
-    server.unref();
-    server.on("error", reject);
-    server.listen(preferred, "127.0.0.1", () => {
-      const address = server.address();
-
-      if (!address || typeof address === "string") {
+    const tryNext = (index) => {
+      if (index >= candidates.length) {
         reject(new Error("사용 가능한 포트를 찾지 못했습니다."));
         return;
       }
 
-      const { port } = address;
-      server.close(() => resolve(port));
-    });
+      const port = candidates[index];
+      const server = net.createServer();
+      server.unref();
+
+      server.once("error", () => {
+        server.close();
+        tryNext(index + 1);
+      });
+
+      server.listen(port, "127.0.0.1", () => {
+        server.close(() => resolve(port));
+      });
+    };
+
+    tryNext(0);
   });
 }
 
@@ -100,7 +112,6 @@ const server = spawn(
 
 try {
   await waitForServer(`${baseUrl}/`);
-
   runPlaywright(["close-all"]);
 
   for (const route of routes) {

@@ -1,14 +1,19 @@
-import { spawn } from "node:child_process";
 import net from "node:net";
+import { spawn } from "node:child_process";
 
 const routes = [
   "/",
-  "/compare",
   "/tracks",
-  "/guides",
-  "/guides/signup-feature",
   "/playbooks",
   "/playbooks/planner-signup-page",
+  "/guides",
+  "/guides/signup-feature",
+  "/casebooks",
+  "/casebooks/signup-project",
+  "/workouts",
+  "/workouts/signup-request-fix",
+  "/compare",
+  "/scenarios",
   "/docs/ui-ux",
   "/docs/frontend",
   "/docs/backend",
@@ -24,22 +29,32 @@ function wait(ms) {
 
 function getAvailablePort() {
   return new Promise((resolve, reject) => {
-    const preferred = Number(process.env.SMOKE_PORT) || 0;
-    const server = net.createServer();
+    const explicitPort = Number(process.env.SMOKE_PORT);
+    const candidates = explicitPort
+      ? [explicitPort]
+      : Array.from({ length: 40 }, (_, index) => 4500 + index);
 
-    server.unref();
-    server.on("error", reject);
-    server.listen(preferred, "127.0.0.1", () => {
-      const address = server.address();
-
-      if (!address || typeof address === "string") {
+    const tryNext = (index) => {
+      if (index >= candidates.length) {
         reject(new Error("사용 가능한 포트를 찾지 못했습니다."));
         return;
       }
 
-      const { port } = address;
-      server.close(() => resolve(port));
-    });
+      const port = candidates[index];
+      const server = net.createServer();
+      server.unref();
+
+      server.once("error", () => {
+        server.close();
+        tryNext(index + 1);
+      });
+
+      server.listen(port, "127.0.0.1", () => {
+        server.close(() => resolve(port));
+      });
+    };
+
+    tryNext(0);
   });
 }
 
@@ -51,17 +66,45 @@ async function waitForServer(url, retries = 60) {
         return;
       }
     } catch {
-      // 서버가 아직 뜨지 않은 상태는 무시합니다.
+      // 서버가 아직 준비되지 않은 상태는 무시합니다.
     }
 
     await wait(1000);
   }
 
-  throw new Error(`프리뷰 서버가 ${url}에서 응답하지 않습니다.`);
+  throw new Error(`프리뷰 서버가 ${url} 에서 응답하지 않습니다.`);
+}
+
+async function getStatusCode(url) {
+  try {
+    const response = await fetch(url, {
+      redirect: "manual",
+    });
+    return response.status;
+  } catch {
+    return 0;
+  }
+}
+
+async function fetchRouteWithRetry(url, retries = 10) {
+  for (let index = 0; index < retries; index += 1) {
+    const status = await getStatusCode(url);
+
+    if (status >= 200 && status < 300) {
+      return status;
+    }
+
+    if (status !== 404) {
+      return status;
+    }
+
+    await wait(1000);
+  }
+
+  return getStatusCode(url);
 }
 
 const failures = [];
-
 const port = await getAvailablePort();
 const baseUrl = `http://localhost:${port}`;
 
@@ -81,12 +124,13 @@ const server = spawn(
 
 try {
   await waitForServer(`${baseUrl}/`);
+  await wait(3000);
 
   for (const route of routes) {
-    const response = await fetch(`${baseUrl}${route}`);
+    const status = await fetchRouteWithRetry(`${baseUrl}${route}`);
 
-    if (!response.ok) {
-      failures.push(`${route}: ${response.status}`);
+    if (status < 200 || status >= 300) {
+      failures.push(`${route}: ${status}`);
     }
   }
 

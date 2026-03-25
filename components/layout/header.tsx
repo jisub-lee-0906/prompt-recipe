@@ -23,29 +23,37 @@ export function Header() {
             <span className="hidden sm:inline">AI 프롬프팅 가이드</span>
           </Link>
         </div>
+
         <div className="flex items-center gap-2">
-          <Link
-            href="/tracks"
-            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 lg:inline-flex"
-          >
-            학습 트랙
-          </Link>
-          <Link
-            href="/playbooks"
-            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 lg:inline-flex"
-          >
-            플레이북
-          </Link>
-          <Link
-            href="/guides"
-            className="hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 xl:inline-flex"
-          >
-            기능 가이드
-          </Link>
+          <NavLink href="/tracks" label="학습 트랙" className="lg:inline-flex" />
+          <NavLink href="/playbooks" label="플레이북" className="lg:inline-flex" />
+          <NavLink href="/guides" label="기능 가이드" className="xl:inline-flex" />
+          <NavLink href="/casebooks" label="사례집" className="xl:inline-flex" />
+          <NavLink href="/workouts" label="실습 훈련" className="2xl:inline-flex" />
+          <NavLink href="/compare" label="비교 허브" className="2xl:inline-flex" />
           <SearchTrigger className="h-9 w-auto min-w-0 justify-between gap-3 px-3 text-muted-foreground sm:min-w-64" />
           <ThemeToggle />
         </div>
       </div>
     </header>
+  );
+}
+
+function NavLink({
+  href,
+  label,
+  className,
+}: {
+  href: string;
+  label: string;
+  className: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`hidden rounded-xl border border-border/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 ${className}`}
+    >
+      {label}
+    </Link>
   );
 }

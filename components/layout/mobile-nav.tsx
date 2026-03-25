@@ -44,7 +44,7 @@ export function MobileNav({ docs }: MobileNavProps) {
         <SheetHeader className="border-b border-border/70 px-4 py-4">
           <SheetTitle>문서 메뉴</SheetTitle>
           <SheetDescription>
-            카테고리별로 문서를 빠르게 탐색할 수 있습니다.
+            학습 트랙, 사례집, 실습, 문서 카테고리를 한 번에 탐색할 수 있습니다.
           </SheetDescription>
         </SheetHeader>
         <div className="min-h-0 flex-1 p-4">
@@ -53,42 +53,24 @@ export function MobileNav({ docs }: MobileNavProps) {
               <div className="space-y-8 p-4">
                 <div className="space-y-2 px-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    문서 탐색
+                    빠른 이동
                   </p>
                   <p className="text-sm leading-6 text-muted-foreground">
-                    용어를 카테고리별로 빠르게 찾아보세요.
+                    역할별 학습과 실전 사례, 실습 훈련, 카테고리 문서를 빠르게
+                    열 수 있습니다.
                   </p>
                 </div>
+
                 <div className="grid gap-2 px-3">
-                  <Link
-                    href="/tracks"
-                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
-                    onClick={() => setOpen(false)}
-                  >
-                    학습 트랙 보기
-                  </Link>
-                  <Link
-                    href="/guides"
-                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
-                    onClick={() => setOpen(false)}
-                  >
-                    기능 가이드 보기
-                  </Link>
-                  <Link
-                    href="/playbooks"
-                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
-                    onClick={() => setOpen(false)}
-                  >
-                    플레이북 보기
-                  </Link>
-                  <Link
-                    href="/compare"
-                    className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
-                    onClick={() => setOpen(false)}
-                  >
-                    비교 허브 보기
-                  </Link>
+                  <QuickLink href="/tracks" label="학습 트랙 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/playbooks" label="플레이북 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/guides" label="기능 가이드 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/casebooks" label="사례집 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/workouts" label="실습 훈련 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/compare" label="비교 허브 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/scenarios" label="상황 허브 보기" onClick={() => setOpen(false)} />
                 </div>
+
                 {DOC_CATEGORIES.map((category) => {
                   const items = docs.filter((doc) => doc.category === category);
 
@@ -112,5 +94,25 @@ export function MobileNav({ docs }: MobileNavProps) {
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function QuickLink({
+  href,
+  label,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60"
+      onClick={onClick}
+    >
+      {label}
+    </Link>
   );
 }

@@ -6,14 +6,21 @@ export type LearningTrack = {
   docs: string[];
   playbooks: string[];
   guides: string[];
+  casebooks: string[];
+  workouts: string[];
 };
 
 export const LEARNING_TRACKS: LearningTrack[] = [
   {
     role: "기획자",
     summary:
-      "요구사항, 사용자 흐름, 성공 기준을 AI IDE가 바로 구현할 수 있는 언어로 바꾸는 데 초점을 둔 학습 순서입니다.",
-    docs: ["user-flow", "information-architecture", "success-criteria", "acceptance-criteria"],
+      "요구사항과 성공 기준을 구현 가능한 문장으로 바꾸고, 기능 흐름을 AI IDE에 끝까지 전달하는 학습 경로입니다.",
+    docs: [
+      "user-flow",
+      "information-architecture",
+      "success-criteria",
+      "acceptance-criteria",
+    ],
     playbooks: [
       "planner-signup-page",
       "planner-dashboard-prd",
@@ -26,11 +33,18 @@ export const LEARNING_TRACKS: LearningTrack[] = [
       "checkout-feature",
       "analytics-feature-guide",
     ],
+    casebooks: ["signup-project", "checkout-project", "approval-project"],
+    workouts: [
+      "signup-request-fix",
+      "approval-flow-clarify",
+      "success-criteria-writing",
+      "api-requirements-spec",
+    ],
   },
   {
     role: "디자이너",
     summary:
-      "화면 패턴, 상태 표현, 정보 위계, 마이크로카피를 더 구체적인 구현 요청으로 바꾸는 데 초점을 둔 학습 순서입니다.",
+      "화면 구조, 상태 시스템, 마이크로카피, 탐색 경험을 AI IDE가 구현할 수 있는 요청으로 바꾸는 학습 경로입니다.",
     docs: ["modal", "empty-state", "microcopy", "responsive-design"],
     playbooks: [
       "designer-dashboard-polish",
@@ -44,11 +58,22 @@ export const LEARNING_TRACKS: LearningTrack[] = [
       "notification-feature-guide",
       "file-upload-feature",
     ],
+    casebooks: [
+      "signup-project",
+      "file-upload-project",
+      "checkout-project",
+    ],
+    workouts: [
+      "state-system-request",
+      "microcopy-improve",
+      "landing-hero-brief",
+      "upload-experience-upgrade",
+    ],
   },
   {
     role: "주니어 개발자",
     summary:
-      "컴포넌트, 상태, 데이터, 인증, 성능을 AI IDE와 안정적으로 협업하는 구현 흐름으로 익히는 학습 순서입니다.",
+      "컴포넌트, 상태, API, 라우팅, 예외 상태를 AI IDE와 안정적으로 구현하는 방법을 익히는 학습 경로입니다.",
     docs: ["component", "state-management", "routing", "data-fetching"],
     playbooks: [
       "junior-api-integration",
@@ -61,6 +86,13 @@ export const LEARNING_TRACKS: LearningTrack[] = [
       "search-feature-guide",
       "list-performance-feature",
       "approval-feature-guide",
+    ],
+    casebooks: ["auth-project", "search-project", "file-upload-project"],
+    workouts: [
+      "api-integration-request",
+      "auth-edge-state",
+      "search-performance-request",
+      "form-submit-finish",
     ],
   },
 ];

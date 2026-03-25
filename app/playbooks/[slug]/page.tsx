@@ -117,22 +117,13 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
             </h2>
             <div className="grid gap-4 md:grid-cols-2">
               {relatedDocs.map((doc) => (
-                <Link key={doc.slug} href={doc.href}>
-                  <Card className="rounded-[1.5rem] border border-border/70 bg-background/70 transition-colors hover:bg-muted/60">
-                    <CardHeader className="space-y-3">
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="secondary">{doc.priority}</Badge>
-                        <Badge variant="outline">{doc.difficulty}</Badge>
-                      </div>
-                      <CardTitle className="text-xl">{doc.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm leading-7 text-muted-foreground">
-                        {doc.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <RelatedCard
+                  key={doc.slug}
+                  href={doc.href}
+                  title={doc.title}
+                  summary={doc.description}
+                  badges={[doc.priority, doc.difficulty]}
+                />
               ))}
             </div>
           </div>
@@ -144,22 +135,13 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
               </h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {relatedPlaybooks.map((item) => (
-                  <Link key={item.slug} href={`/playbooks/${item.slug}`}>
-                    <Card className="rounded-[1.5rem] border border-border/70 bg-background/70 transition-colors hover:bg-muted/60">
-                      <CardHeader className="space-y-3">
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="secondary">{item.role}</Badge>
-                          <Badge variant="outline">{item.level}</Badge>
-                        </div>
-                        <CardTitle className="text-xl">{item.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm leading-7 text-muted-foreground">
-                          {item.summary}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                  <RelatedCard
+                    key={item.slug}
+                    href={`/playbooks/${item.slug}`}
+                    title={item.title}
+                    summary={item.summary}
+                    badges={[item.role, item.level]}
+                  />
                 ))}
               </div>
             </div>
@@ -182,8 +164,8 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
             </div>
           </div>
 
-          <Callout type="info" title="활용 팁">
-            플레이북은 그대로 복붙해도 되지만, 실제 프로젝트 맥락과 제약 조건을
+          <Callout type="info" title="사용 팁">
+            플레이북을 그대로 복붙해도 되지만, 프로젝트 맥락과 제약 조건을
             덧붙일수록 결과가 더 좋아집니다.
           </Callout>
         </section>
@@ -199,5 +181,37 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
         </footer>
       </article>
     </main>
+  );
+}
+
+function RelatedCard({
+  href,
+  title,
+  summary,
+  badges,
+}: {
+  href: string;
+  title: string;
+  summary: string;
+  badges: string[];
+}) {
+  return (
+    <Link href={href}>
+      <Card className="rounded-[1.5rem] border border-border/70 bg-background/70 transition-colors hover:bg-muted/60">
+        <CardHeader className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {badges.map((badge) => (
+              <Badge key={badge} variant="outline">
+                {badge}
+              </Badge>
+            ))}
+          </div>
+          <CardTitle className="text-xl">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm leading-7 text-muted-foreground">{summary}</p>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

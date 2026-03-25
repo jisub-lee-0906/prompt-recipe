@@ -16,17 +16,24 @@ type SearchModalProps = {
 };
 
 type RoleFilter = "전체" | SearchRecord["roleTargets"][number];
+type KindFilter =
+  | "전체"
+  | SearchRecord["kind"]
+  | "docs"
+  | "playbooks"
+  | "guides"
+  | "casebooks"
+  | "workouts"
+  | "hubs";
 
 const STARTER_HREFS = new Set([
   "/docs/ui-ux/modal",
   "/docs/frontend/component",
   "/docs/backend/api",
-  "/docs/ui-ux/user-flow",
-  "/docs/ui-ux/information-architecture",
   "/playbooks/planner-signup-page",
-  "/playbooks/junior-api-integration",
   "/guides/signup-feature",
-  "/guides/auth-feature",
+  "/casebooks/signup-project",
+  "/workouts/signup-request-fix",
 ]);
 
 const ROLE_QUERY_MAP = {
@@ -35,12 +42,76 @@ const ROLE_QUERY_MAP = {
   "주니어 개발자": ["주니어 개발자", "프론트엔드", "개발자", "주니어"],
 } as const;
 
+const KIND_LABELS: Record<SearchRecord["kind"], string> = {
+  docs: "문서",
+  playbooks: "플레이북",
+  guides: "기능 가이드",
+  casebooks: "사례집",
+  workouts: "실습",
+  hubs: "허브",
+};
+
+const GROUP_ORDER: SearchRecord["kind"][] = [
+  "casebooks",
+  "workouts",
+  "guides",
+  "playbooks",
+  "docs",
+  "hubs",
+];
+
 function normalize(value: string) {
   return value.toLowerCase().trim();
 }
 
 function getPriorityRank(priority: SearchRecord["priority"]) {
   return priority === "P1" ? 0 : priority === "P2" ? 1 : 2;
+}
+
+function getKindWeight(item: SearchRecord, query: string) {
+  const normalizedQuery = normalize(query);
+
+  if (!normalizedQuery) {
+    return 0;
+  }
+
+  const casebookKeywords = [
+    "회원가입",
+    "로그인",
+    "검색",
+    "결제",
+    "업로드",
+    "설정",
+    "온보딩",
+    "분석",
+    "사례집",
+  ];
+
+  const workoutKeywords = ["실습", "훈련", "요청", "개선", "고치기"];
+  const hubKeywords = ["비교", "허브", "상황", "무엇부터"];
+
+  if (
+    item.kind === "casebooks" &&
+    casebookKeywords.some((keyword) => normalizedQuery.includes(keyword))
+  ) {
+    return 22;
+  }
+
+  if (
+    item.kind === "workouts" &&
+    workoutKeywords.some((keyword) => normalizedQuery.includes(keyword))
+  ) {
+    return 18;
+  }
+
+  if (
+    item.kind === "hubs" &&
+    hubKeywords.some((keyword) => normalizedQuery.includes(keyword))
+  ) {
+    return 14;
+  }
+
+  return 0;
 }
 
 function getRoleWeight(item: SearchRecord, query: string) {
@@ -64,6 +135,10 @@ function getRoleWeight(item: SearchRecord, query: string) {
   return weight;
 }
 
+function getStarterItems(items: SearchRecord[]) {
+  return items.filter((item) => STARTER_HREFS.has(item.href)).slice(0, 7);
+}
+
 export function SearchModal({
   open,
   onOpenChange,
@@ -71,6 +146,7 @@ export function SearchModal({
 }: SearchModalProps) {
   const [query, setQuery] = React.useState("");
   const [selectedRole, setSelectedRole] = React.useState<RoleFilter>("전체");
+  const [selectedKind, setSelectedKind] = React.useState<KindFilter>("전체");
   const router = useRouter();
 
   React.useEffect(() => {
@@ -93,6 +169,7 @@ export function SearchModal({
     if (!open) {
       setQuery("");
       setSelectedRole("전체");
+      setSelectedKind("전체");
     }
   }, [open]);
 
@@ -125,14 +202,17 @@ export function SearchModal({
         }
 
         score += getRoleWeight(item, query);
+        score += getKindWeight(item, query);
 
         return { item, score };
       })
       .filter(({ item, score }) => {
         const roleMatched =
           selectedRole === "전체" || item.roleTargets.includes(selectedRole);
+        const kindMatched =
+          selectedKind === "전체" || item.kind === selectedKind;
 
-        if (!roleMatched) {
+        if (!roleMatched || !kindMatched) {
           return false;
         }
 
@@ -161,12 +241,20 @@ export function SearchModal({
         return left.item.order - right.item.order;
       })
       .map(({ item }) => item);
-  }, [items, query, selectedRole]);
+  }, [items, query, selectedKind, selectedRole]);
 
-  const suggestedItems = React.useMemo(
-    () => items.filter((item) => item.priority === "P1").slice(0, 5),
-    [items],
+  const starterItems = React.useMemo(
+    () => getStarterItems(filteredItems),
+    [filteredItems],
   );
+  const groupedItems = React.useMemo(() => {
+    const source = query ? filteredItems : filteredItems;
+
+    return GROUP_ORDER.map((kind) => ({
+      kind,
+      items: source.filter((item) => item.kind === kind),
+    })).filter((group) => group.items.length > 0);
+  }, [filteredItems, query]);
 
   if (!open) {
     return null;
@@ -182,14 +270,14 @@ export function SearchModal({
       />
       <Command
         label="문서 검색"
-        className="relative z-10 w-full max-w-2xl overflow-hidden rounded-[2rem] border border-border/70 bg-background shadow-2xl"
+        className="relative z-10 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-border/70 bg-background shadow-2xl"
       >
         <div className="flex items-center gap-3 border-b border-border/70 px-4 py-4">
           <Search className="size-5 text-muted-foreground" />
           <Command.Input
             value={query}
             onValueChange={setQuery}
-            placeholder="문서 제목, 설명, 태그, 별칭, 선행 개념으로 검색해보세요."
+            placeholder="문서 제목, 설명, 태그, 별칭, 선행 개념으로 검색해보세요"
             className="h-10 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           <Button
@@ -203,100 +291,170 @@ export function SearchModal({
           </Button>
         </div>
 
-        <div className="flex flex-wrap gap-2 border-b border-border/70 px-4 py-3">
-          {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map(
-            (role) => (
+        <div className="space-y-3 border-b border-border/70 px-4 py-3">
+          <div className="flex flex-wrap gap-2">
+            {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map(
+              (role) => (
+                <Button
+                  key={role}
+                  type="button"
+                  variant={selectedRole === role ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedRole(role)}
+                >
+                  {role}
+                </Button>
+              ),
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["전체", "전체"],
+                ["docs", "문서"],
+                ["playbooks", "플레이북"],
+                ["guides", "가이드"],
+                ["casebooks", "사례집"],
+                ["workouts", "실습"],
+                ["hubs", "허브"],
+              ] as const
+            ).map(([value, label]) => (
               <Button
-                key={role}
+                key={value}
                 type="button"
-                variant={selectedRole === role ? "default" : "outline"}
+                variant={selectedKind === value ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedRole(role)}
+                onClick={() => setSelectedKind(value)}
               >
-                {role}
+                {label}
               </Button>
-            ),
-          )}
+            ))}
+          </div>
         </div>
 
-        <Command.List className="max-h-[28rem] overflow-y-auto p-3">
+        <Command.List className="max-h-[32rem] overflow-y-auto p-3">
           <Command.Empty className="space-y-4 px-3 py-10 text-center text-sm text-muted-foreground">
             <p>검색 결과가 없습니다.</p>
             <div className="flex flex-wrap justify-center gap-2">
-              {suggestedItems.slice(0, 3).map((item) => (
-                <Button
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onOpenChange(false);
+                  router.push("/compare");
+                }}
+              >
+                비교 허브로 이동
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onOpenChange(false);
+                  router.push("/scenarios");
+                }}
+              >
+                상황 허브로 이동
+              </Button>
+            </div>
+          </Command.Empty>
+
+          {!query ? (
+            <Command.Group heading="추천 시작">
+              {starterItems.map((item) => (
+                <SearchItem
                   key={item.href}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
+                  item={item}
+                  onSelect={() => {
                     onOpenChange(false);
                     router.push(item.href);
                   }}
-                >
-                  {item.title}
-                </Button>
+                />
               ))}
-            </div>
-          </Command.Empty>
-          <Command.Group heading={query ? "검색 결과" : "추천 시작 문서"}>
-            {(query ? filteredItems : suggestedItems).map((item) => (
-              <Command.Item
-                key={item.href}
-                value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")} ${item.updatedAt}`}
-                onSelect={() => {
-                  onOpenChange(false);
-                  router.push(item.href);
-                }}
-                className={cn(
-                  "flex cursor-pointer items-start gap-3 rounded-2xl px-3 py-3 text-sm outline-none",
-                  "data-[selected=true]:bg-muted",
-                )}
-              >
-                <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                  <FileText className="size-4" />
-                </div>
-                <div className="min-w-0 space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-medium text-foreground">{item.title}</p>
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
-                      {item.priority}
-                    </span>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      {item.difficulty}
-                    </span>
-                    {item.priority === "P1" ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
-                        <Sparkles className="size-3" />
-                        입문 추천
-                      </span>
-                    ) : null}
-                  </div>
-                  <p className="line-clamp-2 text-muted-foreground">
-                    {item.description}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <span>{item.categoryLabel}</span>
-                    <span>·</span>
-                    <span>대상 {item.roleTargets.join(", ")}</span>
-                    <span>·</span>
-                    <span className="inline-flex items-center gap-1">
-                      <CalendarDays className="size-3" />
-                      {item.updatedAt}
-                    </span>
-                    {item.prerequisites.length > 0 ? (
-                      <>
-                        <span>·</span>
-                        <span>선행: {item.prerequisites.join(", ")}</span>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-              </Command.Item>
-            ))}
-          </Command.Group>
+            </Command.Group>
+          ) : null}
+
+          {groupedItems.map((group) => (
+            <Command.Group
+              key={group.kind}
+              heading={KIND_LABELS[group.kind]}
+            >
+              {group.items.map((item) => (
+                <SearchItem
+                  key={item.href}
+                  item={item}
+                  onSelect={() => {
+                    onOpenChange(false);
+                    router.push(item.href);
+                  }}
+                />
+              ))}
+            </Command.Group>
+          ))}
         </Command.List>
       </Command>
     </div>
+  );
+}
+
+function SearchItem({
+  item,
+  onSelect,
+}: {
+  item: SearchRecord;
+  onSelect: () => void;
+}) {
+  return (
+    <Command.Item
+      value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")} ${item.updatedAt}`}
+      onSelect={onSelect}
+      className={cn(
+        "flex cursor-pointer items-start gap-3 rounded-2xl px-3 py-3 text-sm outline-none",
+        "data-[selected=true]:bg-muted",
+      )}
+    >
+      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+        <FileText className="size-4" />
+      </div>
+      <div className="min-w-0 space-y-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="font-medium text-foreground">{item.title}</p>
+          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+            {item.priority}
+          </span>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+            {item.difficulty}
+          </span>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+            {KIND_LABELS[item.kind]}
+          </span>
+          {item.priority === "P1" ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+              <Sparkles className="size-3" />
+              추천 시작
+            </span>
+          ) : null}
+        </div>
+        <p className="line-clamp-2 text-muted-foreground">{item.description}</p>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <span>{item.categoryLabel}</span>
+          <span>·</span>
+          <span>대상 {item.roleTargets.join(", ")}</span>
+          <span>·</span>
+          <span className="inline-flex items-center gap-1">
+            <CalendarDays className="size-3" />
+            {item.updatedAt}
+          </span>
+          {item.prerequisites.length > 0 ? (
+            <>
+              <span>·</span>
+              <span>선행: {item.prerequisites.join(", ")}</span>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </Command.Item>
   );
 }

@@ -37,7 +37,7 @@ export default function UpdatesPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-7 text-muted-foreground">
-                {entry.summary}
+                {entry.description}
               </p>
             </CardContent>
           </Card>

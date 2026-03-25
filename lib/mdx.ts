@@ -3,10 +3,17 @@ import path from "node:path";
 
 import matter from "gray-matter";
 
-import { DOC_CATEGORIES, type DocCategory } from "@/lib/docs-config";
+import { getCasebooks } from "@/lib/casebooks";
+import {
+  DOC_CATEGORIES,
+  DOC_CATEGORY_LABELS,
+  type DocCategory,
+} from "@/lib/docs-config";
 import { getFeatureGuides } from "@/lib/guides";
+import { getComparisonHubItems, getScenarioHubItems } from "@/lib/hubs";
 import { getPlaybooks } from "@/lib/playbooks";
 import { ROLE_PATHS, SITE_UPDATED_AT } from "@/lib/site-config";
+import { getWorkouts } from "@/lib/workouts";
 
 export type DocFrontmatter = {
   title: string;
@@ -57,7 +64,7 @@ export type SearchRecord = {
   roleTargets: DocRoleTarget[];
   aliases: string[];
   updatedAt: string;
-  kind: "docs" | "playbooks" | "guides";
+  kind: "docs" | "playbooks" | "guides" | "casebooks" | "workouts" | "hubs";
   categoryLabel: string;
 };
 
@@ -82,10 +89,10 @@ const MASTER_INVENTORY_PATH = path.join(
 const MDX_EXTENSION = ".mdx";
 
 const DOC_ALIAS_MAP: Record<string, string[]> = {
-  modal: ["팝업", "오버레이", "레이어 팝업"],
-  toast: ["알림", "토스트 메시지", "피드백 메시지"],
+  modal: ["팝업", "오버레이", "겹침 창"],
+  toast: ["알림", "토스트 메시지", "상태 알림"],
   dialog: ["확인창", "대화상자"],
-  drawer: ["슬라이드 패널", "사이드 패널"],
+  drawer: ["사이드 패널", "슬라이드 패널"],
   dropdown: ["선택 메뉴", "드롭다운 메뉴"],
   "search-bar": ["검색창", "검색 입력"],
   "state-management": ["상태값", "state", "상태 관리"],
@@ -319,7 +326,9 @@ export function getAllDocsMeta(): DocEntry[] {
       const order = inventoryOrderMap.get(slug);
 
       if (!inventoryMeta || order === undefined) {
-        throw new Error(`마스터 인벤토리에서 문서 메타를 찾을 수 없습니다: ${slug}`);
+        throw new Error(
+          `마스터 인벤토리에서 문서 메타를 찾을 수 없습니다: ${slug}`,
+        );
       }
 
       return {
@@ -425,14 +434,14 @@ export function getSearchIndex(): SearchRecord[] {
       aliases,
       updatedAt,
       kind: "docs" as const,
-      categoryLabel: category,
+      categoryLabel: DOC_CATEGORY_LABELS[category],
     }),
   );
 
   const playbooks = getPlaybooks().map((playbook, index) => ({
     title: playbook.title,
     description: playbook.summary,
-    category: "playbooks" as const,
+    category: "playbooks",
     tags: [playbook.role, playbook.level, "플레이북", "실전 시나리오"],
     href: `/playbooks/${playbook.slug}`,
     priority: playbook.level === "입문" ? ("P1" as const) : ("P2" as const),
@@ -445,7 +454,7 @@ export function getSearchIndex(): SearchRecord[] {
       ...playbook.docs,
       playbook.role,
       "AI IDE",
-      "협업 교과서",
+      "작업 교과서",
       "실전 플레이북",
     ],
     updatedAt: SITE_UPDATED_AT,
@@ -456,7 +465,7 @@ export function getSearchIndex(): SearchRecord[] {
   const guides = getFeatureGuides().map((guide, index) => ({
     title: guide.title,
     description: guide.summary,
-    category: "guides" as const,
+    category: "guides",
     tags: [...guide.audience, guide.level, "기능 가이드"],
     href: `/guides/${guide.slug}`,
     priority: guide.level === "입문" ? ("P1" as const) : ("P2" as const),
@@ -464,13 +473,133 @@ export function getSearchIndex(): SearchRecord[] {
     order: 20_000 + index,
     difficulty: guide.level,
     roleTargets: guide.audience,
-    aliases: [guide.slug, ...guide.docs, ...guide.playbooks, "기능 가이드", "구현 가이드"],
+    aliases: [
+      guide.slug,
+      ...guide.docs,
+      ...guide.playbooks,
+      "기능 가이드",
+      "구현 가이드",
+    ],
     updatedAt: SITE_UPDATED_AT,
     kind: "guides" as const,
     categoryLabel: "기능 가이드",
   }));
 
-  return [...docs, ...playbooks, ...guides];
+  const casebooks = getCasebooks().map((casebook, index) => ({
+    title: casebook.title,
+    description: casebook.summary,
+    category: "casebooks",
+    tags: [...casebook.roles, casebook.level, "사례집", "완성형 사례", "프로젝트 사례"],
+    href: `/casebooks/${casebook.slug}`,
+    priority: casebook.level === "입문" ? ("P1" as const) : ("P2" as const),
+    prerequisites: [...casebook.docs, ...casebook.playbooks, ...casebook.guides],
+    order: 30_000 + index,
+    difficulty: casebook.level,
+    roleTargets: casebook.roles,
+    aliases: [
+      casebook.slug,
+      ...casebook.docs,
+      ...casebook.playbooks,
+      ...casebook.guides,
+      ...(casebook.workouts ?? []),
+      ...casebook.roles,
+      "사례집",
+      "완성형 사례",
+      "프로젝트 사례",
+    ],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "casebooks" as const,
+    categoryLabel: "프로젝트 사례집",
+  }));
+
+  const workouts = getWorkouts().map((workout, index) => ({
+    title: workout.title,
+    description: workout.problem,
+    category: "workouts",
+    tags: [workout.role, workout.level, "실습", "훈련"],
+    href: `/workouts/${workout.slug}`,
+    priority: workout.level === "입문" ? ("P1" as const) : ("P2" as const),
+    prerequisites: [
+      ...workout.docs,
+      ...workout.playbooks,
+      ...workout.guides,
+      ...workout.casebooks,
+    ],
+    order: 40_000 + index,
+    difficulty: workout.level,
+    roleTargets: [workout.role],
+    aliases: [
+      workout.slug,
+      ...workout.docs,
+      ...workout.guides,
+      ...workout.casebooks,
+      workout.role,
+      "실습",
+      "훈련",
+      "요청 개선",
+    ],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "workouts" as const,
+    categoryLabel: "실습 훈련",
+  }));
+
+  const comparisonHubs = getComparisonHubItems().map((item, index) => ({
+    title: item.title,
+    description: item.summary,
+    category: "hubs",
+    tags: ["비교 허브", "개념 비교"],
+    href: `/compare#${item.slug}`,
+    priority: "P2" as const,
+    prerequisites: item.docs,
+    order: 50_000 + index,
+    difficulty: "입문" as const,
+    roleTargets: ["기획자", "디자이너", "주니어 개발자"] as DocRoleTarget[],
+    aliases: [item.slug, ...item.docs, "비교", "헷갈리는 개념", item.confusedWith],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "hubs" as const,
+    categoryLabel: "비교 허브",
+  }));
+
+  const scenarioHubs = getScenarioHubItems().map((item, index) => ({
+    title: item.title,
+    description: item.summary,
+    category: "hubs",
+    tags: ["상황 허브", "추천 경로"],
+    href: `/scenarios#${item.slug}`,
+    priority: "P1" as const,
+    prerequisites: [
+      ...item.docs,
+      ...item.guides,
+      ...item.casebooks,
+      ...item.workouts,
+    ],
+    order: 60_000 + index,
+    difficulty: "입문" as const,
+    roleTargets: ["기획자", "디자이너", "주니어 개발자"] as DocRoleTarget[],
+    aliases: [
+      item.slug,
+      ...item.docs,
+      ...item.guides,
+      ...item.casebooks,
+      ...item.workouts,
+      "상황 허브",
+      "무엇부터 읽을까",
+      "추천 경로",
+    ],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "hubs" as const,
+    categoryLabel: "상황 허브",
+  }));
+
+  return [
+    ...docs,
+    ...playbooks,
+    ...guides,
+    ...casebooks,
+    ...workouts,
+    ...comparisonHubs,
+    ...scenarioHubs,
+  ];
 }
 
 export function getAdjacentDocs(category: DocCategory, slug: string): AdjacentDocs {
