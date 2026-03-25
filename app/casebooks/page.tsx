@@ -50,8 +50,8 @@ export default function CasebooksPage() {
 
       <section className="mt-8 grid gap-5 lg:grid-cols-3">
         {casebooks.map((casebook) => (
-          <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
@@ -66,7 +66,7 @@ export default function CasebooksPage() {
                   {casebook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="mt-auto space-y-3">
                 <p className="text-sm text-muted-foreground">
                   대표 결과물: {casebook.deliverables[0]}
                 </p>

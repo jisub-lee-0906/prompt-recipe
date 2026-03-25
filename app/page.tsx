@@ -101,7 +101,7 @@ export default function Home() {
             {rolePaths.map((pathItem) => (
               <Card
                 key={pathItem.role}
-                className="rounded-[1.75rem] border border-border/70 bg-card/80"
+                className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
               >
                 <CardHeader className="space-y-3">
                   <div className="flex items-center justify-between gap-3">
@@ -115,7 +115,7 @@ export default function Home() {
                     {pathItem.description}
                   </p>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="mt-auto space-y-4">
                   <div className="flex flex-wrap gap-2">
                     {pathItem.docs.slice(0, 2).map((doc) => (
                       <Link
@@ -166,8 +166,8 @@ export default function Home() {
       />
       <CardGrid>
         {casebooks.map((casebook) => (
-          <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
@@ -182,7 +182,7 @@ export default function Home() {
                   {casebook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
                 <BookCopy className="size-4" />
                 사례집 보기
               </CardContent>
@@ -209,8 +209,8 @@ export default function Home() {
       />
       <CardGrid>
         {guides.map((guide) => (
-          <Link key={guide.slug} href={`/guides/${guide.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{guide.level}</Badge>
@@ -225,7 +225,7 @@ export default function Home() {
                   {guide.summary}
                 </p>
               </CardHeader>
-              <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
                 <Layers3 className="size-4" />
                 기능 가이드 보기
               </CardContent>
@@ -253,8 +253,8 @@ export default function Home() {
       />
       <CardGrid>
         {playbooks.map((playbook) => (
-          <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{playbook.role}</Badge>
@@ -265,7 +265,7 @@ export default function Home() {
                   {playbook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
                 <BookOpenText className="size-4" />
                 플레이북 보기
               </CardContent>
@@ -281,8 +281,8 @@ export default function Home() {
       />
       <CardGrid>
         {workouts.map((workout) => (
-          <Link key={workout.slug} href={`/workouts/${workout.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={workout.slug} href={`/workouts/${workout.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{workout.role}</Badge>
@@ -293,7 +293,7 @@ export default function Home() {
                   {workout.problem}
                 </p>
               </CardHeader>
-              <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
                 <Dumbbell className="size-4" />
                 실습 열기
               </CardContent>
@@ -371,8 +371,8 @@ export default function Home() {
           const Icon = CATEGORY_ICONS[item.category as keyof typeof CATEGORY_ICONS];
 
           return (
-            <Link key={item.category} href={`/docs/${item.category}`}>
-              <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <Link key={item.category} href={`/docs/${item.category}`} className="block h-full">
+              <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader className="flex flex-row items-start justify-between gap-4 px-6 py-6">
                   <div className="space-y-3">
                     <CardTitle className="text-xl">{item.title}</CardTitle>
@@ -384,7 +384,7 @@ export default function Home() {
                     <Icon className="size-5" />
                   </div>
                 </CardHeader>
-                <CardContent className="border-t border-border/70 px-6 py-4 text-sm font-medium text-muted-foreground">
+                <CardContent className="mt-auto border-t border-border/70 px-6 py-4 text-sm font-medium text-muted-foreground">
                   {DOC_CATEGORY_LABELS[item.category as keyof typeof DOC_CATEGORY_LABELS]} 문서 보기
                 </CardContent>
               </Card>
@@ -402,13 +402,13 @@ export default function Home() {
         {CHANGELOG_ENTRIES.slice(0, 3).map((entry) => (
           <Card
             key={entry.date}
-            className="rounded-[1.75rem] border border-border/70 bg-card/80"
+            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
           >
             <CardHeader className="space-y-2">
               <Badge variant="secondary">{entry.date}</Badge>
               <CardTitle className="text-xl">{entry.title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="mt-auto">
               <p className="text-sm leading-7 text-muted-foreground">
                 {entry.description}
               </p>
@@ -460,11 +460,11 @@ function LearningPromiseCard({
   description: string;
 }) {
   return (
-    <Card className="rounded-[1.75rem] border border-border/70 bg-card/80">
+    <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80">
       <CardHeader className="space-y-3">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="mt-auto">
         <p className="text-sm leading-7 text-muted-foreground">{description}</p>
       </CardContent>
     </Card>

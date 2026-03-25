@@ -46,8 +46,8 @@ export default function WorkoutsPage() {
 
       <section className="mt-8 grid gap-5 lg:grid-cols-2">
         {workouts.map((workout) => (
-          <Link key={workout.slug} href={`/workouts/${workout.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={workout.slug} href={`/workouts/${workout.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{workout.role}</Badge>
@@ -59,7 +59,7 @@ export default function WorkoutsPage() {
                   {workout.problem}
                 </p>
               </CardHeader>
-              <CardContent className="inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
                 실습 시작하기
                 <ArrowRight className="size-4" />
               </CardContent>

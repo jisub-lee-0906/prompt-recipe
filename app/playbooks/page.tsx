@@ -57,8 +57,8 @@ export default function PlaybooksPage() {
 
       <section className="mt-8 grid gap-5 lg:grid-cols-2">
         {playbooks.map((playbook) => (
-          <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+          <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">{playbook.role}</Badge>
@@ -70,7 +70,7 @@ export default function PlaybooksPage() {
                   {playbook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="mt-auto space-y-4">
                 <div>
                   <p className="text-sm font-medium">기대 결과</p>
                   <p className="mt-1 text-sm leading-7 text-muted-foreground">
@@ -91,7 +91,7 @@ export default function PlaybooksPage() {
         {roleSections.map((section) => (
           <Card
             key={section.role}
-            className="rounded-[1.75rem] border border-border/70 bg-card/80"
+            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
           >
             <CardHeader className="space-y-3">
               <div className="flex items-center justify-between gap-3">
@@ -102,7 +102,7 @@ export default function PlaybooksPage() {
                 {section.description}
               </p>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="mt-auto space-y-3">
               {section.items.map((playbook, index) => (
                 <Link
                   key={playbook.slug}
