@@ -8,11 +8,15 @@ import { PromptCard } from "@/components/mdx/PromptCard";
 import { PromptCodeBlock } from "@/components/mdx/PromptCodeBlock";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCasebookBySlug, getCasebooks, getRelatedCasebooks } from "@/lib/casebooks";
+import {
+  getCasebookBySlug,
+  getCasebooks,
+  getRelatedCasebooks,
+} from "@/lib/casebooks";
 import { getFeatureGuideBySlug } from "@/lib/guides";
+import { getScenarioHubItems } from "@/lib/hubs";
 import { getDocsBySlugs } from "@/lib/mdx";
 import { getPlaybookBySlug } from "@/lib/playbooks";
-import { getScenarioHubItems } from "@/lib/hubs";
 import { getWorkoutBySlug } from "@/lib/workouts";
 
 type CasebookPageProps = {
@@ -154,12 +158,16 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
           />
 
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold tracking-tight">빠른 프롬프트</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              빠른 프롬프트
+            </h2>
             <PromptCodeBlock>{casebook.quickPrompt}</PromptCodeBlock>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold tracking-tight">고급 프롬프트</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              고급 프롬프트
+            </h2>
             <PromptCodeBlock>{casebook.detailedPrompt}</PromptCodeBlock>
           </div>
 

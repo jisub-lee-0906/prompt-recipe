@@ -123,6 +123,15 @@ export default function CasebooksPage() {
           />
         </div>
       </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">사례집을 읽을 때의 기준</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          사례집은 예쁜 화면 예시가 아니라, 실제 기능을 처음부터 끝까지 어떻게
+          시킬지 배우는 섹션입니다. 따라서 화면보다 먼저 `상황`, `완성할 것`,
+          `수용 기준`을 읽고, 마지막에 프롬프트를 보는 순서가 가장 좋습니다.
+        </p>
+      </section>
     </main>
   );
 }

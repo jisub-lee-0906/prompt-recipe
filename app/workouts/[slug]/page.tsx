@@ -12,7 +12,11 @@ import { getCasebookBySlug } from "@/lib/casebooks";
 import { getFeatureGuideBySlug } from "@/lib/guides";
 import { getDocsBySlugs } from "@/lib/mdx";
 import { getPlaybookBySlug } from "@/lib/playbooks";
-import { getRelatedWorkouts, getWorkoutBySlug, getWorkouts } from "@/lib/workouts";
+import {
+  getRelatedWorkouts,
+  getWorkoutBySlug,
+  getWorkouts,
+} from "@/lib/workouts";
 
 type WorkoutPageProps = {
   params: Promise<{
@@ -99,17 +103,21 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
             goodPrompt={workout.goodPrompt}
           />
 
-          <Callout type="warning" title="왜 문제가 되는가">
+          <Callout type="warning" title="왜 이 문제가 생기는가">
             {workout.targetOutcome}
           </Callout>
 
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold tracking-tight">좋은 요청</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              좋은 요청 예시
+            </h2>
             <PromptCodeBlock>{workout.goodPrompt}</PromptCodeBlock>
           </div>
 
-          <Callout type="tip" title="점검 체크포인트">
-            요청문에 필드, 상태, 예외 상황, 다음 행동이 드러나는지 확인하세요.
+          <Callout type="tip" title="실습할 때 확인할 점">
+            요청문에 필드, 상태, 예외 상황, 다음 행동이 빠지지 않았는지 먼저
+            점검하세요. 좋은 실습은 답을 외우는 것이 아니라 누락을 찾아내는
+            감각을 만드는 데 목적이 있습니다.
           </Callout>
 
           <div className="space-y-4">
@@ -124,6 +132,22 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
                 >
                   <CheckCircle2 className="mt-0.5 size-5 text-primary" />
                   <p className="text-sm leading-7 text-muted-foreground">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              숨은 누락 포인트
+            </h2>
+            <div className="grid gap-3">
+              {getWorkoutBlindSpots(workout.slug).map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-dashed border-border/70 bg-background/60 px-4 py-4 text-sm leading-7 text-muted-foreground"
+                >
+                  {item}
                 </div>
               ))}
             </div>
@@ -202,6 +226,75 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
       </article>
     </main>
   );
+}
+
+function getWorkoutBlindSpots(slug: string) {
+  switch (slug) {
+    case "signup-request-fix":
+      return [
+        "입력 필드만 늘리는 것으로 끝내지 말고, 성공 뒤 어디로 이동하는지가 포함되어 있는지 확인하세요.",
+        "실패 상태를 적더라도 서버 오류와 입력 오류를 같은 문구로 뭉개지 않았는지 점검하세요.",
+      ];
+    case "success-criteria-writing":
+      return [
+        "좋은 성공 기준은 ‘잘 된다’가 아니라, 사용자가 무엇을 보고 어떤 행동을 할 수 있는지로 써야 합니다.",
+        "실패 복구가 빠진 성공 기준은 실제 서비스 품질을 충분히 설명하지 못합니다.",
+      ];
+    case "approval-flow-clarify":
+      return [
+        "승인과 반려를 같은 액션처럼 적으면 반려 사유 입력 규칙이 쉽게 빠집니다.",
+        "처리 후 목록 갱신이 없으면 기능은 동작해도 운영 화면이 오래된 상태로 남을 수 있습니다.",
+      ];
+    case "api-requirements-spec":
+      return [
+        "검색 API처럼 보이는 기능도 실제로는 정렬, 필터, 오류 응답이 함께 있어야 화면과 연결됩니다.",
+        "응답 구조를 적지 않으면 프론트는 성공 상태만 상상해서 구현하기 쉽습니다.",
+      ];
+    case "state-system-request":
+      return [
+        "정상 상태 외에 빈 상태, 로딩 상태, 오류 상태를 각각 다른 목적의 화면으로 보고 있는지 확인하세요.",
+        "목록 단위와 아이템 단위 상태가 섞여 있지 않은지도 점검해야 합니다.",
+      ];
+    case "microcopy-improve":
+      return [
+        "문구 개선은 예쁜 문장 만들기가 아니라 사용자가 지금 무엇을 해야 하는지 분명히 하는 작업입니다.",
+        "성공 문구와 실패 문구가 같은 톤으로만 되어 있으면 상태 차이가 잘 드러나지 않을 수 있습니다.",
+      ];
+    case "landing-hero-brief":
+      return [
+        "메시지보다 스타일을 먼저 요청하면 히어로가 장식 중심 결과로 끝나기 쉽습니다.",
+        "메인 CTA와 보조 CTA를 나누지 않으면 첫 행동 유도가 약해질 수 있습니다.",
+      ];
+    case "upload-experience-upgrade":
+      return [
+        "업로드 전 안내와 업로드 후 미리보기를 같은 상태로 다루고 있지 않은지 확인하세요.",
+        "실패 재시도를 넣더라도 파일 제한 조건을 같이 설명하지 않으면 사용자가 같은 실수를 반복할 수 있습니다.",
+      ];
+    case "api-integration-request":
+      return [
+        "로딩과 오류는 있어도 데이터 없음 상태가 빠지면 실제 화면 품질은 여전히 낮게 느껴집니다.",
+        "느린 응답 조건을 넣지 않으면 성공 화면 중심 구현으로 돌아갈 수 있습니다.",
+      ];
+    case "auth-edge-state":
+      return [
+        "권한 부족과 세션 만료를 같은 상태처럼 쓰고 있지 않은지 점검하세요.",
+        "각 예외 상태에서 사용자가 할 수 있는 다음 행동이 있는지도 반드시 확인해야 합니다.",
+      ];
+    case "search-performance-request":
+      return [
+        "디바운스만 넣고 캐시나 느린 응답 안내를 빼면 체감 성능은 여전히 약할 수 있습니다.",
+        "검색 결과 없음과 느린 검색 중 상태를 서로 다른 경험으로 다루고 있는지 보세요.",
+      ];
+    case "form-submit-finish":
+      return [
+        "제출 성공과 실패를 적더라도 다음 행동 CTA가 없으면 흐름이 중간에서 멈출 수 있습니다.",
+        "검증 메시지와 서버 실패 메시지를 같은 위치와 톤으로만 처리하고 있지 않은지 확인하세요.",
+      ];
+    default:
+      return [
+        "나쁜 요청을 고칠 때는 화면 요소를 더하는 것보다, 상태와 다음 행동을 먼저 보강하는지 점검하세요.",
+      ];
+  }
 }
 
 function RelatedSection({

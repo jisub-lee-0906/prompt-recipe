@@ -430,7 +430,7 @@ function SearchItem({
           <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
             {KIND_LABELS[item.kind]}
           </span>
-          {item.priority === "P1" ? (
+          {STARTER_HREFS.has(item.href) ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
               <Sparkles className="size-3" />
               추천 시작

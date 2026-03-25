@@ -59,6 +59,7 @@ export default function TracksPage() {
           return (
             <Card
               key={track.role}
+              id={getTrackAnchorId(track.role)}
               className="rounded-[2rem] border border-border/70 bg-card/80"
             >
               <CardHeader className="space-y-4">
@@ -78,10 +79,23 @@ export default function TracksPage() {
                 </p>
               </CardHeader>
 
-              <CardContent className="grid gap-5 xl:grid-cols-5">
-                <TrackColumn
+              <CardContent className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <InfoBlock
+                    title="이 역할이 먼저 익혀야 하는 것"
+                    description={getTrackFocus(track.role)}
+                  />
+                  <InfoBlock
+                    title="이 트랙을 마치면 할 수 있는 것"
+                    description={getTrackOutcome(track.role)}
+                  />
+                </div>
+
+                <div className="grid gap-5 xl:grid-cols-5">
+                  <TrackColumn
                   label="1단계"
                   title="핵심 용어 문서"
+                  description="먼저 용어를 정확히 익혀야 AI IDE가 이해할 수 있는 요청으로 바꿀 수 있습니다."
                   items={docs.map((doc) => ({
                     href: doc.href,
                     title: doc.title,
@@ -89,9 +103,10 @@ export default function TracksPage() {
                     badges: [doc.priority, doc.difficulty],
                   }))}
                 />
-                <TrackColumn
+                  <TrackColumn
                   label="2단계"
                   title="실전 플레이북"
+                  description="같은 기능이라도 내 역할에 맞게 어떤 문장으로 설명해야 하는지 익히는 단계입니다."
                   items={playbooks.map((item) => ({
                     href: `/playbooks/${item.slug}`,
                     title: item.title,
@@ -99,9 +114,10 @@ export default function TracksPage() {
                     badges: [item.role, item.level],
                   }))}
                 />
-                <TrackColumn
+                  <TrackColumn
                   label="3단계"
                   title="기능 단위 가이드"
+                  description="화면, 상태, API를 기능 묶음으로 보는 습관을 만드는 단계입니다."
                   items={guides.map((item) => ({
                     href: `/guides/${item.slug}`,
                     title: item.title,
@@ -109,9 +125,10 @@ export default function TracksPage() {
                     badges: [item.level, item.audience[0]],
                   }))}
                 />
-                <TrackColumn
+                  <TrackColumn
                   label="4단계"
                   title="프로젝트 사례집"
+                  description="실제 제품 기능을 처음부터 끝까지 어떻게 시킬지 보는 완성형 실전 단계입니다."
                   items={casebooks.map((item) => ({
                     href: `/casebooks/${item.slug}`,
                     title: item.title,
@@ -119,16 +136,18 @@ export default function TracksPage() {
                     badges: [item.level, item.roles[0]],
                   }))}
                 />
-                <TrackColumn
+                  <TrackColumn
                   label="5단계"
                   title="실습 훈련"
+                  description="나쁜 요청을 직접 고쳐 보며, 배운 내용을 내 문장으로 체화하는 단계입니다."
                   items={workouts.map((item) => ({
                     href: `/workouts/${item.slug}`,
                     title: item.title,
                     summary: item.problem,
                     badges: [item.level, item.role],
                   }))}
-                />
+                  />
+                </div>
               </CardContent>
             </Card>
           );
@@ -170,9 +189,23 @@ export default function TracksPage() {
   );
 }
 
+function getTrackAnchorId(role: string) {
+  switch (role) {
+    case "기획자":
+      return "planner-track";
+    case "디자이너":
+      return "designer-track";
+    case "주니어 개발자":
+      return "junior-developer-track";
+    default:
+      return undefined;
+  }
+}
+
 type TrackColumnProps = {
   label: string;
   title: string;
+  description: string;
   items: Array<{
     href: string;
     title: string;
@@ -181,12 +214,30 @@ type TrackColumnProps = {
   }>;
 };
 
-function TrackColumn({ label, title, items }: TrackColumnProps) {
+function TrackColumn({ label, title, description, items }: TrackColumnProps) {
+  const completionHint = getTrackCompletionHint(label);
+  const practiceHint = getTrackPracticeHint(label);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Badge variant="outline">{label}</Badge>
         <p className="font-medium">{title}</p>
+      </div>
+      <p className="text-sm leading-6 text-muted-foreground">{description}</p>
+      <div className="rounded-2xl border border-dashed border-border/70 bg-background/60 px-4 py-4">
+        <p className="text-xs font-semibold tracking-wide text-foreground/90">
+          이 단계 완료 기준
+        </p>
+        <p className="mt-2 text-xs leading-6 text-muted-foreground">
+          {completionHint}
+        </p>
+        <p className="mt-3 text-xs font-semibold tracking-wide text-foreground/90">
+          멈춰서 점검할 질문
+        </p>
+        <p className="mt-2 text-xs leading-6 text-muted-foreground">
+          {practiceHint}
+        </p>
       </div>
       <div className="space-y-3">
         {items.map((item) => (
@@ -211,6 +262,66 @@ function TrackColumn({ label, title, items }: TrackColumnProps) {
       </div>
     </div>
   );
+}
+
+function getTrackCompletionHint(label: string) {
+  switch (label) {
+    case "1단계":
+      return "핵심 용어를 내 말로 설명하고, 같은 개념과 헷갈리는 용어를 구분할 수 있으면 다음 단계로 넘어가도 됩니다.";
+    case "2단계":
+      return "내 역할에 맞는 요청 문장을 직접 한 번 써보고, 무엇을 빠뜨리면 결과가 약해지는지 설명할 수 있으면 충분합니다.";
+    case "3단계":
+      return "화면, 상태, API를 하나의 기능 묶음으로 설명할 수 있고, 단계별 구현 순서를 말할 수 있으면 다음 단계로 넘어갈 수 있습니다.";
+    case "4단계":
+      return "실제 기능을 처음부터 끝까지 어떤 흐름으로 시킬지 이해하고, 수용 기준까지 함께 요청할 수 있으면 사례 단계가 끝난 것입니다.";
+    case "5단계":
+      return "나쁜 요청을 스스로 고치고, 누락된 조건을 먼저 찾아내는 습관이 생기면 이 트랙을 실제 업무에 적용할 준비가 된 것입니다.";
+    default:
+      return "핵심 개념과 실전 요청을 연결할 수 있으면 충분합니다.";
+  }
+}
+
+function getTrackPracticeHint(label: string) {
+  switch (label) {
+    case "1단계":
+      return "이 용어를 왜 쓰는지, 비슷한 다른 용어 대신 이 표현을 써야 하는 이유를 설명할 수 있는가?";
+    case "2단계":
+      return "지금 요청은 화면 이름만 말하고 있는가, 아니면 기능 흐름과 결과 기준까지 포함하고 있는가?";
+    case "3단계":
+      return "구현 단계를 말할 때 상태와 예외 처리를 빠뜨리지 않았는가?";
+    case "4단계":
+      return "완성 사례를 볼 때 화면만 보고 끝내지 않고, 상태 변화와 API 조건까지 같이 읽고 있는가?";
+    case "5단계":
+      return "좋은 답을 읽기 전에 먼저 내가 직접 요구사항을 다시 써보고 누락된 조건을 표시해봤는가?";
+    default:
+      return "지금 단계에서 배운 내용을 내 문장으로 다시 설명할 수 있는가?";
+  }
+}
+
+function getTrackFocus(role: string) {
+  switch (role) {
+    case "기획자":
+      return "모호한 요구사항을 테스트 가능한 문장으로 바꾸고, 화면이 아니라 기능 흐름 전체를 요청하는 감각을 먼저 익혀야 합니다.";
+    case "디자이너":
+      return "정상 화면뿐 아니라 상태 시스템, 마이크로카피, 정보 구조까지 함께 설명하는 습관을 만드는 것이 중요합니다.";
+    case "주니어 개발자":
+      return "컴포넌트 구현보다 먼저 상태, API, 예외 처리까지 포함한 구현 단위를 묶어 설명하는 연습이 필요합니다.";
+    default:
+      return "역할에 맞는 표현과 학습 흐름을 먼저 익히는 것이 중요합니다.";
+  }
+}
+
+function getTrackOutcome(role: string) {
+  switch (role) {
+    case "기획자":
+      return "기능 요구사항, 성공 기준, 예외 상태를 빠뜨리지 않고 AI IDE에 전달할 수 있게 됩니다.";
+    case "디자이너":
+      return "화면 개선 요청을 시각 장식이 아니라 구조, 상태, 행동 유도 중심으로 설명할 수 있게 됩니다.";
+    case "주니어 개발자":
+      return "API 연동, 인증, 성능, 상태 처리까지 포함한 구현 요청을 더 안정적으로 작성할 수 있게 됩니다.";
+    default:
+      return "역할에 맞는 실전 요청을 더 정확하게 작성할 수 있게 됩니다.";
+  }
 }
 
 function InfoBlock({

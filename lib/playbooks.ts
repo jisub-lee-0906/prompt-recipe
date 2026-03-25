@@ -25,7 +25,8 @@ export const PLAYBOOKS: Playbook[] = [
     role: "기획자",
     level: "입문",
     outcome: "회원가입 요구사항을 검증과 상태까지 포함한 구현 요청으로 바꿉니다.",
-    situation: "회원가입 페이지가 필요한데, 화면만 설명하면 검증과 성공·실패 흐름이 비는 상황입니다.",
+    situation:
+      "회원가입 페이지가 필요한데, 화면만 설명하면 검증과 성공·실패 흐름, 가입 직후 다음 행동이 모두 빠지는 상황입니다. 이 플레이북은 화면 설명을 기능 설명으로 바꾸는 데 초점을 둡니다.",
     docs: ["user-flow", "form", "form-validation", "success-criteria", "api"],
     quickPrompt:
       "회원가입 페이지를 만들어줘. 이메일, 비밀번호, 비밀번호 확인 필드가 필요하고, 잘못 입력하면 바로 안내해줘.",
@@ -37,7 +38,7 @@ export const PLAYBOOKS: Playbook[] = [
     checklist: [
       "필수 필드와 검증 규칙이 포함되어 있는가",
       "제출 중 상태와 성공·실패 흐름이 들어 있는가",
-      "다음 단계 안내가 포함되어 있는가",
+      "가입 직후 로그인, 온보딩, 이메일 인증처럼 다음 단계 안내가 포함되어 있는가",
     ],
   },
   {
@@ -193,8 +194,10 @@ export const PLAYBOOKS: Playbook[] = [
     summary: "API 요청, 로딩, 에러, 빈 상태를 포함한 기본 연동 화면 요청 플레이북입니다.",
     role: "주니어 개발자",
     level: "입문",
-    outcome: "데이터 표시 화면을 상태를 포함한 구현 요청으로 바꿉니다.",
-    situation: "API는 준비되어 있는데 화면에서 로딩과 에러를 어떻게 설명해야 할지 막막한 상황입니다.",
+    outcome:
+      "데이터 표시 화면을 성공 화면 하나가 아니라 로딩, 오류, 빈 상태까지 포함한 구현 요청으로 바꿉니다.",
+    situation:
+      "API는 준비되어 있는데 화면에서 로딩, 오류, 빈 데이터, 느린 응답 같은 상태를 어떻게 설명해야 할지 막막한 상황입니다. 이 플레이북은 API 연동 요청이 왜 자주 성공 화면만 남기는지까지 같이 짚습니다.",
     docs: ["data-fetching", "api", "endpoint", "request-response-schema", "loading-state"],
     quickPrompt: "사용자 목록을 API로 불러와 보여주는 페이지를 만들어줘.",
     detailedPrompt:
@@ -206,6 +209,7 @@ export const PLAYBOOKS: Playbook[] = [
       "엔드포인트와 응답 필드가 명확한가",
       "로딩과 에러 상태가 포함되었는가",
       "데이터가 없을 때 처리도 정의되었는가",
+      "응답이 느릴 때의 체감 품질까지 요청에 들어 있는가",
     ],
   },
   {

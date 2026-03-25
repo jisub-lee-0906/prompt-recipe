@@ -20,6 +20,7 @@ export function Header() {
             <span className="inline-flex size-9 items-center justify-center rounded-2xl bg-primary text-sm text-primary-foreground">
               AI
             </span>
+            <span className="inline sm:hidden">프롬프트</span>
             <span className="hidden sm:inline">AI 프롬프팅 가이드</span>
           </Link>
         </div>

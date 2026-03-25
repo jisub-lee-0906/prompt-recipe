@@ -136,17 +136,26 @@ export default function PlaybooksPage() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <GuideTip
             title="상황과 역할에 맞는 플레이북 선택"
-            description="지금 맡은 역할과 가장 가까운 시나리오부터 시작하면 표현을 빠르게 익힐 수 있습니다."
+            description="지금 맡은 역할과 가장 가까운 시나리오부터 시작하면 어떤 말을 먼저 붙여야 하는지 빠르게 익힐 수 있습니다."
           />
           <GuideTip
             title="짧은 요청과 긴 요청 비교"
-            description="빠른 요청과 고급 요청을 나란히 보면서 무엇이 추가되면 결과가 좋아지는지 확인하세요."
+            description="빠른 요청과 고급 요청을 나란히 보면서 상태, 예외 처리, 다음 행동 중 무엇이 추가되면 결과가 좋아지는지 확인하세요."
           />
           <GuideTip
             title="관련 문서와 함께 읽기"
             description="플레이북에서 연결된 문서와 가이드까지 보면 개념과 실전이 더 잘 연결됩니다."
           />
         </div>
+      </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">플레이북으로 연습하는 법</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          먼저 `상황`을 읽고 내가 지금 실제로 무엇을 빠뜨리고 있는지 표시하세요.
+          그 다음 `빠른 프롬프트`를 그대로 복사하기보다, 현재 프로젝트 맥락을 한 줄
+          더 붙여보는 방식으로 실습하면 훨씬 빠르게 내 문장으로 바뀝니다.
+        </p>
       </section>
     </main>
   );

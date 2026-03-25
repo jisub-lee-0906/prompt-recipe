@@ -11,7 +11,7 @@
     "lint": "eslint",
     "audit:docs": "node scripts/audit-docs.mjs",
     "rebuild:inventory": "node scripts/rebuild-inventory.mjs",
-    "smoke:preview": "node scripts/smoke-preview.mjs",
+    "smoke:preview": "powershell -ExecutionPolicy Bypass -File scripts/smoke-preview.ps1",
     "capture:preview": "node scripts/capture-preview.mjs"
   },
   "dependencies": {

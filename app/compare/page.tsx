@@ -10,7 +10,7 @@ import { getDocsBySlugs } from "@/lib/mdx";
 export const metadata: Metadata = {
   title: "비교 허브",
   description:
-    "헷갈리기 쉬운 개념을 비교 묶음으로 정리해, 어떤 용어를 써야 할지 빠르게 판단할 수 있는 허브입니다.",
+    "헷갈리기 쉬운 용어를 비교 묶음으로 정리해, AI IDE에 어떤 표현을 써야 하는지 빠르게 판단할 수 있게 돕는 허브입니다.",
 };
 
 export default function ComparePage() {
@@ -32,9 +32,9 @@ export default function ComparePage() {
               헷갈리기 쉬운 개념 비교 허브
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
-              비슷해 보이지만 실제로는 다른 개념을 묶어서 정리했습니다. AI
-              IDE에 요청하기 전에 어떤 용어가 가장 정확한지 먼저 확인할 수
-              있습니다.
+              비슷해 보이는 용어라도 실제로는 다른 층위와 목적을 가집니다. 이
+              페이지는 AI IDE에 요청하기 전에 어떤 단어가 더 정확한지 빠르게
+              가려내도록 돕는 비교 학습 허브입니다.
             </p>
           </div>
         </div>
@@ -84,6 +84,15 @@ export default function ComparePage() {
             </CardContent>
           </Card>
         ))}
+      </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">비교 허브를 보는 법</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          비교 허브는 정의를 외우기 위한 페이지가 아닙니다. 실제로 요청문을 쓰기 전에
+          “지금 내가 말하려는 것이 모달인지, 다이얼로그인지, 드로어인지”처럼 헷갈리는
+          순간에 바로 확인하는 용도로 쓰는 것이 가장 효과적입니다.
+        </p>
       </section>
     </main>
   );

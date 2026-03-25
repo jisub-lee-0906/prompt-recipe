@@ -78,10 +78,10 @@ function Get-StatusCode {
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $port = Get-AvailablePort
-$baseUrl = "http://localhost:$port"
+$baseUrl = "http://127.0.0.1:$port"
 $process = Start-Process `
   -FilePath "cmd.exe" `
-  -ArgumentList "/d", "/s", "/c", "node_modules\\.bin\\next.cmd start --hostname localhost --port $port" `
+  -ArgumentList "/d", "/s", "/c", "node_modules\\.bin\\next.cmd start --hostname 127.0.0.1 --port $port" `
   -WorkingDirectory $projectRoot `
   -PassThru
 

@@ -27,7 +27,11 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     level: "입문",
     goal: "회원가입을 화면, 상태, API까지 포함한 기능 단위로 요청합니다.",
     audience: ["기획자", "디자이너", "주니어 개발자"],
-    stages: ["입력 필드 정의", "검증과 에러 메시지 정리", "제출 상태와 완료 경험 설계"],
+    stages: [
+      "가입 흐름에 꼭 필요한 입력 필드와 가입 직후 다음 행동까지 함께 정의합니다.",
+      "필드별 검증 규칙과 에러 메시지를 단순 경고가 아니라 다음 행동을 안내하는 문장으로 정리합니다.",
+      "제출 중, 성공, 실패 상태를 각각 분리하고 완료 뒤 어디로 이동할지까지 설계합니다.",
+    ],
     docs: ["form", "form-validation", "success-criteria", "api", "loading-state"],
     playbooks: ["planner-signup-page", "junior-form-submit-flow"],
     prompts: [
@@ -79,7 +83,11 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     level: "중급",
     goal: "검색을 입력창 하나가 아니라 경험 전체로 요청합니다.",
     audience: ["기획자", "디자이너", "주니어 개발자"],
-    stages: ["입력과 결과 경험 설계", "검색 API와 정렬 기준 정의", "모바일과 성능 고려"],
+    stages: [
+      "검색 입력 방식과 결과 카드에서 먼저 보여줘야 할 정보를 함께 설계합니다.",
+      "검색 API, 정렬, 필터 기준을 정해 사용자가 원하는 결과를 좁혀 갈 수 있게 합니다.",
+      "디바운스, 느린 응답 대응, 모바일 배치까지 포함해 실제 사용 경험을 완성합니다.",
+    ],
     docs: ["search-bar", "search-api", "search-index", "debounce", "empty-state"],
     playbooks: ["search-feature-playbook", "junior-list-performance"],
     prompts: [

@@ -45,17 +45,26 @@ export default function GuidesPage() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <GuideTip
             title="기능 목표 확인"
-            description="이 가이드가 해결하려는 기능 범위를 먼저 확인합니다."
+            description="이 가이드가 화면 하나를 다루는지, 상태와 API까지 포함한 기능 묶음을 다루는지 먼저 확인합니다."
           />
           <GuideTip
             title="화면과 상태 흐름 읽기"
-            description="화면 구조, 상태 변화, API 연결이 어떤 순서로 이어지는지 확인합니다."
+            description="화면 구조, 상태 변화, API 연결이 어떤 순서로 이어지는지 읽으면서 어디까지 요청해야 완성형 기능이 되는지 확인합니다."
           />
           <GuideTip
             title="프롬프트로 바로 실험하기"
             description="가이드 안의 프롬프트를 AI IDE에 넣어보고 결과를 비교합니다."
           />
         </div>
+      </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">가이드를 읽을 때 놓치기 쉬운 것</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          기능 가이드는 순서대로 읽는 것이 중요합니다. 뒤 단계의 상태나 모바일 조건만
+          먼저 가져오면 요청이 다시 추상적으로 돌아가기 쉽습니다. 항상 “기능 목표 →
+          상태 흐름 → 예외 처리 → 결과 이후 행동” 순서로 읽는 습관을 추천합니다.
+        </p>
       </section>
 
       <section className="mt-8 grid gap-5 lg:grid-cols-2">

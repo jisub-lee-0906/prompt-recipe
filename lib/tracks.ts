@@ -45,7 +45,14 @@ export const LEARNING_TRACKS: LearningTrack[] = [
     role: "디자이너",
     summary:
       "화면 구조, 상태 시스템, 마이크로카피, 탐색 경험을 AI IDE가 구현할 수 있는 요청으로 바꾸는 학습 경로입니다.",
-    docs: ["modal", "empty-state", "microcopy", "responsive-design"],
+    docs: [
+      "modal",
+      "empty-state",
+      "microcopy",
+      "information-architecture",
+      "design-system",
+      "responsive-design",
+    ],
     playbooks: [
       "designer-dashboard-polish",
       "designer-state-system",

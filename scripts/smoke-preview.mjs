@@ -106,7 +106,7 @@ async function fetchRouteWithRetry(url, retries = 10) {
 
 const failures = [];
 const port = await getAvailablePort();
-const baseUrl = `http://localhost:${port}`;
+const baseUrl = `http://127.0.0.1:${port}`;
 
 const server = spawn(
   "cmd.exe",
@@ -114,7 +114,7 @@ const server = spawn(
     "/d",
     "/s",
     "/c",
-    `node_modules\\.bin\\next.cmd start --hostname localhost --port ${port}`,
+    `node_modules\\.bin\\next.cmd start --hostname 127.0.0.1 --port ${port}`,
   ],
   {
     cwd: process.cwd(),

@@ -93,6 +93,15 @@ export default function WorkoutsPage() {
           )}
         </div>
       </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <h2 className="text-xl font-semibold tracking-tight">실습 점수 올리는 법</h2>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          좋은 답을 읽기 전에 먼저 내가 직접 요청문을 고쳐 쓰고, 무엇을 추가했는지
+          메모하는 방식이 가장 효과적입니다. 필드, 상태, 예외, 다음 행동 네 가지 중
+          몇 개를 스스로 찾아냈는지 기준으로 보면 실력이 더 빨리 늘어납니다.
+        </p>
+      </section>
     </main>
   );
 }
