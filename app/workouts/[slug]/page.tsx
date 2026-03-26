@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCasebookBySlug } from "@/lib/casebooks";
 import { getFeatureGuideBySlug } from "@/lib/guides";
 import { getDocsBySlugs } from "@/lib/mdx";
+import { getOperationGuideBySlug } from "@/lib/operations";
 import { getPlaybookBySlug } from "@/lib/playbooks";
 import {
   getRelatedWorkouts,
@@ -65,6 +66,9 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
     .filter((item) => item !== null);
   const guides = workout.guides
     .map((guideSlug) => getFeatureGuideBySlug(guideSlug))
+    .filter((item) => item !== null);
+  const operations = (workout.operations ?? [])
+    .map((guideSlug) => getOperationGuideBySlug(guideSlug))
     .filter((item) => item !== null);
   const casebooks = workout.casebooks
     .map((casebookSlug) => getCasebookBySlug(casebookSlug))
@@ -185,6 +189,18 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
                 title={guide.title}
                 summary={guide.summary}
                 badges={[guide.level, guide.audience[0]]}
+              />
+            ))}
+          </RelatedSection>
+
+          <RelatedSection title="관련 운영 가이드">
+            {operations.map((operation) => (
+              <RelatedCard
+                key={operation.slug}
+                href={`/operations/${operation.slug}`}
+                title={operation.title}
+                summary={operation.summary}
+                badges={[operation.level, "운영"]}
               />
             ))}
           </RelatedSection>

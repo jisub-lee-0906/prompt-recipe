@@ -14,6 +14,7 @@ export type Workout = {
   docs: string[];
   playbooks: string[];
   guides: string[];
+  operations?: string[];
   casebooks: string[];
   nextWorkouts?: string[];
 };
@@ -40,6 +41,7 @@ const WORKOUTS: Workout[] = [
     docs: ["form", "form-validation", "acceptance-criteria"],
     playbooks: ["planner-signup-page"],
     guides: ["signup-feature"],
+    operations: ["task-decomposition"],
     casebooks: ["signup-project"],
     nextWorkouts: ["success-criteria-writing"],
   },
@@ -63,6 +65,7 @@ const WORKOUTS: Workout[] = [
     docs: ["confirmation-flow", "edge-case", "success-criteria"],
     playbooks: ["planner-admin-workflow"],
     guides: ["approval-feature-guide"],
+    operations: ["task-decomposition", "reviewing-ai-output"],
     casebooks: ["approval-project"],
     nextWorkouts: ["api-requirements-spec"],
   },
@@ -87,6 +90,7 @@ const WORKOUTS: Workout[] = [
     docs: ["success-criteria", "acceptance-criteria"],
     playbooks: ["planner-checkout-flow"],
     guides: ["checkout-feature"],
+    operations: ["verification-loop"],
     casebooks: ["checkout-project"],
   },
   {
@@ -109,6 +113,7 @@ const WORKOUTS: Workout[] = [
     docs: ["api", "endpoint", "request-response-schema"],
     playbooks: ["planner-dashboard-prd"],
     guides: ["search-feature-guide"],
+    operations: ["reviewing-ai-output"],
     casebooks: ["search-project"],
   },
   {
@@ -131,6 +136,7 @@ const WORKOUTS: Workout[] = [
     docs: ["loading-state", "error-state", "empty-state"],
     playbooks: ["designer-state-system"],
     guides: ["notification-feature-guide"],
+    operations: ["revision-requests"],
     casebooks: ["notification-project"],
   },
   {
@@ -153,6 +159,7 @@ const WORKOUTS: Workout[] = [
     docs: ["microcopy", "call-to-action"],
     playbooks: ["designer-dashboard-polish"],
     guides: ["notification-feature-guide", "file-upload-feature"],
+    operations: ["reviewing-ai-output"],
     casebooks: ["notification-project", "file-upload-project"],
   },
   {
@@ -175,6 +182,7 @@ const WORKOUTS: Workout[] = [
     docs: ["hero-section", "call-to-action"],
     playbooks: ["designer-landing-page-hero"],
     guides: ["checkout-feature"],
+    operations: ["revision-requests"],
     casebooks: ["checkout-project", "onboarding-project"],
   },
   {
@@ -197,6 +205,7 @@ const WORKOUTS: Workout[] = [
     docs: ["file-upload", "loading-state", "error-state"],
     playbooks: ["designer-state-system"],
     guides: ["file-upload-feature"],
+    operations: ["failure-control"],
     casebooks: ["file-upload-project"],
   },
   {
@@ -219,6 +228,7 @@ const WORKOUTS: Workout[] = [
     docs: ["data-fetching", "api-error-response", "skeleton"],
     playbooks: ["junior-api-integration"],
     guides: ["search-feature-guide"],
+    operations: ["verification-loop"],
     casebooks: ["search-project"],
   },
   {
@@ -241,6 +251,7 @@ const WORKOUTS: Workout[] = [
     docs: ["auth-flow", "session", "rbac"],
     playbooks: ["junior-auth-guard"],
     guides: ["auth-feature"],
+    operations: ["verification-loop", "reviewing-ai-output"],
     casebooks: ["auth-project", "settings-permission-project"],
   },
   {
@@ -263,6 +274,7 @@ const WORKOUTS: Workout[] = [
     docs: ["debounce", "frontend-cache", "search-api"],
     playbooks: ["junior-list-performance"],
     guides: ["search-feature-guide", "list-performance-feature"],
+    operations: ["revision-requests"],
     casebooks: ["search-project", "list-performance-project"],
   },
   {
@@ -285,7 +297,103 @@ const WORKOUTS: Workout[] = [
     docs: ["form", "form-validation", "toast"],
     playbooks: ["junior-form-submit-flow"],
     guides: ["signup-feature", "profile-settings-feature"],
+    operations: ["verification-loop"],
     casebooks: ["signup-project", "profile-settings-project", "file-upload-project"],
+  },
+  {
+    slug: "codebase-reading-request",
+    title: "코드베이스 먼저 읽기 실습",
+    role: "주니어 개발자",
+    level: "입문",
+    problem:
+      "기능 수정 요청을 해야 하는데 현재 코드 구조를 읽지 않고 바로 구현부터 시키려 합니다.",
+    badPrompt: "검색 페이지에 필터 추가해줘.",
+    targetOutcome:
+      "관련 파일, 기존 패턴, 재사용 가능한 컴포넌트를 먼저 찾게 하는 요청으로 바꾸는 것이 목표입니다.",
+    goodPrompt:
+      "바로 수정하지 말고 검색 페이지 필터와 관련된 페이지, 컴포넌트, 상태 로직, API 호출 파일부터 찾아줘. 각 파일의 역할과 이미 재사용 중인 패턴을 먼저 요약하고, 새 구조를 만들기보다 유지해야 할 기존 방식이 무엇인지 설명해줘.",
+    checkpoints: [
+      "바로 수정하지 말라는 조건이 있는가",
+      "관련 파일과 역할 요약을 먼저 요구하는가",
+      "재사용해야 할 기존 패턴을 확인하게 하는가",
+    ],
+    docs: ["component", "layout", "routing", "state-management"],
+    playbooks: ["junior-api-integration"],
+    guides: ["search-feature-guide"],
+    operations: ["codebase-reading"],
+    casebooks: ["search-project", "settings-permission-project"],
+    nextWorkouts: ["scope-control-request"],
+  },
+  {
+    slug: "scope-control-request",
+    title: "범위 통제 요청 실습",
+    role: "디자이너",
+    level: "중급",
+    problem:
+      "AI가 요구하지 않은 구조 변경까지 하며 작업 범위를 넓히는 상황인데, 이를 제어하는 요청이 부족합니다.",
+    badPrompt: "이 화면 좀 더 낫게 바꿔줘.",
+    targetOutcome:
+      "수정 가능한 파일, 유지해야 할 구조, 건드리면 안 되는 영역을 분리해 다시 지시하는 것이 목표입니다.",
+    goodPrompt:
+      "이 화면 개선은 현재 카드 구조와 디자인 시스템은 유지한 채 진행해줘. 관련 화면 파일과 연결된 스타일/상태 로직만 수정하고, 공통 컴포넌트 구조와 라우팅은 건드리지 마. 바로 수정하지 말고 먼저 영향 범위와 수정 계획을 요약해줘.",
+    checkpoints: [
+      "유지할 것과 수정할 것을 분리하는가",
+      "수정 가능한 파일 범위를 제한하는가",
+      "재시도 전에 영향 범위 확인을 요구하는가",
+    ],
+    docs: ["design-system", "responsive-design", "layout"],
+    playbooks: ["designer-dashboard-polish", "designer-admin-ia"],
+    guides: ["admin-dashboard-feature"],
+    operations: ["failure-control", "revision-requests"],
+    casebooks: ["analytics-dashboard-project", "settings-permission-project"],
+    nextWorkouts: ["review-findings-request"],
+  },
+  {
+    slug: "verification-loop-request",
+    title: "검증 루프 요청 실습",
+    role: "기획자",
+    level: "중급",
+    problem:
+      "구현이 끝났다고 하지만 실제로는 어떤 상태를 확인했고 무엇이 미검증인지 알 수 없습니다.",
+    badPrompt: "다 됐으면 결과만 알려줘.",
+    targetOutcome:
+      "실행한 테스트, 확인한 상태, 남은 리스크를 분리해 보고하게 만드는 요청으로 바꾸는 것이 목표입니다.",
+    goodPrompt:
+      "구현이 끝났다면 결과 요약만 하지 말고 검증 루프까지 수행해줘. 실행한 테스트, 직접 확인한 상태, 아직 확인하지 못한 항목, 남은 리스크를 구분해서 정리하고 정상 상태 외에 로딩/오류/빈 상태/모바일 조건도 함께 점검해줘.",
+    checkpoints: [
+      "테스트와 미검증 항목을 구분하는가",
+      "정상 상태 외의 조건을 점검하게 하는가",
+      "남은 리스크를 명시하게 하는가",
+    ],
+    docs: ["success-criteria", "acceptance-criteria", "loading-state", "error-state"],
+    playbooks: ["planner-checkout-flow", "planner-admin-workflow"],
+    guides: ["checkout-feature", "approval-feature-guide"],
+    operations: ["verification-loop"],
+    casebooks: ["checkout-project", "approval-project"],
+    nextWorkouts: ["review-findings-request"],
+  },
+  {
+    slug: "review-findings-request",
+    title: "리뷰 관점 재지시 실습",
+    role: "주니어 개발자",
+    level: "중급",
+    problem:
+      "AI 결과물이 그럴듯해 보여도 요구사항 누락과 회귀 위험을 제대로 짚지 못하고 있습니다.",
+    badPrompt: "전체적으로 다시 한번 봐줘.",
+    targetOutcome:
+      "구현 요약이 아니라 코드 리뷰 관점으로 문제를 우선순위 순서대로 찾게 만드는 요청으로 바꾸는 것이 목표입니다.",
+    goodPrompt:
+      "이 결과를 구현 요약이 아니라 코드 리뷰 관점으로 다시 봐줘. 요구사항 누락, 과도한 변경, 기존 패턴 위반, 숨은 회귀 위험, 테스트 공백이 있으면 우선순위 순서대로 먼저 정리해줘. 괜찮다면 남은 리스크만 짧게 남겨줘.",
+    checkpoints: [
+      "문제점을 먼저 찾게 하는가",
+      "요구사항 누락과 회귀 위험을 분리하는가",
+      "테스트 공백까지 검토 범위에 넣는가",
+    ],
+    docs: ["acceptance-criteria", "edge-case", "rollback", "api-error-response"],
+    playbooks: ["junior-auth-guard", "planner-dashboard-prd"],
+    guides: ["analytics-feature-guide", "auth-feature"],
+    operations: ["reviewing-ai-output"],
+    casebooks: ["analytics-dashboard-project", "auth-project"],
   },
 ];
 

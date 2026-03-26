@@ -64,7 +64,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["designer-admin-ia", "junior-api-integration"],
     guides: ["admin-dashboard-feature", "profile-settings-feature"],
     casebooks: ["settings-permission-project", "analytics-dashboard-project"],
-    workouts: ["api-integration-request", "form-submit-finish"],
+    workouts: ["codebase-reading-request", "api-integration-request", "form-submit-finish"],
   },
   {
     slug: "task-decomposition",
@@ -105,7 +105,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["planner-admin-workflow", "junior-form-submit-flow"],
     guides: ["approval-feature-guide", "signup-feature"],
     casebooks: ["approval-project", "signup-project"],
-    workouts: ["approval-flow-clarify", "signup-request-fix"],
+    workouts: ["signup-request-fix", "approval-flow-clarify", "codebase-reading-request"],
   },
   {
     slug: "verification-loop",
@@ -146,7 +146,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["planner-checkout-flow", "junior-auth-guard"],
     guides: ["checkout-feature", "auth-feature"],
     casebooks: ["checkout-project", "auth-project"],
-    workouts: ["success-criteria-writing", "auth-edge-state"],
+    workouts: ["verification-loop-request", "success-criteria-writing", "auth-edge-state"],
   },
   {
     slug: "revision-requests",
@@ -187,7 +187,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["designer-dashboard-polish", "junior-list-performance"],
     guides: ["admin-dashboard-feature", "list-performance-feature"],
     casebooks: ["analytics-dashboard-project", "list-performance-project"],
-    workouts: ["state-system-request", "search-performance-request"],
+    workouts: ["scope-control-request", "state-system-request", "search-performance-request"],
   },
   {
     slug: "reviewing-ai-output",
@@ -228,7 +228,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["planner-dashboard-prd", "junior-auth-guard"],
     guides: ["analytics-feature-guide", "approval-feature-guide"],
     casebooks: ["analytics-dashboard-project", "approval-project"],
-    workouts: ["api-requirements-spec", "auth-edge-state"],
+    workouts: ["review-findings-request", "api-requirements-spec", "auth-edge-state"],
   },
   {
     slug: "failure-control",
@@ -269,7 +269,7 @@ const OPERATION_GUIDES: OperationGuide[] = [
     playbooks: ["planner-admin-workflow", "junior-api-integration"],
     guides: ["approval-feature-guide", "file-upload-feature"],
     casebooks: ["settings-permission-project", "file-upload-project"],
-    workouts: ["upload-experience-upgrade", "api-integration-request"],
+    workouts: ["scope-control-request", "upload-experience-upgrade", "api-integration-request"],
   },
 ];
 

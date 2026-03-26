@@ -14,6 +14,9 @@ export const metadata: Metadata = {
 
 export default function WorkoutsPage() {
   const workouts = getWorkouts();
+  const operationWorkouts = workouts.filter(
+    (item) => (item.operations?.length ?? 0) > 0,
+  );
   const starterByRole = [
     ["기획자", workouts.find((item) => item.slug === "signup-request-fix")],
     ["디자이너", workouts.find((item) => item.slug === "state-system-request")],
@@ -91,6 +94,34 @@ export default function WorkoutsPage() {
               </Link>
             ) : null,
           )}
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+        <div className="flex items-center gap-2">
+          <Sparkles className="size-5 text-primary" />
+          <h2 className="text-xl font-semibold tracking-tight">
+            운영 가이드와 함께 보는 실습
+          </h2>
+        </div>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {operationWorkouts.map((workout) => (
+            <Link
+              key={workout.slug}
+              href={`/workouts/${workout.slug}`}
+              className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+            >
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary">{workout.role}</Badge>
+                <Badge variant="outline">{workout.level}</Badge>
+                <Badge variant="outline">운영형 실습</Badge>
+              </div>
+              <p className="mt-3 font-semibold">{workout.title}</p>
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                {workout.targetOutcome}
+              </p>
+            </Link>
+          ))}
         </div>
       </section>
 

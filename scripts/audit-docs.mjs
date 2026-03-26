@@ -161,7 +161,7 @@ const datasetChecks = [
   { file: "lib/guides.ts", expected: 12, label: "기능 가이드" },
   { file: "lib/operations.ts", expected: 6, label: "운영 가이드" },
   { file: "lib/casebooks.ts", expected: 12, label: "사례집" },
-  { file: "lib/workouts.ts", expected: 12, label: "실습" },
+  { file: "lib/workouts.ts", expected: 16, label: "실습" },
   { file: "lib/hubs.ts", expected: 19, label: "허브 항목" },
 ];
 
