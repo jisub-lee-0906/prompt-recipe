@@ -3,11 +3,9 @@ import Link from "next/link";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { SearchTrigger } from "@/components/search/search-trigger";
-import { getAllDocsMeta } from "@/lib/mdx";
+import type { DocEntry } from "@/lib/mdx";
 
-export function Header() {
-  const docs = getAllDocsMeta();
-
+export function Header({ docs }: { docs: DocEntry[] }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[var(--header-height)] w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
@@ -29,6 +27,7 @@ export function Header() {
           <NavLink href="/tracks" label="학습 트랙" className="lg:inline-flex" />
           <NavLink href="/playbooks" label="플레이북" className="lg:inline-flex" />
           <NavLink href="/guides" label="기능 가이드" className="xl:inline-flex" />
+          <NavLink href="/operations" label="운영 가이드" className="xl:inline-flex" />
           <NavLink href="/casebooks" label="사례집" className="xl:inline-flex" />
           <NavLink href="/workouts" label="실습 훈련" className="2xl:inline-flex" />
           <NavLink href="/compare" label="비교 허브" className="2xl:inline-flex" />

@@ -65,6 +65,7 @@ export function MobileNav({ docs }: MobileNavProps) {
                   <QuickLink href="/tracks" label="학습 트랙 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/playbooks" label="플레이북 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/guides" label="기능 가이드 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/operations" label="운영 가이드 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/casebooks" label="사례집 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/workouts" label="실습 훈련 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/compare" label="비교 허브 보기" onClick={() => setOpen(false)} />

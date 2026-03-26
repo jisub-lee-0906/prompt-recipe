@@ -19,6 +19,7 @@ import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
 import { getFeatureGuides } from "@/lib/guides";
 import { getComparisonHubItems, getScenarioHubItems } from "@/lib/hubs";
 import { getAllDocsMeta, getDocsBySlugs } from "@/lib/mdx";
+import { getOperationGuides } from "@/lib/operations";
 import { getPlaybooks } from "@/lib/playbooks";
 import {
   CATEGORY_META,
@@ -39,6 +40,7 @@ export default function Home() {
   const casebooks = getCasebooks().slice(0, 3);
   const guides = getFeatureGuides().slice(0, 3);
   const playbooks = getPlaybooks().slice(0, 3);
+  const operations = getOperationGuides().slice(0, 3);
   const workouts = getWorkouts().slice(0, 3);
   const compareItems = getComparisonHubItems().slice(0, 3);
   const scenarioItems = getScenarioHubItems().slice(0, 3);
@@ -123,8 +125,8 @@ export default function Home() {
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
                   기획자, 디자이너, 주니어 개발자가 웹 개발과 UI/UX 언어를 빠르게
-                  익히고 AI IDE에 더 정확한 요청을 전달하도록 돕는 정적 문서형
-                  교과서입니다.
+                  익히고 AI IDE에 더 정확한 요청을 전달한 뒤, 결과를 검토하고
+                  다시 수정 지시할 수 있도록 돕는 정적 문서형 교과서입니다.
                 </p>
               </div>
             </div>
@@ -213,7 +215,7 @@ export default function Home() {
         />
         <LearningPromiseCard
           title="이 교과서는 어떻게 읽는가"
-          description="문서로 개념을 익히고, 플레이북과 가이드로 표현을 배우고, 사례집과 실습으로 내 문장으로 체화합니다."
+          description="문서로 개념을 익히고, 플레이북과 가이드로 표현을 배우고, 사례집과 실습으로 체화한 뒤 운영 가이드로 검증과 수정 루프까지 익힙니다."
         />
       </section>
 
@@ -299,6 +301,38 @@ export default function Home() {
               </Link>
             </CardContent>
           </Card>
+        ))}
+      </section>
+
+      <SectionHeader
+        eyebrow="실전 운영"
+        title="요청 다음 단계를 다루는 운영 가이드"
+        description="좋은 첫 요청에서 멈추지 않고, 코드베이스 읽기, 작업 분해, 검증, 수정 요청, 리뷰까지 이어지는 실전 운영 축입니다."
+      />
+      <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-3">
+        {operations.map((guide) => (
+          <Link key={guide.slug} href={`/operations/${guide.slug}`} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <CardHeader className="space-y-4">
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary">{guide.level}</Badge>
+                  {guide.roleTargets.slice(0, 2).map((role) => (
+                    <Badge key={role} variant="outline">
+                      {role}
+                    </Badge>
+                  ))}
+                </div>
+                <CardTitle className="text-xl">{guide.title}</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  {guide.summary}
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
+                운영 가이드 보기
+                <ArrowRight className="size-4" />
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </section>
 

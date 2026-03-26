@@ -11,6 +11,7 @@ import {
 } from "@/lib/docs-config";
 import { getFeatureGuides } from "@/lib/guides";
 import { getComparisonHubItems, getScenarioHubItems } from "@/lib/hubs";
+import { getOperationGuides } from "@/lib/operations";
 import { getPlaybooks } from "@/lib/playbooks";
 import { ROLE_PATHS, SITE_UPDATED_AT } from "@/lib/site-config";
 import { getWorkouts } from "@/lib/workouts";
@@ -64,7 +65,14 @@ export type SearchRecord = {
   roleTargets: DocRoleTarget[];
   aliases: string[];
   updatedAt: string;
-  kind: "docs" | "playbooks" | "guides" | "casebooks" | "workouts" | "hubs";
+  kind:
+    | "docs"
+    | "playbooks"
+    | "guides"
+    | "casebooks"
+    | "workouts"
+    | "operations"
+    | "hubs";
   categoryLabel: string;
 };
 
@@ -87,6 +95,9 @@ const MASTER_INVENTORY_PATH = path.join(
   "master-inventory.md",
 );
 const MDX_EXTENSION = ".mdx";
+const shouldUseProcessCache = process.env.NODE_ENV === "production";
+let allDocsMetaCache: DocEntry[] | null = null;
+let searchIndexCache: SearchRecord[] | null = null;
 
 const DOC_ALIAS_MAP: Record<string, string[]> = {
   modal: ["팝업", "오버레이", "겹침 창"],
@@ -316,6 +327,10 @@ export function getAllDocPaths() {
 }
 
 export function getAllDocsMeta(): DocEntry[] {
+  if (shouldUseProcessCache && allDocsMetaCache) {
+    return allDocsMetaCache;
+  }
+
   const inventoryOrderMap = getInventoryOrderMap();
   const inventoryMetaMap = getInventoryMetaMap();
 
@@ -347,7 +362,7 @@ export function getAllDocsMeta(): DocEntry[] {
     })
     .sort((left, right) => left.order - right.order);
 
-  return baseDocs.map((doc) => ({
+  const computedDocs = baseDocs.map((doc) => ({
     ...doc,
     relatedSlugs: getRelatedSlugs(
       baseDocs,
@@ -356,6 +371,12 @@ export function getAllDocsMeta(): DocEntry[] {
       doc.prerequisites,
     ),
   }));
+
+  if (shouldUseProcessCache) {
+    allDocsMetaCache = computedDocs;
+  }
+
+  return computedDocs;
 }
 
 export function getDocsByCategory(category: DocCategory) {
@@ -406,6 +427,10 @@ export function getDocBySlug(
 }
 
 export function getSearchIndex(): SearchRecord[] {
+  if (shouldUseProcessCache && searchIndexCache) {
+    return searchIndexCache;
+  }
+
   const docs = getAllDocsMeta().map(
     ({
       title,
@@ -543,6 +568,41 @@ export function getSearchIndex(): SearchRecord[] {
     categoryLabel: "실습 훈련",
   }));
 
+  const operations = getOperationGuides().map((guide, index) => ({
+    title: guide.title,
+    description: guide.summary,
+    category: "operations",
+    tags: [...guide.roleTargets, guide.level, "운영 가이드", "AI IDE 운영"],
+    href: `/operations/${guide.slug}`,
+    priority: guide.level === "입문" ? ("P1" as const) : ("P2" as const),
+    prerequisites: [
+      ...guide.docs,
+      ...guide.playbooks,
+      ...guide.guides,
+      ...guide.casebooks,
+      ...guide.workouts,
+    ],
+    order: 45_000 + index,
+    difficulty: guide.level,
+    roleTargets: guide.roleTargets,
+    aliases: [
+      guide.slug,
+      ...guide.docs,
+      ...guide.playbooks,
+      ...guide.guides,
+      ...guide.casebooks,
+      ...guide.workouts,
+      "수정 요청",
+      "검증",
+      "리뷰",
+      "코드베이스 읽기",
+      "작업 분해",
+    ],
+    updatedAt: SITE_UPDATED_AT,
+    kind: "operations" as const,
+    categoryLabel: "운영 가이드",
+  }));
+
   const comparisonHubs = getComparisonHubItems().map((item, index) => ({
     title: item.title,
     description: item.summary,
@@ -591,15 +651,22 @@ export function getSearchIndex(): SearchRecord[] {
     categoryLabel: "상황 허브",
   }));
 
-  return [
+  const computedIndex = [
     ...docs,
     ...playbooks,
     ...guides,
     ...casebooks,
     ...workouts,
+    ...operations,
     ...comparisonHubs,
     ...scenarioHubs,
   ];
+
+  if (shouldUseProcessCache) {
+    searchIndexCache = computedIndex;
+  }
+
+  return computedIndex;
 }
 
 export function getAdjacentDocs(category: DocCategory, slug: string): AdjacentDocs {

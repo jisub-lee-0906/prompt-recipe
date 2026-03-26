@@ -5,13 +5,12 @@ import { Header } from "@/components/layout/header";
 import { SearchProvider } from "@/components/search/search-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { getSearchIndex } from "@/lib/mdx";
+import { getAllDocsMeta, getSearchIndex } from "@/lib/mdx";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-sans",
-  subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
 
@@ -60,6 +59,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const docs = getAllDocsMeta();
   const searchIndex = getSearchIndex();
 
   return (
@@ -78,7 +78,7 @@ export default function RootLayout({
         >
           <SearchProvider searchIndex={searchIndex}>
             <div className="min-h-screen bg-background">
-              <Header />
+              <Header docs={docs} />
               <div className="pt-[var(--header-height)]">{children}</div>
             </div>
             <Toaster richColors position="top-right" />

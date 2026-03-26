@@ -31,7 +31,7 @@ export function SearchTrigger({
         </span>
       </span>
       <span className="hidden rounded-md border border-border/80 bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground/80 sm:inline-flex">
-        Cmd + K
+        Ctrl/Cmd + K
       </span>
     </Button>
   );

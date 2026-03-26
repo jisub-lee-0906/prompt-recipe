@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getCasebookBySlug } from "@/lib/casebooks";
 import { getFeatureGuideBySlug } from "@/lib/guides";
 import { getDocsBySlugs } from "@/lib/mdx";
+import { getOperationGuides } from "@/lib/operations";
 import { getPlaybookBySlug } from "@/lib/playbooks";
 import { getLearningTracks } from "@/lib/tracks";
 import { getWorkoutBySlug } from "@/lib/workouts";
@@ -208,7 +209,7 @@ export default function TracksPage() {
             description="각 단계의 프롬프트를 AI IDE에 바로 넣어보면서 결과를 비교하면 학습 속도가 빨라집니다."
           />
         </div>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap gap-4">
           <Link
             href="/guides"
             className="inline-flex items-center gap-2 text-sm font-medium text-primary"
@@ -216,6 +217,44 @@ export default function TracksPage() {
             기능 가이드 전체 보기
             <ArrowRight className="size-4" />
           </Link>
+          <Link
+            href="/operations"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary"
+          >
+            운영 가이드 전체 보기
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+        <div className="flex items-center gap-2">
+          <Sparkles className="size-5 text-primary" />
+          <h2 className="text-xl font-semibold tracking-tight">
+            트랙 다음 단계: 운영 가이드
+          </h2>
+        </div>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          문서, 플레이북, 사례집, 실습으로 좋은 요청을 쓰는 법을 익혔다면,
+          다음은 코드를 먼저 읽게 하고, 작업을 쪼개고, 결과를 검증하고, 다시
+          수정시키는 운영 단계입니다.
+        </p>
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {getOperationGuides()
+            .slice(0, 3)
+            .map((guide) => (
+              <Link
+                key={guide.slug}
+                href={`/operations/${guide.slug}`}
+                className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+              >
+                <Badge variant="secondary">{guide.level}</Badge>
+                <p className="mt-3 font-semibold">{guide.title}</p>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                  {guide.summary}
+                </p>
+              </Link>
+            ))}
         </div>
       </section>
     </main>

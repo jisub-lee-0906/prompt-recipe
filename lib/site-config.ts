@@ -2,10 +2,10 @@ import type { DocCategory } from "@/lib/docs-config";
 
 export const SITE_NAME = "AI 프롬프팅 가이드";
 export const SITE_DESCRIPTION =
-  "기획자, 디자이너, 주니어 개발자가 웹 개발과 UI/UX 용어를 빠르게 익히고 AI IDE에 더 정확하게 요청할 수 있도록 돕는 정적 문서형 교과서입니다.";
+  "기획자, 디자이너, 주니어 개발자가 웹 개발과 UI/UX 용어를 빠르게 익히고 AI IDE에 더 정확하게 요청하고, 결과를 검토하고, 다시 수정 지시할 수 있도록 돕는 정적 문서형 교과서입니다.";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://prompting-docs.example.com";
-export const SITE_UPDATED_AT = "2026-03-25";
+export const SITE_UPDATED_AT = "2026-03-27";
 export const FEEDBACK_URL =
   "mailto:feedback@example.com?subject=AI%20%ED%94%84%EB%A1%AC%ED%94%84%ED%8C%85%20%EA%B0%80%EC%9D%B4%EB%93%9C%20%ED%94%BC%EB%93%9C%EB%B0%B1";
 export const REQUEST_TERM_URL =
@@ -57,6 +57,12 @@ export const ROLE_PATHS = [
 ] as const;
 
 export const CHANGELOG_ENTRIES = [
+  {
+    date: "2026-03-26",
+    title: "AI IDE 실전 운영 가이드 추가",
+    description:
+      "코드베이스 읽기, 작업 분해, 검증 루프, 수정 요청, 리뷰, 실패 통제를 다루는 운영 가이드를 추가했습니다.",
+  },
   {
     date: "2026-03-25",
     title: "프로젝트 사례집 1차 추가",

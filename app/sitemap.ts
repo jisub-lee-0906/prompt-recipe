@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { getCasebooks } from "@/lib/casebooks";
 import { getFeatureGuides } from "@/lib/guides";
 import { getAllDocsMeta } from "@/lib/mdx";
+import { getOperationGuides } from "@/lib/operations";
 import { getPlaybooks } from "@/lib/playbooks";
 import { SITE_URL } from "@/lib/site-config";
 import { getWorkouts } from "@/lib/workouts";
@@ -12,14 +13,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const docs = getAllDocsMeta();
   const playbooks = getPlaybooks();
   const guides = getFeatureGuides();
+  const operations = getOperationGuides();
   const workouts = getWorkouts();
-  const baseDate = new Date("2026-03-25");
+  const baseDate = new Date("2026-03-27");
 
   return [
     { url: SITE_URL, lastModified: baseDate, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/tracks`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.98 },
     { url: `${SITE_URL}/playbooks`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },
     { url: `${SITE_URL}/guides`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },
+    { url: `${SITE_URL}/operations`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },
     { url: `${SITE_URL}/casebooks`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.97 },
     { url: `${SITE_URL}/workouts`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.97 },
     { url: `${SITE_URL}/compare`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.9 },
@@ -45,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: baseDate,
       changeFrequency: "monthly" as const,
       priority: guide.level === "입문" ? 0.86 : 0.76,
+    })),
+    ...operations.map((guide) => ({
+      url: `${SITE_URL}/operations/${guide.slug}`,
+      lastModified: baseDate,
+      changeFrequency: "monthly" as const,
+      priority: guide.level === "입문" ? 0.85 : 0.75,
     })),
     ...casebooks.map((casebook) => ({
       url: `${SITE_URL}/casebooks/${casebook.slug}`,

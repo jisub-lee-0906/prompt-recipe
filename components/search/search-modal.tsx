@@ -24,6 +24,7 @@ type KindFilter =
   | "guides"
   | "casebooks"
   | "workouts"
+  | "operations"
   | "hubs";
 
 const STARTER_HREFS = new Set([
@@ -32,6 +33,7 @@ const STARTER_HREFS = new Set([
   "/docs/backend/api",
   "/playbooks/planner-signup-page",
   "/guides/signup-feature",
+  "/operations/codebase-reading",
   "/casebooks/signup-project",
   "/workouts/signup-request-fix",
 ]);
@@ -48,6 +50,7 @@ const KIND_LABELS: Record<SearchRecord["kind"], string> = {
   guides: "기능 가이드",
   casebooks: "사례집",
   workouts: "실습",
+  operations: "운영 가이드",
   hubs: "허브",
 };
 
@@ -55,6 +58,7 @@ const GROUP_ORDER: SearchRecord["kind"][] = [
   "casebooks",
   "workouts",
   "guides",
+  "operations",
   "playbooks",
   "docs",
   "hubs",
@@ -89,6 +93,14 @@ function getKindWeight(item: SearchRecord, query: string) {
 
   const workoutKeywords = ["실습", "훈련", "요청", "개선", "고치기"];
   const hubKeywords = ["비교", "허브", "상황", "무엇부터"];
+  const operationKeywords = [
+    "검증",
+    "리뷰",
+    "수정",
+    "코드베이스",
+    "분해",
+    "운영",
+  ];
 
   if (
     item.kind === "casebooks" &&
@@ -102,6 +114,13 @@ function getKindWeight(item: SearchRecord, query: string) {
     workoutKeywords.some((keyword) => normalizedQuery.includes(keyword))
   ) {
     return 18;
+  }
+
+  if (
+    item.kind === "operations" &&
+    operationKeywords.some((keyword) => normalizedQuery.includes(keyword))
+  ) {
+    return 20;
   }
 
   if (
@@ -314,6 +333,7 @@ export function SearchModal({
                 ["docs", "문서"],
                 ["playbooks", "플레이북"],
                 ["guides", "가이드"],
+                ["operations", "운영"],
                 ["casebooks", "사례집"],
                 ["workouts", "실습"],
                 ["hubs", "허브"],
