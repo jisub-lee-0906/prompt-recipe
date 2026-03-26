@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BookMarked, Layers3, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getCasebookBySlug } from "@/lib/casebooks";
 import { getFeatureGuideBySlug } from "@/lib/guides";
 import { getDocsBySlugs } from "@/lib/mdx";
@@ -19,6 +19,20 @@ export const metadata: Metadata = {
 
 export default function TracksPage() {
   const tracks = getLearningTracks();
+  const trackHints = [
+    {
+      title: "처음 시작하는 사람",
+      description: "1단계만 먼저 열고 대표 문서 2개만 읽어도 충분합니다.",
+    },
+    {
+      title: "이미 용어를 아는 사람",
+      description: "2단계 플레이북부터 바로 들어가도 흐름을 따라갈 수 있습니다.",
+    },
+    {
+      title: "실전만 빠르게 보고 싶은 사람",
+      description: "4단계 사례집과 5단계 실습부터 보고 필요한 문서만 거슬러 올라가세요.",
+    },
+  ];
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
@@ -40,8 +54,23 @@ export default function TracksPage() {
         </div>
       </section>
 
+      <section className="mt-8">
+        <Card className="rounded-[1.5rem] border border-border/70 bg-card/80">
+          <CardContent className="grid gap-4 px-6 py-5 md:grid-cols-3">
+            {trackHints.map((hint) => (
+              <div key={hint.title}>
+                <p className="font-medium">{hint.title}</p>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                  {hint.description}
+                </p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mt-8 grid gap-6">
-        {tracks.map((track) => {
+        {tracks.map((track, index) => {
           const docs = getDocsBySlugs(track.docs);
           const playbooks = track.playbooks
             .map((slug) => getPlaybookBySlug(slug))
@@ -57,29 +86,32 @@ export default function TracksPage() {
             .filter((item) => item !== null);
 
           return (
-            <Card
+            <details
               key={track.role}
               id={getTrackAnchorId(track.role)}
+              open={index === 0}
               className="rounded-[2rem] border border-border/70 bg-card/80"
             >
-              <CardHeader className="space-y-4">
-                <div className="flex items-center justify-between gap-4">
-                  <CardTitle className="flex items-center gap-2 text-2xl">
-                    <Sparkles className="size-5 text-primary" />
-                    {track.role}
-                  </CardTitle>
-                  <Badge variant="secondary">
-                    문서 {docs.length} · 플레이북 {playbooks.length} · 가이드{" "}
-                    {guides.length} · 사례집 {casebooks.length} · 실습{" "}
-                    {workouts.length}
+              <summary className="cursor-pointer list-none px-6 py-6 sm:px-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="size-5 text-primary" />
+                      <p className="text-2xl font-semibold tracking-tight">
+                        {track.role}
+                      </p>
+                    </div>
+                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                      {track.summary}
+                    </p>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0">
+                    5단계 트랙
                   </Badge>
                 </div>
-                <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                  {track.summary}
-                </p>
-              </CardHeader>
+              </summary>
 
-              <CardContent className="space-y-6">
+              <div className="space-y-6 border-t border-border/70 px-6 py-6 sm:px-8">
                 <div className="grid gap-4 md:grid-cols-2">
                   <InfoBlock
                     title="이 역할이 먼저 익혀야 하는 것"
@@ -91,65 +123,66 @@ export default function TracksPage() {
                   />
                 </div>
 
-                <div className="grid gap-5 xl:grid-cols-5">
-                  <TrackColumn
-                  label="1단계"
-                  title="핵심 용어 문서"
-                  description="먼저 용어를 정확히 익혀야 AI IDE가 이해할 수 있는 요청으로 바꿀 수 있습니다."
-                  items={docs.map((doc) => ({
-                    href: doc.href,
-                    title: doc.title,
-                    summary: doc.description,
-                    badges: [doc.priority, doc.difficulty],
-                  }))}
-                />
-                  <TrackColumn
-                  label="2단계"
-                  title="실전 플레이북"
-                  description="같은 기능이라도 내 역할에 맞게 어떤 문장으로 설명해야 하는지 익히는 단계입니다."
-                  items={playbooks.map((item) => ({
-                    href: `/playbooks/${item.slug}`,
-                    title: item.title,
-                    summary: item.summary,
-                    badges: [item.role, item.level],
-                  }))}
-                />
-                  <TrackColumn
-                  label="3단계"
-                  title="기능 단위 가이드"
-                  description="화면, 상태, API를 기능 묶음으로 보는 습관을 만드는 단계입니다."
-                  items={guides.map((item) => ({
-                    href: `/guides/${item.slug}`,
-                    title: item.title,
-                    summary: item.summary,
-                    badges: [item.level, item.audience[0]],
-                  }))}
-                />
-                  <TrackColumn
-                  label="4단계"
-                  title="프로젝트 사례집"
-                  description="실제 제품 기능을 처음부터 끝까지 어떻게 시킬지 보는 완성형 실전 단계입니다."
-                  items={casebooks.map((item) => ({
-                    href: `/casebooks/${item.slug}`,
-                    title: item.title,
-                    summary: item.summary,
-                    badges: [item.level, item.roles[0]],
-                  }))}
-                />
-                  <TrackColumn
-                  label="5단계"
-                  title="실습 훈련"
-                  description="나쁜 요청을 직접 고쳐 보며, 배운 내용을 내 문장으로 체화하는 단계입니다."
-                  items={workouts.map((item) => ({
-                    href: `/workouts/${item.slug}`,
-                    title: item.title,
-                    summary: item.problem,
-                    badges: [item.level, item.role],
-                  }))}
+                <div className="space-y-4">
+                  <TrackStage
+                    label="1단계"
+                    title="핵심 용어 문서"
+                    description="먼저 용어를 정확히 익혀야 AI IDE가 이해할 수 있는 요청으로 바꿀 수 있습니다."
+                    items={docs.map((doc) => ({
+                      href: doc.href,
+                      title: doc.title,
+                      summary: doc.description,
+                      badges: [doc.priority, doc.difficulty],
+                    }))}
+                    defaultOpen
+                  />
+                  <TrackStage
+                    label="2단계"
+                    title="실전 플레이북"
+                    description="같은 기능이라도 내 역할에 맞게 어떤 문장으로 설명해야 하는지 익히는 단계입니다."
+                    items={playbooks.map((item) => ({
+                      href: `/playbooks/${item.slug}`,
+                      title: item.title,
+                      summary: item.summary,
+                      badges: [item.role, item.level],
+                    }))}
+                  />
+                  <TrackStage
+                    label="3단계"
+                    title="기능 단위 가이드"
+                    description="화면, 상태, API를 기능 묶음으로 보는 습관을 만드는 단계입니다."
+                    items={guides.map((item) => ({
+                      href: `/guides/${item.slug}`,
+                      title: item.title,
+                      summary: item.summary,
+                      badges: [item.level, item.audience[0]],
+                    }))}
+                  />
+                  <TrackStage
+                    label="4단계"
+                    title="프로젝트 사례집"
+                    description="실제 제품 기능을 처음부터 끝까지 어떻게 시킬지 보는 완성형 실전 단계입니다."
+                    items={casebooks.map((item) => ({
+                      href: `/casebooks/${item.slug}`,
+                      title: item.title,
+                      summary: item.summary,
+                      badges: [item.level, item.roles[0]],
+                    }))}
+                  />
+                  <TrackStage
+                    label="5단계"
+                    title="실습 훈련"
+                    description="나쁜 요청을 직접 고쳐 보며, 배운 내용을 내 문장으로 체화하는 단계입니다."
+                    items={workouts.map((item) => ({
+                      href: `/workouts/${item.slug}`,
+                      title: item.title,
+                      summary: item.problem,
+                      badges: [item.level, item.role],
+                    }))}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </details>
           );
         })}
       </section>
@@ -214,53 +247,95 @@ type TrackColumnProps = {
   }>;
 };
 
-function TrackColumn({ label, title, description, items }: TrackColumnProps) {
+function TrackStage({
+  label,
+  title,
+  description,
+  items,
+  defaultOpen = false,
+}: TrackColumnProps & { defaultOpen?: boolean }) {
   const completionHint = getTrackCompletionHint(label);
   const practiceHint = getTrackPracticeHint(label);
+  const previewItems = items.slice(0, 2);
+  const hiddenCount = Math.max(items.length - previewItems.length, 0);
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Badge variant="outline">{label}</Badge>
-        <p className="font-medium">{title}</p>
-      </div>
-      <p className="text-sm leading-6 text-muted-foreground">{description}</p>
-      <div className="rounded-2xl border border-dashed border-border/70 bg-background/60 px-4 py-4">
-        <p className="text-xs font-semibold tracking-wide text-foreground/90">
-          이 단계 완료 기준
-        </p>
-        <p className="mt-2 text-xs leading-6 text-muted-foreground">
-          {completionHint}
-        </p>
-        <p className="mt-3 text-xs font-semibold tracking-wide text-foreground/90">
-          멈춰서 점검할 질문
-        </p>
-        <p className="mt-2 text-xs leading-6 text-muted-foreground">
-          {practiceHint}
-        </p>
-      </div>
-      <div className="space-y-3">
-        {items.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
-          >
-            <div className="flex flex-wrap items-center gap-2">
-              {item.badges.map((badge) => (
-                <Badge key={badge} variant="outline">
-                  {badge}
-                </Badge>
-              ))}
+    <details
+      open={defaultOpen}
+      className="rounded-[1.5rem] border border-border/70 bg-background/70"
+    >
+      <summary className="cursor-pointer list-none px-5 py-5">
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="outline">{label}</Badge>
+          <p className="font-medium">{title}</p>
+        </div>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
+        <div className="mt-4 space-y-2">
+          {previewItems.map((item) => (
+            <div
+              key={item.href}
+              className="rounded-2xl border border-border/70 bg-card/80 px-4 py-3"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                {item.badges.slice(0, 2).map((badge) => (
+                  <Badge key={badge} variant="outline">
+                    {badge}
+                  </Badge>
+                ))}
+              </div>
+              <p className="mt-2 font-semibold">{item.title}</p>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground line-clamp-2">
+                {item.summary}
+              </p>
             </div>
-            <p className="mt-3 font-semibold">{item.title}</p>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              {item.summary}
+          ))}
+        </div>
+        <p className="mt-4 text-sm font-medium text-primary">
+          {hiddenCount > 0 ? `${hiddenCount}개 더 보기` : "단계 자세히 보기"}
+        </p>
+      </summary>
+      <div className="space-y-4 border-t border-border/70 px-5 py-5">
+        <div className="grid gap-4 rounded-2xl border border-dashed border-border/70 bg-background/60 px-4 py-4 md:grid-cols-2">
+          <div>
+            <p className="text-xs font-semibold tracking-wide text-foreground/90">
+              이 단계 완료 기준
             </p>
-          </Link>
-        ))}
+            <p className="mt-2 text-xs leading-6 text-muted-foreground">
+              {completionHint}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-wide text-foreground/90">
+              멈춰서 점검할 질문
+            </p>
+            <p className="mt-2 text-xs leading-6 text-muted-foreground">
+              {practiceHint}
+            </p>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block rounded-2xl border border-border/70 bg-card/80 px-4 py-3 transition-colors hover:bg-muted/60"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                {item.badges.slice(0, 2).map((badge) => (
+                  <Badge key={badge} variant="outline">
+                    {badge}
+                  </Badge>
+                ))}
+              </div>
+              <p className="mt-2 font-semibold">{item.title}</p>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground line-clamp-2">
+                {item.summary}
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </details>
   );
 }
 

@@ -3,12 +3,9 @@ import {
   ArrowRight,
   Blocks,
   BookCopy,
-  BookOpenText,
   BrushCleaning,
   Compass,
   DatabaseZap,
-  Dumbbell,
-  Layers3,
   Sparkles,
   SplitSquareVertical,
 } from "lucide-react";
@@ -55,6 +52,61 @@ export default function Home() {
     docs: getDocsBySlugs([...pathItem.slugs]),
     trackHref: getRoleTrackHref(pathItem.role),
   }));
+  const compactSections = [
+    {
+      title: "기능 가이드",
+      description: "기능 단위로 읽으며 화면, 상태, API를 한 묶음으로 익힙니다.",
+      href: "/guides",
+      label: "가이드 전체 보기",
+      items: guides.map((guide) => ({
+        href: `/guides/${guide.slug}`,
+        title: guide.title,
+        summary: guide.summary,
+      })),
+    },
+    {
+      title: "실전 플레이북",
+      description: "내 역할에 맞는 요청 문장을 바로 가져다 쓸 수 있게 정리했습니다.",
+      href: "/playbooks",
+      label: "플레이북 전체 보기",
+      items: playbooks.map((playbook) => ({
+        href: `/playbooks/${playbook.slug}`,
+        title: playbook.title,
+        summary: playbook.summary,
+      })),
+    },
+    {
+      title: "실습 훈련",
+      description: "나쁜 요청을 좋은 요청으로 직접 고치며 표현을 몸에 익힙니다.",
+      href: "/workouts",
+      label: "실습 전체 보기",
+      items: workouts.map((workout) => ({
+        href: `/workouts/${workout.slug}`,
+        title: workout.title,
+        summary: workout.problem,
+      })),
+    },
+  ];
+  const quickStartCards = [
+    {
+      title: "대표 문서로 시작",
+      description: "가장 먼저 읽기 좋은 핵심 문서부터 가볍게 시작합니다.",
+      href: "/docs/ui-ux/modal",
+      label: "대표 문서 보기",
+    },
+    {
+      title: "학습 트랙으로 시작",
+      description: "내 역할에 맞는 순서대로 문서, 사례집, 실습을 따라갑니다.",
+      href: "/tracks",
+      label: "학습 트랙 보기",
+    },
+    {
+      title: "사례집으로 바로 시작",
+      description: "실제 기능을 끝까지 어떻게 시켜야 하는지 완성형 예시로 배웁니다.",
+      href: "/casebooks",
+      label: "사례집 보기",
+    },
+  ];
 
   return (
     <main className="bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.08),transparent_30%),linear-gradient(to_bottom,transparent,rgba(15,23,42,0.03))]">
@@ -84,65 +136,71 @@ export default function Home() {
                 </Button>
               </Link>
               <HomeSearchButton />
-              <Link href="/tracks">
-                <Button variant="outline" size="lg">
-                  학습 트랙
-                </Button>
-              </Link>
-              <Link href="/casebooks">
-                <Button variant="outline" size="lg">
-                  사례집
-                </Button>
-              </Link>
             </div>
           </div>
 
-          <div className="grid gap-4">
-            {rolePaths.map((pathItem) => (
-              <Card
-                key={pathItem.role}
-                className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
-              >
-                <CardHeader className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <CardTitle className="flex items-center gap-2 text-xl">
-                      <Sparkles className="size-4 text-primary" />
-                      {pathItem.role}
-                    </CardTitle>
-                    <Badge variant="secondary">{pathItem.docs.length}개</Badge>
+          <Card className="rounded-[1.75rem] border border-border/70 bg-card/80">
+            <CardHeader className="space-y-3">
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Sparkles className="size-4 text-primary" />
+                누구에게 가장 잘 맞는가
+              </CardTitle>
+              <p className="text-sm leading-7 text-muted-foreground">
+                역할별로 시작 문서와 학습 트랙을 한 번에 정리했습니다. 카드 하나만
+                선택해 바로 들어가면 됩니다.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {rolePaths.map((pathItem) => (
+                <Link
+                  key={pathItem.role}
+                  href={pathItem.trackHref}
+                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-2">
+                      <p className="font-semibold">{pathItem.role}</p>
+                      <p className="text-sm leading-6 text-muted-foreground">
+                        {pathItem.description}
+                      </p>
+                      {pathItem.docs[0] ? (
+                        <p className="text-xs font-medium text-primary">
+                          대표 문서: {pathItem.docs[0].title}
+                        </p>
+                      ) : null}
+                    </div>
+                    <ArrowRight className="mt-1 size-4 shrink-0 text-primary" />
                   </div>
-                  <p className="text-sm leading-7 text-muted-foreground">
-                    {pathItem.description}
-                  </p>
-                </CardHeader>
-                <CardContent className="mt-auto space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {pathItem.docs.slice(0, 2).map((doc) => (
-                      <Link
-                        key={doc.slug}
-                        href={doc.href}
-                        className="rounded-full border border-border/70 px-3 py-1 text-sm transition-colors hover:bg-muted/60"
-                      >
-                        {doc.title}
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Link href={pathItem.trackHref}>
-                      <Button size="sm">이 역할 트랙 보기</Button>
-                    </Link>
-                    <Link href="/tracks">
-                      <Button variant="outline" size="sm">
-                        전체 트랙 보기
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
         </div>
       </section>
+
+      <SectionHeader
+        eyebrow="시작 경로"
+        title="처음 시작하는 사람을 위한 3가지 경로"
+        description="지금 필요한 방식에 따라 문서, 학습 트랙, 사례집 중 하나만 골라 시작하면 됩니다."
+      />
+      <CardGrid>
+        {quickStartCards.map((item) => (
+          <Link key={item.href} href={item.href} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <CardHeader className="space-y-3">
+                <CardTitle className="text-xl">{item.title}</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  {item.description}
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
+                {item.label}
+                <ArrowRight className="size-4" />
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </CardGrid>
 
       <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-3">
         <LearningPromiseCard
@@ -203,153 +261,91 @@ export default function Home() {
       </section>
 
       <SectionHeader
-        eyebrow="기능 가이드"
-        title="기능 가이드"
-        description="로그인, 검색, 업로드처럼 화면·상태·API를 묶어서 읽는 기능 단위 가이드입니다."
+        eyebrow="실전 학습 허브"
+        title="가이드, 플레이북, 실습을 짧게 고르기"
+        description="홈에서는 대표 항목만 먼저 고르고, 자세한 탐색은 각 허브 페이지에서 이어서 할 수 있게 정리했습니다."
       />
-      <CardGrid>
-        {guides.map((guide) => (
-          <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">{guide.level}</Badge>
-                  {guide.audience.slice(0, 2).map((role) => (
-                    <Badge key={role} variant="outline">
-                      {role}
-                    </Badge>
-                  ))}
-                </div>
-                <CardTitle className="text-xl">{guide.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {guide.summary}
-                </p>
-              </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
-                <Layers3 className="size-4" />
-                기능 가이드 보기
-              </CardContent>
-            </Card>
-          </Link>
+      <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-3">
+        {compactSections.map((section) => (
+          <Card
+            key={section.title}
+            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
+          >
+            <CardHeader className="space-y-3">
+              <CardTitle className="text-xl">{section.title}</CardTitle>
+              <p className="text-sm leading-7 text-muted-foreground">
+                {section.description}
+              </p>
+            </CardHeader>
+            <CardContent className="mt-auto space-y-3">
+              {section.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                >
+                  <p className="font-semibold">{item.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground line-clamp-2">
+                    {item.summary}
+                  </p>
+                </Link>
+              ))}
+              <Link
+                href={section.href}
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary"
+              >
+                {section.label}
+                <ArrowRight className="size-4" />
+              </Link>
+            </CardContent>
+          </Card>
         ))}
-      </CardGrid>
-
-      <section className="mx-auto w-full max-w-7xl px-6 pb-12">
-        <div className="rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
-          <p className="text-sm font-medium text-foreground">기능 가이드는 이렇게 읽으세요</p>
-          <p className="mt-2 max-w-4xl text-sm leading-7 text-muted-foreground">
-            기능 가이드는 화면 하나를 만드는 법보다, 기능을 어떤 단위로 끊어서
-            설명해야 하는지 익히는 데 목적이 있습니다. 따라서 목표를 먼저 읽고,
-            단계별 흐름을 따라가며 상태와 API 조건이 어디서 붙는지 확인하는 방식이
-            가장 효과적입니다.
-          </p>
-        </div>
       </section>
-
-      <SectionHeader
-        eyebrow="플레이북"
-        title="실전 플레이북"
-        description="같은 기능도 역할에 따라 어떻게 표현해야 하는지 보여주는 역할별 플레이북입니다."
-      />
-      <CardGrid>
-        {playbooks.map((playbook) => (
-          <Link key={playbook.slug} href={`/playbooks/${playbook.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">{playbook.role}</Badge>
-                  <Badge variant="outline">{playbook.level}</Badge>
-                </div>
-                <CardTitle className="text-xl">{playbook.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {playbook.summary}
-                </p>
-              </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
-                <BookOpenText className="size-4" />
-                플레이북 보기
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </CardGrid>
-
-      <SectionHeader
-        eyebrow="실습 훈련"
-        title="실습 훈련"
-        description="나쁜 요청을 좋은 요청으로 고치는 훈련을 통해 직접 표현을 다듬는 단계입니다."
-      />
-      <CardGrid>
-        {workouts.map((workout) => (
-          <Link key={workout.slug} href={`/workouts/${workout.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">{workout.role}</Badge>
-                  <Badge variant="outline">{workout.level}</Badge>
-                </div>
-                <CardTitle className="text-xl">{workout.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {workout.problem}
-                </p>
-              </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
-                <Dumbbell className="size-4" />
-                실습 열기
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </CardGrid>
 
       <SectionHeader
         eyebrow="비교 허브"
         title="비교 허브와 상황 허브"
         description="헷갈리는 개념은 비교로 풀고, 실제 기능 상황은 추천 경로로 바로 들어갈 수 있게 구성했습니다."
       />
-      <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-2">
-        <Card className="rounded-[1.75rem] border border-border/70 bg-card/80">
-          <CardHeader className="space-y-3">
-            <div className="flex items-center gap-2">
-              <SplitSquareVertical className="size-5 text-primary" />
-              <CardTitle className="text-2xl">비교 허브</CardTitle>
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              비슷한 개념을 나란히 놓고 차이를 빠르게 판단하는 섹션입니다.
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-3">
+      <section className="mx-auto grid w-full max-w-7xl gap-6 px-6 pb-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-[1.75rem] border border-border/70 bg-card/80 p-6">
+          <div className="flex items-center gap-2">
+            <SplitSquareVertical className="size-5 text-primary" />
+            <h3 className="text-xl font-semibold tracking-tight">비교 허브</h3>
+          </div>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+            비슷한 개념의 차이를 빠르게 구분하고 싶을 때 가장 먼저 보면 좋은 허브입니다.
+          </p>
+          <div className="mt-5 space-y-3">
             {compareItems.map((item) => (
               <Link
                 key={item.slug}
                 href={`/compare#${item.slug}`}
-                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                className="block border-b border-border/70 pb-3 last:border-b-0 last:pb-0"
               >
                 <p className="font-semibold">{item.title}</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   {item.summary}
                 </p>
               </Link>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="rounded-[1.75rem] border border-border/70 bg-card/80">
-          <CardHeader className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Compass className="size-5 text-primary" />
-              <CardTitle className="text-2xl">상황 허브</CardTitle>
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              회원가입, 검색, 결제처럼 실제 상황별로 무엇부터 읽을지 안내합니다.
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <div className="rounded-[1.75rem] border border-border/70 bg-card/80 p-6">
+          <div className="flex items-center gap-2">
+            <Compass className="size-5 text-primary" />
+            <h3 className="text-xl font-semibold tracking-tight">상황 허브</h3>
+          </div>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+            실제 기능 상황에 따라 무엇부터 읽어야 할지 빠르게 고를 수 있는 요약 허브입니다.
+          </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {scenarioItems.map((item) => (
               <Link
                 key={item.slug}
                 href={`/scenarios#${item.slug}`}
-                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                className="rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
               >
                 <p className="font-semibold">{item.title}</p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -357,8 +353,8 @@ export default function Home() {
                 </p>
               </Link>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </section>
 
       <SectionHeader
@@ -398,23 +394,25 @@ export default function Home() {
         title="최근 업데이트"
         description="문서와 학습 허브가 어떻게 발전하고 있는지 빠르게 확인할 수 있습니다."
       />
-      <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-24 lg:grid-cols-3">
-        {CHANGELOG_ENTRIES.slice(0, 3).map((entry) => (
-          <Card
-            key={entry.date}
-            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
-          >
-            <CardHeader className="space-y-2">
-              <Badge variant="secondary">{entry.date}</Badge>
-              <CardTitle className="text-xl">{entry.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="mt-auto">
-              <p className="text-sm leading-7 text-muted-foreground">
-                {entry.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+      <section className="mx-auto w-full max-w-7xl px-6 pb-24">
+        <div className="rounded-[1.75rem] border border-border/70 bg-card/80 p-6">
+          <div className="space-y-4">
+            {CHANGELOG_ENTRIES.slice(0, 3).map((entry) => (
+              <div
+                key={entry.date}
+                className="border-b border-border/70 pb-4 last:border-b-0 last:pb-0"
+              >
+                <div className="flex flex-wrap items-center gap-3">
+                  <Badge variant="secondary">{entry.date}</Badge>
+                  <p className="font-semibold">{entry.title}</p>
+                </div>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                  {entry.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );
