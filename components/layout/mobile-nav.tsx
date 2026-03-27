@@ -44,7 +44,7 @@ export function MobileNav({ docs }: MobileNavProps) {
         <SheetHeader className="border-b border-border/70 px-4 py-4">
           <SheetTitle>문서 메뉴</SheetTitle>
           <SheetDescription>
-            학습 트랙, 사례집, 실습, 문서 카테고리를 한 번에 탐색할 수 있습니다.
+            문서, 사례집, 실습, 비교 허브를 한 번에 탐색할 수 있습니다.
           </SheetDescription>
         </SheetHeader>
         <div className="min-h-0 flex-1 p-4">
@@ -56,13 +56,13 @@ export function MobileNav({ docs }: MobileNavProps) {
                     빠른 이동
                   </p>
                   <p className="text-sm leading-6 text-muted-foreground">
-                    역할별 학습과 실전 사례, 실습 훈련, 카테고리 문서를 빠르게
-                    열 수 있습니다.
+                    문서 허브와 실전 사례, 실습 훈련, 카테고리 문서를 빠르게 열 수
+                    있습니다.
                   </p>
                 </div>
 
                 <div className="grid gap-2 px-3">
-                  <QuickLink href="/tracks" label="학습 트랙 보기" onClick={() => setOpen(false)} />
+                  <QuickLink href="/docs" label="문서 허브 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/playbooks" label="플레이북 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/guides" label="기능 가이드 보기" onClick={() => setOpen(false)} />
                   <QuickLink href="/operations" label="운영 가이드 보기" onClick={() => setOpen(false)} />

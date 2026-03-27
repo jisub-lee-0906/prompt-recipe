@@ -66,11 +66,7 @@ export default function OperationsPage() {
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{guide.level}</Badge>
-                  {guide.roleTargets.map((role) => (
-                    <Badge key={role} variant="outline">
-                      {role}
-                    </Badge>
-                  ))}
+                  <Badge variant="outline">운영 가이드</Badge>
                 </div>
                 <CardTitle className="text-2xl">{guide.title}</CardTitle>
                 <p className="text-sm leading-7 text-muted-foreground">

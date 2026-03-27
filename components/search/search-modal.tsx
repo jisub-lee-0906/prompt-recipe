@@ -15,7 +15,6 @@ type SearchModalProps = {
   items: SearchRecord[];
 };
 
-type RoleFilter = "전체" | SearchRecord["roleTargets"][number];
 type KindFilter =
   | "전체"
   | SearchRecord["kind"]
@@ -37,12 +36,6 @@ const STARTER_HREFS = new Set([
   "/casebooks/signup-project",
   "/workouts/signup-request-fix",
 ]);
-
-const ROLE_QUERY_MAP = {
-  기획자: ["기획자", "pm", "po", "프로덕트"],
-  디자이너: ["디자이너", "ux", "ui", "프로덕트 디자이너"],
-  "주니어 개발자": ["주니어 개발자", "프론트엔드", "개발자", "주니어"],
-} as const;
 
 const KIND_LABELS: Record<SearchRecord["kind"], string> = {
   docs: "문서",
@@ -133,27 +126,6 @@ function getKindWeight(item: SearchRecord, query: string) {
   return 0;
 }
 
-function getRoleWeight(item: SearchRecord, query: string) {
-  const normalizedQuery = normalize(query);
-
-  if (!normalizedQuery) {
-    return item.priority === "P1" ? 12 : 0;
-  }
-
-  let weight = 0;
-
-  for (const [role, aliases] of Object.entries(ROLE_QUERY_MAP)) {
-    if (
-      aliases.some((alias) => normalize(alias).includes(normalizedQuery)) &&
-      item.roleTargets.includes(role as SearchRecord["roleTargets"][number])
-    ) {
-      weight += 80;
-    }
-  }
-
-  return weight;
-}
-
 function getStarterItems(items: SearchRecord[]) {
   return items.filter((item) => STARTER_HREFS.has(item.href)).slice(0, 7);
 }
@@ -164,7 +136,6 @@ export function SearchModal({
   items,
 }: SearchModalProps) {
   const [query, setQuery] = React.useState("");
-  const [selectedRole, setSelectedRole] = React.useState<RoleFilter>("전체");
   const [selectedKind, setSelectedKind] = React.useState<KindFilter>("전체");
   const router = useRouter();
 
@@ -187,7 +158,6 @@ export function SearchModal({
   React.useEffect(() => {
     if (!open) {
       setQuery("");
-      setSelectedRole("전체");
       setSelectedKind("전체");
     }
   }, [open]);
@@ -202,7 +172,6 @@ export function SearchModal({
         const tags = item.tags.map(normalize);
         const aliases = item.aliases.map(normalize);
         const prerequisites = item.prerequisites.map(normalize);
-        const roles = item.roleTargets.map(normalize);
         let score = 0;
 
         if (normalizedQuery) {
@@ -213,25 +182,21 @@ export function SearchModal({
           if (tags.some((tag) => tag.includes(normalizedQuery))) score += 50;
           if (aliases.some((alias) => alias.includes(normalizedQuery))) score += 45;
           if (description.includes(normalizedQuery)) score += 30;
-          if (roles.some((role) => role.includes(normalizedQuery))) score += 25;
           if (prerequisites.some((value) => value.includes(normalizedQuery))) {
             score += 20;
           }
           if (normalize(item.category).includes(normalizedQuery)) score += 10;
         }
 
-        score += getRoleWeight(item, query);
         score += getKindWeight(item, query);
 
         return { item, score };
       })
       .filter(({ item, score }) => {
-        const roleMatched =
-          selectedRole === "전체" || item.roleTargets.includes(selectedRole);
         const kindMatched =
           selectedKind === "전체" || item.kind === selectedKind;
 
-        if (!roleMatched || !kindMatched) {
+        if (!kindMatched) {
           return false;
         }
 
@@ -260,7 +225,7 @@ export function SearchModal({
         return left.item.order - right.item.order;
       })
       .map(({ item }) => item);
-  }, [items, query, selectedKind, selectedRole]);
+  }, [items, query, selectedKind]);
 
   const starterItems = React.useMemo(
     () => getStarterItems(filteredItems),
@@ -311,21 +276,6 @@ export function SearchModal({
         </div>
 
         <div className="space-y-3 border-b border-border/70 px-4 py-3">
-          <div className="flex flex-wrap gap-2">
-            {(["전체", "기획자", "디자이너", "주니어 개발자"] as const).map(
-              (role) => (
-                <Button
-                  key={role}
-                  type="button"
-                  variant={selectedRole === role ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedRole(role)}
-                >
-                  {role}
-                </Button>
-              ),
-            )}
-          </div>
           <div className="flex flex-wrap gap-2">
             {(
               [
@@ -428,7 +378,7 @@ function SearchItem({
 }) {
   return (
     <Command.Item
-      value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.roleTargets.join(" ")} ${item.updatedAt}`}
+      value={`${item.title} ${item.description} ${item.category} ${item.priority} ${item.tags.join(" ")} ${item.aliases.join(" ")} ${item.prerequisites.join(" ")} ${item.updatedAt}`}
       onSelect={onSelect}
       className={cn(
         "flex cursor-pointer items-start gap-3 rounded-2xl px-3 py-3 text-sm outline-none",
@@ -460,8 +410,6 @@ function SearchItem({
         <p className="line-clamp-2 text-muted-foreground">{item.description}</p>
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span>{item.categoryLabel}</span>
-          <span>·</span>
-          <span>대상 {item.roleTargets.join(", ")}</span>
           <span>·</span>
           <span className="inline-flex items-center gap-1">
             <CalendarDays className="size-3" />

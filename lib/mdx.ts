@@ -13,7 +13,7 @@ import { getFeatureGuides } from "@/lib/guides";
 import { getComparisonHubItems, getScenarioHubItems } from "@/lib/hubs";
 import { getOperationGuides } from "@/lib/operations";
 import { getPlaybooks } from "@/lib/playbooks";
-import { ROLE_PATHS, SITE_UPDATED_AT } from "@/lib/site-config";
+import { SITE_UPDATED_AT } from "@/lib/site-config";
 import { getWorkouts } from "@/lib/workouts";
 
 export type DocFrontmatter = {
@@ -25,7 +25,6 @@ export type DocFrontmatter = {
 
 export type DocPriority = "P1" | "P2" | "P3";
 export type DocDifficulty = "입문" | "중급" | "심화";
-export type DocRoleTarget = "기획자" | "디자이너" | "주니어 개발자";
 
 export type InventoryMeta = {
   priority: DocPriority;
@@ -45,7 +44,6 @@ export type DocEntry = DocFrontmatter &
     href: string;
     order: number;
     difficulty: DocDifficulty;
-    roleTargets: DocRoleTarget[];
     relatedSlugs: string[];
     updatedAt: string;
     readingTime: number;
@@ -62,7 +60,6 @@ export type SearchRecord = {
   prerequisites: string[];
   order: number;
   difficulty: DocDifficulty;
-  roleTargets: DocRoleTarget[];
   aliases: string[];
   updatedAt: string;
   kind:
@@ -149,14 +146,6 @@ function priorityToDifficulty(priority: DocPriority): DocDifficulty {
   if (priority === "P1") return "입문";
   if (priority === "P2") return "중급";
   return "심화";
-}
-
-function getRoleTargets(slug: string): DocRoleTarget[] {
-  const targets = ROLE_PATHS.filter((pathItem) =>
-    pathItem.slugs.some((item) => item === slug),
-  ).map((pathItem) => pathItem.role) as DocRoleTarget[];
-
-  return targets.length > 0 ? targets : ["주니어 개발자"];
 }
 
 function parseDocFile(filePath: string) {
@@ -353,7 +342,6 @@ export function getAllDocsMeta(): DocEntry[] {
         order,
         ...inventoryMeta,
         difficulty: priorityToDifficulty(inventoryMeta.priority),
-        roleTargets: getRoleTargets(slug),
         relatedSlugs: [],
         updatedAt: SITE_UPDATED_AT,
         readingTime: estimateReadingTime(content),
@@ -442,7 +430,6 @@ export function getSearchIndex(): SearchRecord[] {
       prerequisites,
       order,
       difficulty,
-      roleTargets,
       aliases,
       updatedAt,
     }) => ({
@@ -455,7 +442,6 @@ export function getSearchIndex(): SearchRecord[] {
       prerequisites,
       order,
       difficulty,
-      roleTargets,
       aliases,
       updatedAt,
       kind: "docs" as const,
@@ -467,17 +453,15 @@ export function getSearchIndex(): SearchRecord[] {
     title: playbook.title,
     description: playbook.summary,
     category: "playbooks",
-    tags: [playbook.role, playbook.level, "플레이북", "실전 시나리오"],
+    tags: [playbook.level, "플레이북", "실전 시나리오"],
     href: `/playbooks/${playbook.slug}`,
     priority: playbook.level === "입문" ? ("P1" as const) : ("P2" as const),
     prerequisites: playbook.docs,
     order: 10_000 + index,
     difficulty: playbook.level,
-    roleTargets: [playbook.role],
     aliases: [
       playbook.slug,
       ...playbook.docs,
-      playbook.role,
       "AI IDE",
       "작업 교과서",
       "실전 플레이북",
@@ -491,13 +475,12 @@ export function getSearchIndex(): SearchRecord[] {
     title: guide.title,
     description: guide.summary,
     category: "guides",
-    tags: [...guide.audience, guide.level, "기능 가이드"],
+    tags: [guide.level, "기능 가이드"],
     href: `/guides/${guide.slug}`,
     priority: guide.level === "입문" ? ("P1" as const) : ("P2" as const),
     prerequisites: guide.docs,
     order: 20_000 + index,
     difficulty: guide.level,
-    roleTargets: guide.audience,
     aliases: [
       guide.slug,
       ...guide.docs,
@@ -514,20 +497,18 @@ export function getSearchIndex(): SearchRecord[] {
     title: casebook.title,
     description: casebook.summary,
     category: "casebooks",
-    tags: [...casebook.roles, casebook.level, "사례집", "완성형 사례", "프로젝트 사례"],
+    tags: [casebook.level, "사례집", "완성형 사례", "프로젝트 사례"],
     href: `/casebooks/${casebook.slug}`,
     priority: casebook.level === "입문" ? ("P1" as const) : ("P2" as const),
     prerequisites: [...casebook.docs, ...casebook.playbooks, ...casebook.guides],
     order: 30_000 + index,
     difficulty: casebook.level,
-    roleTargets: casebook.roles,
     aliases: [
       casebook.slug,
       ...casebook.docs,
       ...casebook.playbooks,
       ...casebook.guides,
       ...(casebook.workouts ?? []),
-      ...casebook.roles,
       "사례집",
       "완성형 사례",
       "프로젝트 사례",
@@ -541,7 +522,7 @@ export function getSearchIndex(): SearchRecord[] {
     title: workout.title,
     description: workout.problem,
     category: "workouts",
-    tags: [workout.role, workout.level, "실습", "훈련"],
+    tags: [workout.level, "실습", "훈련"],
     href: `/workouts/${workout.slug}`,
     priority: workout.level === "입문" ? ("P1" as const) : ("P2" as const),
     prerequisites: [
@@ -552,13 +533,11 @@ export function getSearchIndex(): SearchRecord[] {
     ],
     order: 40_000 + index,
     difficulty: workout.level,
-    roleTargets: [workout.role],
     aliases: [
       workout.slug,
       ...workout.docs,
       ...workout.guides,
       ...workout.casebooks,
-      workout.role,
       "실습",
       "훈련",
       "요청 개선",
@@ -572,7 +551,7 @@ export function getSearchIndex(): SearchRecord[] {
     title: guide.title,
     description: guide.summary,
     category: "operations",
-    tags: [...guide.roleTargets, guide.level, "운영 가이드", "AI IDE 운영"],
+    tags: [guide.level, "운영 가이드", "AI IDE 운영"],
     href: `/operations/${guide.slug}`,
     priority: guide.level === "입문" ? ("P1" as const) : ("P2" as const),
     prerequisites: [
@@ -584,7 +563,6 @@ export function getSearchIndex(): SearchRecord[] {
     ],
     order: 45_000 + index,
     difficulty: guide.level,
-    roleTargets: guide.roleTargets,
     aliases: [
       guide.slug,
       ...guide.docs,
@@ -613,7 +591,6 @@ export function getSearchIndex(): SearchRecord[] {
     prerequisites: item.docs,
     order: 50_000 + index,
     difficulty: "입문" as const,
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"] as DocRoleTarget[],
     aliases: [item.slug, ...item.docs, "비교", "헷갈리는 개념", item.confusedWith],
     updatedAt: SITE_UPDATED_AT,
     kind: "hubs" as const,
@@ -635,7 +612,6 @@ export function getSearchIndex(): SearchRecord[] {
     ],
     order: 60_000 + index,
     difficulty: "입문" as const,
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"] as DocRoleTarget[],
     aliases: [
       item.slug,
       ...item.docs,

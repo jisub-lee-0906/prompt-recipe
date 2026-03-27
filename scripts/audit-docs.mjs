@@ -186,6 +186,7 @@ for (const dataset of datasetChecks) {
 }
 
 const routeChecks = [
+  "app/docs/page.tsx",
   "app/workouts/page.tsx",
   "app/workouts/[slug]/page.tsx",
   "app/operations/page.tsx",

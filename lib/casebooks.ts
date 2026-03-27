@@ -1,12 +1,10 @@
 export type CasebookLevel = "입문" | "중급";
-export type CasebookRole = "기획자" | "디자이너" | "주니어 개발자";
 
 export type Casebook = {
   slug: string;
   title: string;
   summary: string;
   level: CasebookLevel;
-  roles: CasebookRole[];
   goal: string;
   situation: string;
   deliverables: string[];
@@ -36,7 +34,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "회원가입 화면, 입력 검증, 성공과 실패 상태, 가입 후 다음 행동까지 한 번에 설계하는 사례집입니다.",
     level: "입문",
-    roles: ["기획자", "디자이너", "주니어 개발자"],
     goal:
       "회원가입을 단일 폼이 아니라 화면, 상태, 검증, 결과 안내까지 포함한 완성형 기능으로 요청할 수 있게 만듭니다.",
     situation:
@@ -95,9 +92,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["auth-project", "onboarding-project"],
     workouts: ["signup-request-fix", "form-submit-finish"],
     roleNotes: [
-      "기획자는 가입 완료 후 무엇을 하게 할지까지 정의해야 합니다.",
-      "디자이너는 오류 상태와 성공 상태를 같은 밀도로 설계해야 합니다.",
-      "주니어 개발자는 폼 검증과 응답 상태를 같은 기능 단위로 다뤄야 합니다.",
+      "요구사항 단계에서는 가입 완료 후 무엇을 하게 할지까지 정의해야 합니다.",
+      "화면 설계 단계에서는 오류 상태와 성공 상태를 같은 밀도로 다뤄야 합니다.",
+      "구현 단계에서는 폼 검증과 응답 상태를 같은 기능 단위로 다뤄야 합니다.",
     ],
     operationsNotes: [
       "가입 성공 이벤트와 실패 이벤트를 구분해 추적할 수 있게 요청하면 운영 분석이 쉬워집니다.",
@@ -110,7 +107,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "로그인 화면, 보호된 페이지, 세션 만료, 권한 부족까지 포함한 인증 기능 사례집입니다.",
     level: "입문",
-    roles: ["기획자", "주니어 개발자"],
     goal:
       "인증을 로그인 화면 하나가 아니라 접근 제어 흐름 전체로 요청할 수 있게 만듭니다.",
     situation:
@@ -169,8 +165,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["settings-permission-project", "approval-project"],
     workouts: ["auth-edge-state", "api-integration-request"],
     roleNotes: [
-      "기획자는 비로그인, 만료, 권한 부족을 하나로 뭉개지 말고 구분해야 합니다.",
-      "주니어 개발자는 세션 저장 방식과 라우트 보호 방식이 분리되어 있음을 이해해야 합니다.",
+      "요구사항 단계에서는 비로그인, 만료, 권한 부족을 하나로 뭉개지 말고 구분해야 합니다.",
+      "구현 단계에서는 세션 저장 방식과 라우트 보호 방식이 분리되어 있음을 이해해야 합니다.",
     ],
     operationsNotes: [
       "로그인 실패 횟수와 세션 만료 빈도를 따로 보면 실제 운영 이슈를 더 빨리 찾을 수 있습니다.",
@@ -183,7 +179,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "검색 입력, 검색 API, 결과 상태, 정렬과 빈 결과까지 포함한 검색 기능 사례집입니다.",
     level: "입문",
-    roles: ["기획자", "주니어 개발자"],
     goal:
       "검색 기능을 입력창 하나가 아니라 결과 경험 전체로 설계하고 요청할 수 있게 만듭니다.",
     situation:
@@ -241,8 +236,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["list-performance-project", "analytics-dashboard-project"],
     workouts: ["search-performance-request", "api-requirements-spec"],
     roleNotes: [
-      "기획자는 무엇을 검색하는지와 어떤 결과가 나와야 하는지를 같이 적어야 합니다.",
-      "주니어 개발자는 검색 API, 정렬, 디바운스가 서로 연결된다는 점을 요청에 포함해야 합니다.",
+      "요구사항 단계에서는 무엇을 검색하는지와 어떤 결과가 나와야 하는지를 같이 적어야 합니다.",
+      "구현 단계에서는 검색 API, 정렬, 디바운스가 서로 연결된다는 점을 요청에 포함해야 합니다.",
     ],
     operationsNotes: [
       "검색어 입력 이벤트와 결과 클릭 이벤트를 함께 추적하면 실제 검색 품질을 개선하기 쉽습니다.",
@@ -255,7 +250,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "승인 대기 목록, 상세 확인, 승인/반려 액션, 처리 결과 반영까지 다루는 관리자 사례집입니다.",
     level: "중급",
-    roles: ["기획자", "디자이너", "주니어 개발자"],
     goal:
       "관리자 승인 화면을 목록과 버튼이 아니라 검토 흐름 전체로 요청할 수 있게 만듭니다.",
     situation:
@@ -314,9 +308,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["settings-permission-project", "analytics-dashboard-project"],
     workouts: ["approval-flow-clarify", "success-criteria-writing"],
     roleNotes: [
-      "기획자는 승인 근거와 반려 사유를 분리해 정의해야 합니다.",
-      "디자이너는 목록과 상세의 정보 밀도를 다르게 설계해야 합니다.",
-      "주니어 개발자는 처리 결과가 즉시 반영되는 상태 동기화까지 포함해 요청해야 합니다.",
+      "요구사항 단계에서는 승인 근거와 반려 사유를 분리해 정의해야 합니다.",
+      "화면 설계 단계에서는 목록과 상세의 정보 밀도를 다르게 다뤄야 합니다.",
+      "구현 단계에서는 처리 결과가 즉시 반영되는 상태 동기화까지 포함해 요청해야 합니다.",
     ],
     operationsNotes: [
       "승인 완료, 반려 완료, 반려 사유 작성 이벤트를 따로 보면 운영 효율을 분석하기 좋습니다.",
@@ -329,7 +323,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "주문 확인, 결제 수단 선택, 실패 복구, 완료 화면까지 포함한 결제 사례집입니다.",
     level: "중급",
-    roles: ["기획자", "디자이너", "주니어 개발자"],
     goal:
       "결제 전환을 화면 하나가 아니라 전환율과 오류 복구까지 포함한 흐름으로 요청할 수 있게 합니다.",
     situation:
@@ -388,9 +381,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["notification-project", "analytics-dashboard-project"],
     workouts: ["success-criteria-writing", "landing-hero-brief"],
     roleNotes: [
-      "기획자는 실패 복구와 완료 후 흐름을 반드시 함께 적어야 합니다.",
-      "디자이너는 금액, CTA, 신뢰 문구의 우선순위를 화면에서 분명히 보여줘야 합니다.",
-      "주니어 개발자는 중복 제출과 결제 오류 상태를 각각 분리해 요청해야 합니다.",
+      "요구사항 단계에서는 실패 복구와 완료 후 흐름을 반드시 함께 적어야 합니다.",
+      "화면 설계 단계에서는 금액, CTA, 신뢰 문구의 우선순위를 분명히 보여줘야 합니다.",
+      "구현 단계에서는 중복 제출과 결제 오류 상태를 각각 분리해 요청해야 합니다.",
     ],
     operationsNotes: [
       "결제 시작, 결제 실패, 결제 완료 이벤트를 구분하면 전환율 분석이 쉬워집니다.",
@@ -403,7 +396,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "파일 선택, 업로드 진행 상태, 미리보기, 실패 재시도까지 포함한 업로드 사례집입니다.",
     level: "입문",
-    roles: ["디자이너", "주니어 개발자"],
     goal:
       "파일 업로드를 단순 input이 아니라 진행 상태와 실패 복구가 있는 경험으로 요청할 수 있게 만듭니다.",
     situation:
@@ -461,8 +453,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["profile-settings-project", "notification-project"],
     workouts: ["upload-experience-upgrade", "form-submit-finish"],
     roleNotes: [
-      "디자이너는 선택 전과 업로드 후 화면 차이를 명확히 설계해야 합니다.",
-      "주니어 개발자는 파일 형식 검증과 업로드 상태 동기화를 같이 요청해야 합니다.",
+      "화면 설계 단계에서는 선택 전과 업로드 후 화면 차이를 명확히 다뤄야 합니다.",
+      "구현 단계에서는 파일 형식 검증과 업로드 상태 동기화를 같이 요청해야 합니다.",
     ],
     operationsNotes: [
       "업로드 실패 유형을 나누어 추적하면 실제 운영 장애를 더 빠르게 찾을 수 있습니다.",
@@ -475,7 +467,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "프로필 정보 수정, 비밀번호 변경, 저장 상태, 변경 성공 피드백까지 포함한 설정 사례집입니다.",
     level: "입문",
-    roles: ["기획자", "주니어 개발자"],
     goal:
       "프로필 설정을 작은 폼이 아니라 계정 관리 경험 전체로 요청할 수 있게 합니다.",
     situation:
@@ -526,9 +517,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["settings-permission-project", "notification-project"],
     workouts: ["form-submit-finish"],
     roleNotes: [
-      "기획자는 어떤 정보가 즉시 반영되는지, 어떤 정보는 재로그인이 필요한지 구분해야 합니다.",
-      "주니어 개발자는 프로필 수정과 비밀번호 변경을 같은 저장 액션으로 뭉개지 말고 별도 흐름으로 다뤄야 합니다.",
-      "디자이너가 함께 보는 경우에는 저장 성공과 실패 피드백의 밀도를 맞추고, 민감한 변경에 더 강한 안내 문구를 배치해야 합니다.",
+      "요구사항 단계에서는 어떤 정보가 즉시 반영되는지, 어떤 정보는 재로그인이 필요한지 구분해야 합니다.",
+      "구현 단계에서는 프로필 수정과 비밀번호 변경을 같은 저장 액션으로 뭉개지 말고 별도 흐름으로 다뤄야 합니다.",
+      "화면 설계 단계에서는 저장 성공과 실패 피드백의 밀도를 맞추고, 민감한 변경에 더 강한 안내 문구를 배치해야 합니다.",
     ],
     operationsNotes: [
       "프로필 변경과 비밀번호 변경 이벤트를 분리해 추적하면 보안 운영에 도움이 됩니다.",
@@ -543,7 +534,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "알림 목록, 읽음 처리, 우선순위, 빈 상태까지 포함한 알림 경험 사례집입니다.",
     level: "입문",
-    roles: ["디자이너", "주니어 개발자"],
     goal:
       "알림을 단순 토스트가 아니라 장기 보관과 읽음 상태가 있는 기능으로 요청할 수 있게 만듭니다.",
     situation:
@@ -594,9 +584,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["analytics-dashboard-project"],
     workouts: ["microcopy-improve"],
     roleNotes: [
-      "디자이너는 정보 우선순위와 읽음 상태 표현을 먼저 잡아야 합니다.",
-      "주니어 개발자는 목록 표시와 읽음 처리 요청을 별개로 보지 말고 상태 동기화까지 함께 요청해야 합니다.",
-      "기획자는 어떤 이벤트가 즉시 알림이고 어떤 이벤트가 기록형 알림인지 구분하지 않으면 알림 체계가 쉽게 과밀해질 수 있습니다.",
+      "화면 설계 단계에서는 정보 우선순위와 읽음 상태 표현을 먼저 잡아야 합니다.",
+      "구현 단계에서는 목록 표시와 읽음 처리 요청을 별개로 보지 말고 상태 동기화까지 함께 요청해야 합니다.",
+      "요구사항 단계에서는 어떤 이벤트가 즉시 알림이고 어떤 이벤트가 기록형 알림인지 구분하지 않으면 알림 체계가 쉽게 과밀해질 수 있습니다.",
     ],
     operationsNotes: [
       "알림 클릭률과 전체 읽음 처리율을 같이 보면 실제 유용성을 판단하기 쉽습니다.",
@@ -611,7 +601,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "첫 사용자의 초기 학습 흐름, 툴팁, 체크리스트, 시작 CTA까지 포함한 온보딩 사례집입니다.",
     level: "입문",
-    roles: ["기획자", "디자이너"],
     goal:
       "온보딩을 예쁜 화면이 아니라 사용자가 첫 행동을 하게 만드는 흐름으로 요청할 수 있게 합니다.",
     situation:
@@ -662,8 +651,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["signup-project"],
     workouts: ["landing-hero-brief", "state-system-request"],
     roleNotes: [
-      "기획자는 온보딩 성공 기준을, 디자이너는 안내 밀도를 먼저 정의해야 합니다.",
-      "주니어 개발자가 구현에 참여한다면 건너뛰기, 다시 보기, 완료 상태 저장을 각각 다른 흐름으로 다뤄야 합니다.",
+      "요구사항 단계에서는 온보딩 성공 기준을 먼저 정해야 하고, 화면 설계 단계에서는 안내 밀도를 조절해야 합니다.",
+      "구현 단계에서는 건너뛰기, 다시 보기, 완료 상태 저장을 각각 다른 흐름으로 다뤄야 합니다.",
     ],
     operationsNotes: [
       "온보딩 완료율과 첫 행동 전환율을 같이 보면 온보딩 품질을 판단하기 좋습니다.",
@@ -677,7 +666,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "핵심 지표 카드, 필터, 차트, 기간 선택, 빈 상태까지 포함한 분석 대시보드 사례집입니다.",
     level: "중급",
-    roles: ["기획자", "디자이너", "주니어 개발자"],
     goal:
       "대시보드를 예쁜 카드 모음이 아니라 KPI와 탐색 흐름이 있는 제품 화면으로 요청할 수 있게 합니다.",
     situation:
@@ -734,8 +722,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["list-performance-project"],
     workouts: ["success-criteria-writing", "api-requirements-spec"],
     roleNotes: [
-      "기획자는 지표 의미와 성공 기준을 먼저 써야 하고, 디자이너는 정보 밀도를 조절해야 합니다.",
-      "주니어 개발자가 구현한다면 필터, 기간, 차트 상태, 빈 상태를 같은 데이터 계약 안에서 설명해야 결과가 안정적입니다.",
+      "요구사항 단계에서는 지표 의미와 성공 기준을 먼저 써야 하고, 화면 설계 단계에서는 정보 밀도를 조절해야 합니다.",
+      "구현 단계에서는 필터, 기간, 차트 상태, 빈 상태를 같은 데이터 계약 안에서 설명해야 결과가 안정적입니다.",
     ],
     operationsNotes: [
       "지표 카드 클릭, 필터 변경, 차트 세그먼트 변경 이벤트를 추적하면 실제 사용 패턴을 이해하기 좋습니다.",
@@ -749,7 +737,6 @@ const CASEBOOKS: Casebook[] = [
     summary:
       "대량 목록, 필터, 정렬, 무한 스크롤 또는 페이지네이션, 성능 대응을 다루는 사례집입니다.",
     level: "중급",
-    roles: ["기획자", "주니어 개발자"],
     goal:
       "긴 목록 화면을 단순 렌더링이 아니라 성능과 탐색 경험이 함께 있는 기능으로 요청할 수 있게 합니다.",
     situation:
@@ -800,8 +787,8 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["analytics-dashboard-project"],
     workouts: ["search-performance-request"],
     roleNotes: [
-      "기획자는 탐색 방식 선택 이유를 설명해야 하고, 주니어 개발자는 렌더링 비용을 줄이는 조건을 요청에 넣어야 합니다.",
-      "디자이너가 참여한다면 긴 목록에서도 중요한 정보가 먼저 보이도록 카드와 행의 정보 밀도를 조정해야 합니다.",
+      "요구사항 단계에서는 탐색 방식 선택 이유를 설명해야 하고, 구현 단계에서는 렌더링 비용을 줄이는 조건을 요청에 넣어야 합니다.",
+      "화면 설계 단계에서는 긴 목록에서도 중요한 정보가 먼저 보이도록 카드와 행의 정보 밀도를 조정해야 합니다.",
     ],
     operationsNotes: [
       "목록 스크롤 깊이, 필터 사용률, 검색 입력 빈도를 보면 실제 탐색 패턴을 판단할 수 있습니다.",
@@ -813,9 +800,8 @@ const CASEBOOKS: Casebook[] = [
     slug: "settings-permission-project",
     title: "설정·권한 관리 사례",
     summary:
-      "설정 메뉴 구조, 역할별 권한, 접근 제한, 변경 이력까지 포함한 설정/권한 사례집입니다.",
+      "설정 메뉴 구조, 권한 그룹별 접근 제어, 접근 제한, 변경 이력까지 포함한 설정/권한 사례집입니다.",
     level: "중급",
-    roles: ["기획자", "주니어 개발자"],
     goal:
       "설정 화면과 권한 정책을 같이 설명하고 요청할 수 있게 만듭니다.",
     situation:
@@ -847,17 +833,17 @@ const CASEBOOKS: Casebook[] = [
     playbooks: ["planner-admin-workflow", "auth-flow-playbook"],
     guides: ["profile-settings-feature", "auth-feature"],
     quickPrompt:
-      "설정과 권한 관리 기능을 만들어줘. 설정 메뉴 구조, 역할별 권한, 위험 변경 확인 흐름을 포함해줘.",
+      "설정과 권한 관리 기능을 만들어줘. 설정 메뉴 구조, 권한 그룹별 접근 제어, 위험 변경 확인 흐름을 포함해줘.",
     detailedPrompt: `설정과 권한 관리 기능을 만들어줘.
 
 - 설정 메뉴는 계정, 팀, 권한처럼 논리적으로 묶어줘
-- 역할에 따라 보이는 메뉴와 가능한 액션이 달라지게 해줘
+- 권한 그룹에 따라 보이는 메뉴와 가능한 액션이 달라지게 해줘
 - 위험한 변경은 확인 모달과 되돌리기 안내를 포함해줘
 - 권한이 없는 사용자는 접근 불가 이유를 이해할 수 있어야 해
 - 운영자를 위해 변경 이력이나 최근 수정 정보도 고려해줘`,
     commonMistake: "설정 페이지랑 권한만 넣어줘.",
     improvedRequest:
-      "설정 정보 구조, 역할별 권한, 위험 변경 보호, 접근 불가 안내까지 포함한 관리 기능을 만들어줘.",
+      "설정 정보 구조, 권한 그룹별 접근 제어, 위험 변경 보호, 접근 불가 안내까지 포함한 관리 기능을 만들어줘.",
     acceptanceChecklist: [
       "권한에 따라 보이는 메뉴가 달라진다.",
       "위험한 변경 전에 확인 단계가 있다.",
@@ -866,9 +852,9 @@ const CASEBOOKS: Casebook[] = [
     nextCasebooks: ["approval-project", "auth-project"],
     workouts: ["api-requirements-spec", "auth-edge-state"],
     roleNotes: [
-      "기획자는 메뉴 구조와 권한 구조를 따로 정의해야 합니다.",
-      "주니어 개발자는 화면 접근 제어와 액션 가능 여부를 같은 규칙으로 취급하지 말고 분리해서 구현 요청을 해야 합니다.",
-      "디자이너가 관여한다면 위험 설정과 일반 설정의 시각적 무게를 다르게 설계해야 실수 방지 효과가 커집니다.",
+      "요구사항 단계에서는 메뉴 구조와 권한 구조를 따로 정의해야 합니다.",
+      "구현 단계에서는 화면 접근 제어와 액션 가능 여부를 같은 규칙으로 취급하지 말고 분리해서 구현 요청을 해야 합니다.",
+      "화면 설계 단계에서는 위험 설정과 일반 설정의 시각적 무게를 다르게 설계해야 실수 방지 효과가 커집니다.",
     ],
     operationsNotes: [
       "권한 변경 이벤트와 위험 설정 변경 이벤트를 분리해 추적하는 것이 좋습니다.",

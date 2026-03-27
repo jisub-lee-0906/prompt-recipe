@@ -152,13 +152,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     <Badge variant="outline">선행 개념 없음</Badge>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {doc.roleTargets.map((role) => (
-                    <Badge key={role} variant="secondary">
-                      {role}
-                    </Badge>
-                  ))}
-                </div>
               </CardContent>
             </Card>
           </Link>

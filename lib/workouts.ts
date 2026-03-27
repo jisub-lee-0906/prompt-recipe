@@ -1,10 +1,8 @@
-export type WorkoutRole = "기획자" | "디자이너" | "주니어 개발자";
 export type WorkoutLevel = "입문" | "중급";
 
 export type Workout = {
   slug: string;
   title: string;
-  role: WorkoutRole;
   level: WorkoutLevel;
   problem: string;
   badPrompt: string;
@@ -23,7 +21,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "signup-request-fix",
     title: "회원가입 요구사항 개선 실습",
-    role: "기획자",
     level: "입문",
     problem:
       "회원가입 기능을 요청해야 하는데 요구사항이 너무 짧고 모호합니다.",
@@ -48,7 +45,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "approval-flow-clarify",
     title: "관리자 승인 흐름 명확화 실습",
-    role: "기획자",
     level: "중급",
     problem:
       "관리자 승인 기능을 요청했지만 처리 흐름과 반려 조건이 빠져 있습니다.",
@@ -72,7 +68,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "success-criteria-writing",
     title: "성공 기준 쓰기 실습",
-    role: "기획자",
     level: "입문",
     problem:
       "기능 설명은 있지만 무엇을 성공이라고 볼지 기준이 없습니다.",
@@ -96,7 +91,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "api-requirements-spec",
     title: "API 요구사항 구체화 실습",
-    role: "기획자",
     level: "중급",
     problem:
       "백엔드가 필요한 기능인데 어떤 요청과 응답이 필요한지 설명이 부족합니다.",
@@ -119,10 +113,9 @@ const WORKOUTS: Workout[] = [
   {
     slug: "state-system-request",
     title: "상태 시스템 요청 고도화 실습",
-    role: "디자이너",
     level: "입문",
     problem:
-      "디자이너가 상태 표현을 요청했지만 정상 상태만 설명하고 있습니다.",
+      "상태 표현을 요청했지만 정상 상태만 설명하고 있습니다.",
     badPrompt: "알림 요소들 정리해줘.",
     targetOutcome:
       "기본, 로딩, 성공, 실패, 빈 상태까지 포함하는 상태 시스템 요청으로 바꾸는 것이 목표입니다.",
@@ -142,7 +135,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "microcopy-improve",
     title: "마이크로카피 개선 실습",
-    role: "디자이너",
     level: "입문",
     problem:
       "화면은 보이지만 버튼과 안내 문구가 모호합니다.",
@@ -165,7 +157,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "landing-hero-brief",
     title: "랜딩 히어로 요청 개선 실습",
-    role: "디자이너",
     level: "입문",
     problem:
       "랜딩 첫 화면을 요청했지만 메시지 우선순위와 CTA가 빠져 있습니다.",
@@ -188,7 +179,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "upload-experience-upgrade",
     title: "업로드 경험 보강 실습",
-    role: "디자이너",
     level: "중급",
     problem:
       "업로드 기능을 요청했지만 실패와 진행 상태가 빠져 있습니다.",
@@ -211,7 +201,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "api-integration-request",
     title: "API 연동 요청 구체화 실습",
-    role: "주니어 개발자",
     level: "입문",
     problem:
       "프론트 구현 요청인데 API 응답 처리와 상태가 빠져 있습니다.",
@@ -234,7 +223,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "auth-edge-state",
     title: "인증 예외 상태 추가 실습",
-    role: "주니어 개발자",
     level: "중급",
     problem:
       "로그인 기능은 구현했지만 세션 만료와 권한 부족이 빠져 있습니다.",
@@ -257,7 +245,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "search-performance-request",
     title: "검색 성능 요구 추가 실습",
-    role: "주니어 개발자",
     level: "중급",
     problem:
       "검색 기능을 만들었지만 입력 최적화와 성능 조건이 빠져 있습니다.",
@@ -280,7 +267,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "form-submit-finish",
     title: "폼 제출 흐름 완성 실습",
-    role: "주니어 개발자",
     level: "입문",
     problem:
       "폼은 보이지만 제출 이후 상태와 완료 흐름이 빠져 있습니다.",
@@ -303,7 +289,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "codebase-reading-request",
     title: "코드베이스 먼저 읽기 실습",
-    role: "주니어 개발자",
     level: "입문",
     problem:
       "기능 수정 요청을 해야 하는데 현재 코드 구조를 읽지 않고 바로 구현부터 시키려 합니다.",
@@ -327,7 +312,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "scope-control-request",
     title: "범위 통제 요청 실습",
-    role: "디자이너",
     level: "중급",
     problem:
       "AI가 요구하지 않은 구조 변경까지 하며 작업 범위를 넓히는 상황인데, 이를 제어하는 요청이 부족합니다.",
@@ -351,7 +335,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "verification-loop-request",
     title: "검증 루프 요청 실습",
-    role: "기획자",
     level: "중급",
     problem:
       "구현이 끝났다고 하지만 실제로는 어떤 상태를 확인했고 무엇이 미검증인지 알 수 없습니다.",
@@ -375,7 +358,6 @@ const WORKOUTS: Workout[] = [
   {
     slug: "review-findings-request",
     title: "리뷰 관점 재지시 실습",
-    role: "주니어 개발자",
     level: "중급",
     problem:
       "AI 결과물이 그럴듯해 보여도 요구사항 누락과 회귀 위험을 제대로 짚지 못하고 있습니다.",
@@ -416,13 +398,29 @@ export function getRelatedWorkouts(slug: string, limit = 3) {
     .map((nextSlug) => getWorkoutBySlug(nextSlug))
     .filter((item): item is Workout => item !== null);
 
-  const sameRole = WORKOUTS.filter(
-    (workout) => workout.role === current.role && workout.slug !== current.slug,
+  const relatedByReferences = WORKOUTS.filter(
+    (workout) =>
+      workout.slug !== current.slug &&
+      [
+        ...workout.docs,
+        ...workout.playbooks,
+        ...workout.guides,
+        ...(workout.operations ?? []),
+        ...workout.casebooks,
+      ].some((ref) =>
+        [
+          ...current.docs,
+          ...current.playbooks,
+          ...current.guides,
+          ...(current.operations ?? []),
+          ...current.casebooks,
+        ].includes(ref),
+      ),
   );
 
   const unique = new Map<string, Workout>();
 
-  for (const workout of [...explicit, ...sameRole]) {
+  for (const workout of [...explicit, ...relatedByReferences]) {
     if (!unique.has(workout.slug)) {
       unique.set(workout.slug, workout);
     }

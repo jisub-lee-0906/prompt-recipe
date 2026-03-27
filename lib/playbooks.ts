@@ -1,11 +1,9 @@
-export type PlaybookRole = "기획자" | "디자이너" | "주니어 개발자";
 export type PlaybookLevel = "입문" | "중급";
 
 export type Playbook = {
   slug: string;
   title: string;
   summary: string;
-  role: PlaybookRole;
   level: PlaybookLevel;
   outcome: string;
   situation: string;
@@ -20,9 +18,8 @@ export type Playbook = {
 export const PLAYBOOKS: Playbook[] = [
   {
     slug: "planner-signup-page",
-    title: "기획자가 회원가입 페이지를 AI IDE에 시키는 법",
+    title: "회원가입 페이지를 AI IDE에 시키는 법",
     summary: "회원가입 페이지를 화면이 아니라 기능 단위 요구사항으로 바꾸는 플레이북입니다.",
-    role: "기획자",
     level: "입문",
     outcome: "회원가입 요구사항을 검증과 상태까지 포함한 구현 요청으로 바꿉니다.",
     situation:
@@ -43,9 +40,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "planner-dashboard-prd",
-    title: "기획자가 대시보드 PRD를 AI IDE에 전달하는 법",
+    title: "대시보드 PRD를 AI IDE에 전달하는 법",
     summary: "대시보드 화면을 KPI와 운영 목적 중심으로 설명하는 플레이북입니다.",
-    role: "기획자",
     level: "중급",
     outcome: "대시보드 요구사항을 카드 나열이 아니라 운영 목적 중심으로 바꿉니다.",
     situation: "대시보드가 필요한데 어떤 지표를 먼저 보여줘야 하는지와 화면 구조가 모호한 상황입니다.",
@@ -64,9 +60,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "planner-admin-workflow",
-    title: "기획자가 관리자 승인 워크플로를 AI IDE에 시키는 법",
+    title: "관리자 승인 워크플로를 AI IDE에 시키는 법",
     summary: "승인·반려 흐름을 목록과 상세, 처리 결과까지 연결해 설명하는 플레이북입니다.",
-    role: "기획자",
     level: "중급",
     outcome: "운영 승인 흐름을 단계별 처리 경험까지 포함한 요청으로 바꿉니다.",
     situation: "관리자가 요청 목록을 보고 승인하거나 반려해야 하는데, 처리 흐름을 어떻게 나눠 설명할지 모호한 상황입니다.",
@@ -85,9 +80,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "planner-checkout-flow",
-    title: "기획자가 결제 전환 흐름을 AI IDE에 시키는 법",
+    title: "결제 전환 흐름을 AI IDE에 시키는 법",
     summary: "결제 화면을 전환 흐름과 실패 복구까지 포함한 기능으로 설명하는 플레이북입니다.",
-    role: "기획자",
     level: "중급",
     outcome: "결제 기능을 화면 단위가 아니라 전환 경험 중심 요구사항으로 바꿉니다.",
     situation: "결제 기능을 만들어야 하는데 결제 성공만이 아니라 실패, 재시도, 완료 후 행동까지 포함해야 하는 상황입니다.",
@@ -106,9 +100,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "designer-dashboard-polish",
-    title: "디자이너가 대시보드 화면 개선을 AI IDE에 시키는 법",
+    title: "대시보드 화면 개선을 AI IDE에 시키는 법",
     summary: "복잡한 대시보드 화면을 읽기 쉬운 정보 구조로 바꾸는 플레이북입니다.",
-    role: "디자이너",
     level: "중급",
     outcome: "시각 개선 요청을 구조와 상태 중심 요청으로 바꿉니다.",
     situation: "기능은 동작하지만 정보 밀도가 높아 읽기 어렵고, 중요 지표가 잘 드러나지 않는 대시보드가 있는 상황입니다.",
@@ -127,9 +120,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "designer-state-system",
-    title: "디자이너가 상태 시스템을 AI IDE에 시키는 법",
+    title: "상태 시스템을 AI IDE에 시키는 법",
     summary: "정상 화면만이 아니라 빈 상태, 로딩, 에러 상태를 함께 요청하는 플레이북입니다.",
-    role: "디자이너",
     level: "입문",
     outcome: "상태별 UI를 하나의 시스템으로 묶어 요청합니다.",
     situation: "메인 화면은 있는데 빈 상태나 로딩, 에러 대응이 빠져 있어 제품 경험이 약한 상황입니다.",
@@ -148,9 +140,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "designer-landing-page-hero",
-    title: "디자이너가 랜딩 히어로 섹션을 AI IDE에 시키는 법",
+    title: "랜딩 히어로 섹션을 AI IDE에 시키는 법",
     summary: "첫 화면의 메시지와 CTA를 중심으로 히어로 섹션을 설계하는 플레이북입니다.",
-    role: "디자이너",
     level: "입문",
     outcome: "히어로 섹션을 시각 장식이 아니라 메시지와 전환 중심으로 요청합니다.",
     situation: "랜딩 페이지 첫 화면이 필요한데 브랜드 메시지와 CTA를 어떻게 잡아야 할지 모호한 상황입니다.",
@@ -169,9 +160,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "designer-admin-ia",
-    title: "디자이너가 관리자 정보 구조를 AI IDE에 시키는 법",
+    title: "관리자 정보 구조를 AI IDE에 시키는 법",
     summary: "관리자 화면의 정보 구조와 탐색 흐름을 정리하는 플레이북입니다.",
-    role: "디자이너",
     level: "중급",
     outcome: "관리자 화면을 정보 구조 중심으로 재설계하는 요청으로 바꿉니다.",
     situation: "관리자 화면의 메뉴와 섹션이 많아 어디서 무엇을 해야 하는지 헷갈리는 상황입니다.",
@@ -190,9 +180,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "junior-api-integration",
-    title: "주니어 개발자가 API 연동 화면을 AI IDE에 시키는 법",
+    title: "API 연동 화면을 AI IDE에 시키는 법",
     summary: "API 요청, 로딩, 에러, 빈 상태를 포함한 기본 연동 화면 요청 플레이북입니다.",
-    role: "주니어 개발자",
     level: "입문",
     outcome:
       "데이터 표시 화면을 성공 화면 하나가 아니라 로딩, 오류, 빈 상태까지 포함한 구현 요청으로 바꿉니다.",
@@ -214,9 +203,8 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "junior-form-submit-flow",
-    title: "주니어 개발자가 폼 제출 흐름을 AI IDE에 시키는 법",
+    title: "폼 제출 흐름을 AI IDE에 시키는 법",
     summary: "폼 입력과 검증, 제출, 성공과 실패 피드백을 완성형 흐름으로 요청하는 플레이북입니다.",
-    role: "주니어 개발자",
     level: "입문",
     outcome: "폼 기능을 입력창이 아닌 제출 흐름 전체로 요청합니다.",
     situation: "폼 UI는 만들 수 있는데 제출과 검증, 피드백을 어떤 구조로 설명할지 애매한 상황입니다.",
@@ -235,30 +223,28 @@ export const PLAYBOOKS: Playbook[] = [
   },
   {
     slug: "junior-auth-guard",
-    title: "주니어 개발자가 보호된 페이지를 AI IDE에 시키는 법",
+    title: "보호된 페이지를 AI IDE에 시키는 법",
     summary: "로그인 보호, 권한 확인, 리다이렉트와 접근 불가 처리를 포함한 플레이북입니다.",
-    role: "주니어 개발자",
     level: "중급",
     outcome: "보호된 페이지를 인증과 권한 흐름까지 포함해 요청합니다.",
     situation: "로그인 사용자가 아니면 볼 수 없는 페이지를 만들어야 하고, 권한 부족 처리도 필요한 상황입니다.",
     docs: ["auth-flow", "session", "token", "rbac", "permission-policy"],
     quickPrompt: "로그인한 사용자만 볼 수 있는 페이지를 만들어줘.",
     detailedPrompt:
-      "로그인한 사용자만 접근 가능한 페이지를 구현해줘. 비로그인 사용자는 로그인 페이지로 리다이렉트하고, 권한이 부족하면 접근 불가 화면을 보여줘. 세션 만료와 역할별 메뉴 노출 차이도 함께 정리해줘.",
+      "로그인한 사용자만 접근 가능한 페이지를 구현해줘. 비로그인 사용자는 로그인 페이지로 리다이렉트하고, 권한이 부족하면 접근 불가 화면을 보여줘. 세션 만료와 권한별 메뉴 노출 차이도 함께 정리해줘.",
     commonMistake: "로그인한 사용자만 볼 수 있게 해줘라고 해서 권한 부족 상태가 빠지는 경우입니다.",
     improvedRequest:
       "비로그인, 권한 부족, 세션 만료 상태를 모두 구분해서 요청합니다.",
     checklist: [
       "비로그인 리다이렉트가 있는가",
       "권한 부족 UI가 있는가",
-      "세션 만료 처리와 메뉴 차이가 포함되는가",
+      "세션 만료 처리와 권한별 메뉴 차이가 포함되는가",
     ],
   },
   {
     slug: "junior-list-performance",
-    title: "주니어 개발자가 긴 목록 성능을 AI IDE에 시키는 법",
+    title: "긴 목록 성능을 AI IDE에 시키는 법",
     summary: "무한 스크롤, 디바운스, 캐시, 스켈레톤을 묶어 긴 목록 성능을 개선하는 플레이북입니다.",
-    role: "주니어 개발자",
     level: "중급",
     outcome: "긴 목록 화면을 성능과 UX 관점에서 요청하는 방법을 익힙니다.",
     situation: "데이터가 많은 목록 화면이 느려지고, 검색과 추가 로딩 경험이 거칠어진 상황입니다.",
@@ -279,7 +265,6 @@ export const PLAYBOOKS: Playbook[] = [
     slug: "search-feature-playbook",
     title: "검색 기능 전체를 AI IDE에 단계적으로 시키는 법",
     summary: "검색 입력 UI, API, 결과 상태와 정렬 기준을 한 번에 묶는 플레이북입니다.",
-    role: "주니어 개발자",
     level: "중급",
     outcome: "검색 기능을 UI와 데이터 구조를 함께 고려한 요청으로 바꿉니다.",
     situation: "검색창은 필요하지만 실제 검색 결과 상태와 API 구조까지 함께 정리해야 하는 상황입니다.",
@@ -300,28 +285,26 @@ export const PLAYBOOKS: Playbook[] = [
     slug: "auth-flow-playbook",
     title: "로그인과 권한 흐름을 AI IDE에 시키는 법",
     summary: "로그인 성공 이후 예외 상태까지 포함한 인증 흐름 플레이북입니다.",
-    role: "기획자",
     level: "중급",
     outcome: "인증 기능을 예외 상태까지 포함한 제품 요구사항으로 바꿉니다.",
     situation: "로그인 기능이 필요한데 비로그인, 만료, 권한 부족까지 함께 설명해야 하는 상황입니다.",
     docs: ["auth-flow", "session", "token", "rbac", "permission-policy"],
     quickPrompt: "로그인 흐름과 보호된 페이지 접근 기능을 만들어줘.",
     detailedPrompt:
-      "로그인 화면, 보호된 페이지 접근, 세션 만료, 권한 부족 상태를 포함한 인증 흐름을 설계해줘. 비로그인 리다이렉트와 역할별 화면 차이도 포함해줘.",
+      "로그인 화면, 보호된 페이지 접근, 세션 만료, 권한 부족 상태를 포함한 인증 흐름을 설계해줘. 비로그인 리다이렉트와 권한별 화면 차이도 포함해줘.",
     commonMistake: "로그인 화면만 요청해 실제 서비스 흐름이 빠지는 경우입니다.",
     improvedRequest:
       "성공, 비로그인, 만료, 권한 부족 상태를 모두 나눠 요청합니다.",
     checklist: [
       "예외 상태가 분리되어 있는가",
       "보호된 페이지 접근 규칙이 있는가",
-      "역할별 차이가 포함되어 있는가",
+      "권한별 차이가 포함되어 있는가",
     ],
   },
   {
     slug: "admin-dashboard-playbook",
     title: "관리자 페이지를 AI IDE에 기능 묶음으로 시키는 법",
     summary: "필터, 정렬, 테이블, 상태 표현을 포함한 관리자 페이지 플레이북입니다.",
-    role: "디자이너",
     level: "중급",
     outcome: "관리자 페이지를 운영 흐름 중심 요청으로 바꿉니다.",
     situation: "관리자 목록 화면이 필요한데, 검색과 필터, 정렬, 상태 표현까지 함께 설계해야 하는 상황입니다.",
@@ -348,10 +331,6 @@ export function getPlaybookBySlug(slug: string) {
   return PLAYBOOKS.find((playbook) => playbook.slug === slug) ?? null;
 }
 
-export function getPlaybooksByRole(role: PlaybookRole) {
-  return PLAYBOOKS.filter((playbook) => playbook.role === role);
-}
-
 export function getRelatedPlaybooks(slug: string, limit = 3) {
   const current = getPlaybookBySlug(slug);
 
@@ -359,8 +338,8 @@ export function getRelatedPlaybooks(slug: string, limit = 3) {
     return [];
   }
 
-  const sameRole = PLAYBOOKS.filter(
-    (playbook) => playbook.slug !== slug && playbook.role === current.role,
+  const sameLevel = PLAYBOOKS.filter(
+    (playbook) => playbook.slug !== slug && playbook.level === current.level,
   );
   const overlappingDocs = PLAYBOOKS.filter(
     (playbook) =>
@@ -370,7 +349,7 @@ export function getRelatedPlaybooks(slug: string, limit = 3) {
 
   const unique = new Map<string, Playbook>();
 
-  for (const playbook of [...sameRole, ...overlappingDocs]) {
+  for (const playbook of [...sameLevel, ...overlappingDocs]) {
     if (!unique.has(playbook.slug)) {
       unique.set(playbook.slug, playbook);
     }

@@ -3,7 +3,6 @@ import { spawn } from "node:child_process";
 
 const routes = [
   "/",
-  "/tracks",
   "/playbooks",
   "/playbooks/planner-signup-page",
   "/guides",

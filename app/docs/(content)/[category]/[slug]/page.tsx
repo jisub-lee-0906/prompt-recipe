@@ -143,13 +143,6 @@ export default async function DocPage({ params }: DocPageProps) {
                   <Badge variant="secondary">선행 개념 없음</Badge>
                 )}
               </div>
-              <div className="flex flex-wrap gap-2">
-                {doc.roleTargets.map((role) => (
-                  <Badge key={role} variant="outline">
-                    대상 {role}
-                  </Badge>
-                ))}
-              </div>
             </div>
           </header>
 

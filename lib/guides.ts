@@ -1,5 +1,3 @@
-import type { PlaybookRole } from "@/lib/playbooks";
-
 export type FeatureGuideLevel = "입문" | "중급";
 
 export type FeatureGuide = {
@@ -8,7 +6,6 @@ export type FeatureGuide = {
   summary: string;
   level: FeatureGuideLevel;
   goal: string;
-  audience: PlaybookRole[];
   stages: string[];
   docs: string[];
   playbooks: string[];
@@ -26,7 +23,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "입력, 검증, 제출 상태, 성공과 실패 흐름을 한 번에 정리하는 가이드입니다.",
     level: "입문",
     goal: "회원가입을 화면, 상태, API까지 포함한 기능 단위로 요청합니다.",
-    audience: ["기획자", "디자이너", "주니어 개발자"],
     stages: [
       "가입 흐름에 꼭 필요한 입력 필드와 가입 직후 다음 행동까지 함께 정의합니다.",
       "필드별 검증 규칙과 에러 메시지를 단순 경고가 아니라 다음 행동을 안내하는 문장으로 정리합니다.",
@@ -56,8 +52,7 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "로그인, 보호된 페이지, 세션 만료, 권한 부족 상태를 함께 보는 가이드입니다.",
     level: "중급",
     goal: "인증 기능을 성공 흐름만이 아니라 예외 상태까지 포함한 요청으로 바꿉니다.",
-    audience: ["기획자", "주니어 개발자"],
-    stages: ["로그인 성공 흐름 정의", "비로그인과 만료 상태 정의", "권한 부족과 역할별 노출 규칙 정의"],
+    stages: ["로그인 성공 흐름 정의", "비로그인과 만료 상태 정의", "권한 부족과 권한별 노출 규칙 정의"],
     docs: ["auth-flow", "session", "token", "rbac", "permission-policy"],
     playbooks: ["auth-flow-playbook", "junior-auth-guard"],
     prompts: [
@@ -67,13 +62,13 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
       },
       {
         title: "고급 요청",
-        body: "로그인, 보호된 페이지, 세션 만료, 권한 부족 상태를 모두 포함한 인증 흐름을 구현해줘. 역할별 메뉴 노출 차이와 재로그인 흐름도 정리해줘.",
+        body: "로그인, 보호된 페이지, 세션 만료, 권한 부족 상태를 모두 포함한 인증 흐름을 구현해줘. 권한별 메뉴 노출 차이와 재로그인 흐름도 정리해줘.",
       },
     ],
     checklist: [
       "비로그인, 만료, 권한 부족 상태가 분리되어 있는가",
       "보호된 페이지 규칙이 있는가",
-      "역할별 차이가 포함되어 있는가",
+      "권한별 차이가 포함되어 있는가",
     ],
   },
   {
@@ -82,7 +77,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "검색 입력 UI, 검색 API, 결과 상태, 정렬과 인덱스를 함께 보는 가이드입니다.",
     level: "중급",
     goal: "검색을 입력창 하나가 아니라 경험 전체로 요청합니다.",
-    audience: ["기획자", "디자이너", "주니어 개발자"],
     stages: [
       "검색 입력 방식과 결과 카드에서 먼저 보여줘야 할 정보를 함께 설계합니다.",
       "검색 API, 정렬, 필터 기준을 정해 사용자가 원하는 결과를 좁혀 갈 수 있게 합니다.",
@@ -112,7 +106,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "KPI, 필터, 목록, 운영 상태를 함께 보는 관리자 대시보드 가이드입니다.",
     level: "중급",
     goal: "운영 화면을 카드 모음이 아닌 목적 중심 구조로 요청합니다.",
-    audience: ["기획자", "디자이너"],
     stages: ["핵심 KPI 정의", "필터와 목록 구조 정리", "운영 상태 화면 설계"],
     docs: ["data-table", "filter-bar", "sorting-ui", "pagination", "microcopy"],
     playbooks: ["designer-dashboard-polish", "admin-dashboard-playbook", "planner-dashboard-prd"],
@@ -138,7 +131,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "상품 확인, 결제 수단 선택, 실패 복구, 완료 화면까지 포함한 가이드입니다.",
     level: "중급",
     goal: "결제 기능을 전환 흐름과 실패 복구까지 포함한 요청으로 바꿉니다.",
-    audience: ["기획자", "디자이너"],
     stages: ["결제 진입 구조 정리", "결제 제출과 실패 복구 설계", "완료 뒤 행동 정의"],
     docs: ["call-to-action", "failure-scenario", "fallback", "microcopy", "success-criteria"],
     playbooks: ["planner-checkout-flow"],
@@ -164,7 +156,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "무한 스크롤, 캐시, 디바운스, 스켈레톤을 함께 보는 긴 목록 성능 가이드입니다.",
     level: "중급",
     goal: "긴 목록을 속도 문제뿐 아니라 UX 문제까지 포함해 요청합니다.",
-    audience: ["주니어 개발자", "디자이너"],
     stages: ["초기 로딩 설계", "추가 로딩과 검색 최적화", "캐시와 빈 상태 정의"],
     docs: ["infinite-scroll-ui", "infinite-scroll-logic", "frontend-cache", "debounce", "skeleton"],
     playbooks: ["junior-list-performance"],
@@ -190,7 +181,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "개인 정보 수정과 저장 상태, 성공·실패 피드백을 함께 보는 가이드입니다.",
     level: "입문",
     goal: "설정 화면을 단순 폼이 아니라 저장 경험 전체로 요청합니다.",
-    audience: ["기획자", "주니어 개발자"],
     stages: ["수정 가능한 필드 정의", "저장 상태와 피드백 설계", "실패 복구 흐름 정리"],
     docs: ["form", "controlled-component", "toast", "success-criteria", "auth-flow"],
     playbooks: ["junior-form-submit-flow", "auth-flow-playbook"],
@@ -216,7 +206,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "파일 선택, 진행 상태, 미리보기, 실패 재시도를 함께 보는 가이드입니다.",
     level: "중급",
     goal: "업로드 기능을 상태가 있는 완성형 기능으로 요청합니다.",
-    audience: ["디자이너", "주니어 개발자"],
     stages: ["업로드 입력 방식 정리", "진행 상태와 미리보기 설계", "실패 복구와 제한 조건 정의"],
     docs: ["file-upload", "form", "loading-state", "error-state", "api"],
     playbooks: ["junior-form-submit-flow", "designer-state-system"],
@@ -242,7 +231,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "첫 방문 사용자의 적응 흐름과 다음 행동 유도를 함께 보는 가이드입니다.",
     level: "입문",
     goal: "온보딩을 단순 안내 화면이 아니라 적응 흐름으로 요청합니다.",
-    audience: ["기획자", "디자이너"],
     stages: ["첫 진입 메시지 정의", "초기 행동 유도", "이탈 방지와 다음 단계 안내"],
     docs: ["onboarding", "user-flow", "call-to-action", "microcopy", "analytics-event"],
     playbooks: ["planner-signup-page", "designer-landing-page-hero"],
@@ -268,7 +256,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "토스트, 인박스형 알림, 실패 메시지를 함께 보는 알림 기능 가이드입니다.",
     level: "중급",
     goal: "알림을 메시지 하나가 아니라 피드백 시스템으로 요청합니다.",
-    audience: ["디자이너", "주니어 개발자"],
     stages: ["이벤트와 알림 종류 정의", "즉시 피드백과 누적 알림 분리", "실패 알림과 재시도 설계"],
     docs: ["toast", "webhook", "retry", "microcopy", "api-error-response"],
     playbooks: ["designer-state-system", "junior-api-integration"],
@@ -294,7 +281,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "운영 승인 흐름을 목록, 상세, 처리 결과까지 포함해 보는 가이드입니다.",
     level: "중급",
     goal: "승인 기능을 운영 작업 흐름으로 요청합니다.",
-    audience: ["기획자", "주니어 개발자"],
     stages: ["승인 대상 목록 정의", "승인·반려 처리 규칙 설계", "결과 갱신과 실패 복구 정리"],
     docs: ["data-table", "confirmation-flow", "edge-case", "api-error-response", "pagination-api"],
     playbooks: ["planner-admin-workflow", "admin-dashboard-playbook"],
@@ -320,7 +306,6 @@ export const FEATURE_GUIDES: FeatureGuide[] = [
     summary: "KPI 카드, 기간 필터, 비교 기준과 이벤트 해석을 함께 보는 가이드입니다.",
     level: "중급",
     goal: "지표 화면을 숫자 나열이 아니라 해석 가능한 운영 도구로 요청합니다.",
-    audience: ["기획자", "디자이너"],
     stages: ["핵심 KPI 정의", "기간과 필터 기준 정리", "이벤트 해석과 비교 흐름 설계"],
     docs: ["kpi", "analytics-event", "data-table", "filter-bar", "design-system"],
     playbooks: ["planner-dashboard-prd", "designer-dashboard-polish"],

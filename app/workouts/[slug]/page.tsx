@@ -80,8 +80,7 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
       <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
         <header className="space-y-5 border-b border-border/70 pb-8">
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{workout.role}</Badge>
-            <Badge variant="outline">{workout.level}</Badge>
+            <Badge variant="secondary">{workout.level}</Badge>
             <Badge variant="outline">실습 훈련</Badge>
           </div>
           <div className="space-y-3">
@@ -171,24 +170,24 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
 
           <RelatedSection title="관련 플레이북">
             {playbooks.map((playbook) => (
-              <RelatedCard
-                key={playbook.slug}
-                href={`/playbooks/${playbook.slug}`}
-                title={playbook.title}
-                summary={playbook.summary}
-                badges={[playbook.role, playbook.level]}
+                <RelatedCard
+                  key={playbook.slug}
+                  href={`/playbooks/${playbook.slug}`}
+                  title={playbook.title}
+                  summary={playbook.summary}
+                badges={[playbook.level, "플레이북"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="관련 기능 가이드">
             {guides.map((guide) => (
-              <RelatedCard
-                key={guide.slug}
-                href={`/guides/${guide.slug}`}
-                title={guide.title}
-                summary={guide.summary}
-                badges={[guide.level, guide.audience[0]]}
+                <RelatedCard
+                  key={guide.slug}
+                  href={`/guides/${guide.slug}`}
+                  title={guide.title}
+                  summary={guide.summary}
+                badges={[guide.level, "기능 가이드"]}
               />
             ))}
           </RelatedSection>
@@ -207,24 +206,24 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
 
           <RelatedSection title="관련 사례집">
             {casebooks.map((casebook) => (
-              <RelatedCard
-                key={casebook.slug}
-                href={`/casebooks/${casebook.slug}`}
-                title={casebook.title}
-                summary={casebook.summary}
-                badges={[casebook.level, casebook.roles[0]]}
+                <RelatedCard
+                  key={casebook.slug}
+                  href={`/casebooks/${casebook.slug}`}
+                  title={casebook.title}
+                  summary={casebook.summary}
+                badges={[casebook.level, "사례집"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="다음 실습 추천">
             {nextWorkouts.map((nextWorkout) => (
-              <RelatedCard
-                key={nextWorkout.slug}
-                href={`/workouts/${nextWorkout.slug}`}
-                title={nextWorkout.title}
-                summary={nextWorkout.problem}
-                badges={[nextWorkout.level, nextWorkout.role]}
+                <RelatedCard
+                  key={nextWorkout.slug}
+                  href={`/workouts/${nextWorkout.slug}`}
+                  title={nextWorkout.title}
+                  summary={nextWorkout.problem}
+                badges={[nextWorkout.level, "실습"]}
               />
             ))}
           </RelatedSection>

@@ -81,11 +81,6 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
         <header className="space-y-5 border-b border-border/70 pb-8">
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{casebook.level}</Badge>
-            {casebook.roles.map((role) => (
-              <Badge key={role} variant="outline">
-                {role}
-              </Badge>
-            ))}
             <Badge variant="outline">프로젝트 사례집</Badge>
           </div>
           <div className="space-y-3">
@@ -171,12 +166,6 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
             <PromptCodeBlock>{casebook.detailedPrompt}</PromptCodeBlock>
           </div>
 
-          {casebook.roleNotes?.length ? (
-            <Callout type="warning" title="역할별 주의점">
-              {casebook.roleNotes.join(" ")}
-            </Callout>
-          ) : null}
-
           {casebook.operationsNotes?.length ? (
             <Callout type="info" title="운영 포인트">
               {casebook.operationsNotes.join(" ")}
@@ -197,24 +186,24 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
 
           <RelatedSection title="관련 플레이북">
             {playbooks.map((playbook) => (
-              <RelatedCard
-                key={playbook.slug}
-                href={`/playbooks/${playbook.slug}`}
-                title={playbook.title}
-                summary={playbook.summary}
-                badges={[playbook.role, playbook.level]}
+                <RelatedCard
+                  key={playbook.slug}
+                  href={`/playbooks/${playbook.slug}`}
+                  title={playbook.title}
+                  summary={playbook.summary}
+                badges={[playbook.level, "플레이북"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="관련 기능 가이드">
             {guides.map((guide) => (
-              <RelatedCard
-                key={guide.slug}
-                href={`/guides/${guide.slug}`}
-                title={guide.title}
-                summary={guide.summary}
-                badges={[guide.level, guide.audience[0]]}
+                <RelatedCard
+                  key={guide.slug}
+                  href={`/guides/${guide.slug}`}
+                  title={guide.title}
+                  summary={guide.summary}
+                badges={[guide.level, "기능 가이드"]}
               />
             ))}
           </RelatedSection>
@@ -227,9 +216,9 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
                   href={`/workouts/${workout.slug}`}
                   title={workout.title}
                   summary={workout.problem}
-                  badges={[workout.level, workout.role]}
-                />
-              ))}
+                badges={[workout.level, "실습"]}
+              />
+            ))}
             </RelatedSection>
           ) : null}
 
@@ -272,10 +261,10 @@ export default async function CasebookPage({ params }: CasebookPageProps) {
                   href={`/casebooks/${item.slug}`}
                   title={item.title}
                   summary={item.summary}
-                  badges={[item.level, item.roles[0]]}
-                />
-              ))}
-            </RelatedSection>
+                badges={[item.level, "사례집"]}
+              />
+            ))}
+          </RelatedSection>
           ) : null}
         </section>
 

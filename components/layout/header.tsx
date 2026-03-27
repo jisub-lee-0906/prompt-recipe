@@ -24,10 +24,8 @@ export function Header({ docs }: { docs: DocEntry[] }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <NavLink href="/tracks" label="학습 트랙" className="lg:inline-flex" />
-          <NavLink href="/playbooks" label="플레이북" className="lg:inline-flex" />
+          <NavLink href="/docs" label="문서 허브" className="lg:inline-flex" />
           <NavLink href="/guides" label="기능 가이드" className="xl:inline-flex" />
-          <NavLink href="/operations" label="운영 가이드" className="xl:inline-flex" />
           <NavLink href="/casebooks" label="사례집" className="xl:inline-flex" />
           <NavLink href="/workouts" label="실습 훈련" className="2xl:inline-flex" />
           <NavLink href="/compare" label="비교 허브" className="2xl:inline-flex" />

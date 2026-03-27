@@ -3,7 +3,6 @@ $ProgressPreference = "SilentlyContinue"
 
 $routes = @(
   "/",
-  "/tracks",
   "/playbooks",
   "/playbooks/planner-signup-page",
   "/guides",

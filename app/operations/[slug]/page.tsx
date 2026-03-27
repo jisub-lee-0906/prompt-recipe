@@ -86,11 +86,6 @@ export default async function OperationPage({ params }: OperationPageProps) {
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{guide.level}</Badge>
             <Badge variant="outline">운영 가이드</Badge>
-            {guide.roleTargets.map((role) => (
-              <Badge key={role} variant="outline">
-                {role}
-              </Badge>
-            ))}
           </div>
           <div className="space-y-3">
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -196,48 +191,48 @@ export default async function OperationPage({ params }: OperationPageProps) {
 
           <RelatedSection title="관련 플레이북">
             {playbooks.map((playbook) => (
-              <RelatedCard
-                key={playbook.slug}
-                href={`/playbooks/${playbook.slug}`}
-                title={playbook.title}
-                summary={playbook.summary}
-                badges={[playbook.role, playbook.level]}
+                <RelatedCard
+                  key={playbook.slug}
+                  href={`/playbooks/${playbook.slug}`}
+                  title={playbook.title}
+                  summary={playbook.summary}
+                badges={[playbook.level, "플레이북"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="관련 기능 가이드">
             {featureGuides.map((item) => (
-              <RelatedCard
-                key={item.slug}
-                href={`/guides/${item.slug}`}
-                title={item.title}
-                summary={item.summary}
-                badges={[item.level, item.audience[0]]}
+                <RelatedCard
+                  key={item.slug}
+                  href={`/guides/${item.slug}`}
+                  title={item.title}
+                  summary={item.summary}
+                badges={[item.level, "기능 가이드"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="관련 사례집">
             {casebooks.map((item) => (
-              <RelatedCard
-                key={item.slug}
-                href={`/casebooks/${item.slug}`}
-                title={item.title}
-                summary={item.summary}
-                badges={[item.level, item.roles[0]]}
+                <RelatedCard
+                  key={item.slug}
+                  href={`/casebooks/${item.slug}`}
+                  title={item.title}
+                  summary={item.summary}
+                badges={[item.level, "사례집"]}
               />
             ))}
           </RelatedSection>
 
           <RelatedSection title="관련 실습">
             {workouts.map((item) => (
-              <RelatedCard
-                key={item.slug}
-                href={`/workouts/${item.slug}`}
-                title={item.title}
-                summary={item.problem}
-                badges={[item.level, item.role]}
+                <RelatedCard
+                  key={item.slug}
+                  href={`/workouts/${item.slug}`}
+                  title={item.title}
+                  summary={item.problem}
+                badges={[item.level, "실습"]}
               />
             ))}
           </RelatedSection>

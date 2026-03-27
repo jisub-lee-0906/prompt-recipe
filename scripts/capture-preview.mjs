@@ -7,7 +7,6 @@ const projectRoot = process.cwd();
 const outputDir = path.join(projectRoot, "output", "playwright");
 const routes = [
   { route: "/", file: "capture-home.png" },
-  { route: "/tracks", file: "capture-tracks.png" },
   { route: "/playbooks", file: "capture-playbooks.png" },
   { route: "/playbooks/planner-signup-page", file: "capture-playbook-signup.png" },
   { route: "/guides", file: "capture-guides.png" },

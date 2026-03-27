@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 
 export default function CasebooksPage() {
   const casebooks = getCasebooks();
-  const starterByRole = [
-    ["기획자", casebooks.find((item) => item.slug === "signup-project")],
-    ["디자이너", casebooks.find((item) => item.slug === "file-upload-project")],
-    ["주니어 개발자", casebooks.find((item) => item.slug === "auth-project")],
-  ] as const;
+  const starterCasebooks = [
+    casebooks.find((item) => item.slug === "signup-project"),
+    casebooks.find((item) => item.slug === "file-upload-project"),
+    casebooks.find((item) => item.slug === "auth-project"),
+  ].filter((item) => item !== undefined);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
@@ -38,8 +38,8 @@ export default function CasebooksPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/tracks">
-              <Button>학습 트랙과 함께 보기</Button>
+            <Link href="/docs">
+              <Button>문서 허브로 돌아가기</Button>
             </Link>
             <Link href="/workouts">
               <Button variant="outline">실습으로 이어가기</Button>
@@ -55,11 +55,7 @@ export default function CasebooksPage() {
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
-                  {casebook.roles.slice(0, 2).map((role) => (
-                    <Badge key={role} variant="outline">
-                      {role}
-                    </Badge>
-                  ))}
+                  <Badge variant="outline">완성형 사례</Badge>
                 </div>
                 <CardTitle className="text-xl">{casebook.title}</CardTitle>
                 <p className="text-sm leading-7 text-muted-foreground">
@@ -84,18 +80,18 @@ export default function CasebooksPage() {
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">
-            역할별 추천 시작 사례
+            처음 보기 좋은 사례
           </h2>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {starterByRole.map(([role, casebook]) =>
+          {starterCasebooks.map((casebook) =>
             casebook ? (
               <Link
-                key={role}
+                key={casebook.slug}
                 href={`/casebooks/${casebook.slug}`}
                 className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
               >
-                <Badge variant="secondary">{role}</Badge>
+                <Badge variant="secondary">{casebook.level}</Badge>
                 <p className="mt-3 font-semibold">{casebook.title}</p>
                 <p className="mt-2 text-sm leading-7 text-muted-foreground">
                   {casebook.goal}

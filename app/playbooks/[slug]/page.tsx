@@ -69,8 +69,7 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
       <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
         <header className="space-y-5 border-b border-border/70 pb-8">
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{playbook.role}</Badge>
-            <Badge variant="outline">{playbook.level}</Badge>
+            <Badge variant="secondary">{playbook.level}</Badge>
             <Badge variant="outline">플레이북</Badge>
           </div>
           <div className="space-y-3">
@@ -173,12 +172,12 @@ export default async function PlaybookPage({ params }: PlaybookPageProps) {
               </h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {relatedPlaybooks.map((item) => (
-                  <RelatedCard
-                    key={item.slug}
-                    href={`/playbooks/${item.slug}`}
-                    title={item.title}
-                    summary={item.summary}
-                    badges={[item.role, item.level]}
+                <RelatedCard
+                  key={item.slug}
+                  href={`/playbooks/${item.slug}`}
+                  title={item.title}
+                  summary={item.summary}
+                    badges={[item.level, "플레이북"]}
                   />
                 ))}
               </div>

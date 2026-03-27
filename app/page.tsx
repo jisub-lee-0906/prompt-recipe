@@ -4,8 +4,8 @@ import {
   Blocks,
   BookCopy,
   BrushCleaning,
-  Compass,
   DatabaseZap,
+  Compass,
   Sparkles,
   SplitSquareVertical,
 } from "lucide-react";
@@ -18,13 +18,11 @@ import { getCasebooks } from "@/lib/casebooks";
 import { DOC_CATEGORY_LABELS } from "@/lib/docs-config";
 import { getFeatureGuides } from "@/lib/guides";
 import { getComparisonHubItems, getScenarioHubItems } from "@/lib/hubs";
-import { getAllDocsMeta, getDocsBySlugs } from "@/lib/mdx";
-import { getOperationGuides } from "@/lib/operations";
+import { getAllDocsMeta } from "@/lib/mdx";
 import { getPlaybooks } from "@/lib/playbooks";
 import {
   CATEGORY_META,
   CHANGELOG_ENTRIES,
-  ROLE_PATHS,
   SITE_NAME,
 } from "@/lib/site-config";
 import { getWorkouts } from "@/lib/workouts";
@@ -40,7 +38,6 @@ export default function Home() {
   const casebooks = getCasebooks().slice(0, 3);
   const guides = getFeatureGuides().slice(0, 3);
   const playbooks = getPlaybooks().slice(0, 3);
-  const operations = getOperationGuides().slice(0, 3);
   const workouts = getWorkouts().slice(0, 3);
   const compareItems = getComparisonHubItems().slice(0, 3);
   const scenarioItems = getScenarioHubItems().slice(0, 3);
@@ -48,11 +45,6 @@ export default function Home() {
     category,
     ...meta,
     docs: docs.filter((doc) => doc.category === category).slice(0, 3),
-  }));
-  const rolePaths = ROLE_PATHS.map((pathItem) => ({
-    ...pathItem,
-    docs: getDocsBySlugs([...pathItem.slugs]),
-    trackHref: getRoleTrackHref(pathItem.role),
   }));
   const compactSections = [
     {
@@ -68,7 +60,7 @@ export default function Home() {
     },
     {
       title: "실전 플레이북",
-      description: "내 역할에 맞는 요청 문장을 바로 가져다 쓸 수 있게 정리했습니다.",
+      description: "자주 마주치는 실전 상황을 어떤 순서와 표현으로 요청할지 정리했습니다.",
       href: "/playbooks",
       label: "플레이북 전체 보기",
       items: playbooks.map((playbook) => ({
@@ -91,29 +83,29 @@ export default function Home() {
   ];
   const quickStartCards = [
     {
+      title: "문서 허브에서 시작",
+      description: "정해진 순서를 따르기보다, 지금 막히는 개념부터 직접 찾아 읽는 시작점입니다.",
+      href: "/docs",
+      label: "문서 허브 보기",
+    },
+    {
       title: "대표 문서로 시작",
-      description: "가장 먼저 읽기 좋은 핵심 문서부터 가볍게 시작합니다.",
+      description: "입문자가 가장 먼저 읽기 좋은 핵심 문서부터 가볍게 시작합니다.",
       href: "/docs/ui-ux/modal",
       label: "대표 문서 보기",
     },
     {
-      title: "학습 트랙으로 시작",
-      description: "내 역할에 맞는 순서대로 문서, 사례집, 실습을 따라갑니다.",
-      href: "/tracks",
-      label: "학습 트랙 보기",
-    },
-    {
-      title: "사례집으로 바로 시작",
-      description: "실제 기능을 끝까지 어떻게 시켜야 하는지 완성형 예시로 배웁니다.",
-      href: "/casebooks",
-      label: "사례집 보기",
+      title: "비교 허브로 시작",
+      description: "용어가 헷갈릴 때 비교 허브에서 차이를 정리한 뒤 필요한 문서로 넘어갑니다.",
+      href: "/compare",
+      label: "비교 허브 보기",
     },
   ];
 
   return (
     <main className="bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.08),transparent_30%),linear-gradient(to_bottom,transparent,rgba(15,23,42,0.03))]">
       <section className="mx-auto flex min-h-[calc(100vh-var(--header-height))] w-full max-w-7xl items-center px-6 py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div className="space-y-8">
             <div className="space-y-5">
               <p className="text-sm font-medium uppercase tracking-[0.22em] text-muted-foreground">
@@ -124,16 +116,17 @@ export default function Home() {
                   {SITE_NAME}
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-                  기획자, 디자이너, 주니어 개발자가 웹 개발과 UI/UX 언어를 빠르게
-                  익히고 AI IDE에 더 정확한 요청을 전달한 뒤, 결과를 검토하고
-                  다시 수정 지시할 수 있도록 돕는 정적 문서형 교과서입니다.
+                  웹 개발과 UI/UX 언어를 빠르게 익히고 AI IDE에 더 정확한 요청을
+                  전달할 수 있도록 돕는 정적 문서형 교과서입니다. 문서 허브를
+                  중심으로 필요한 개념을 직접 찾아 읽고, 필요할 때만 가이드와
+                  사례집으로 확장하면 됩니다.
                 </p>
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link href="/docs/ui-ux/modal">
+              <Link href="/docs">
                 <Button size="lg">
-                  대표 문서로 시작
+                  문서 허브로 시작
                   <ArrowRight className="size-4" />
                 </Button>
               </Link>
@@ -145,31 +138,49 @@ export default function Home() {
             <CardHeader className="space-y-3">
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Sparkles className="size-4 text-primary" />
-                누구에게 가장 잘 맞는가
+                문서 허브를 먼저 쓰는 법
               </CardTitle>
               <p className="text-sm leading-7 text-muted-foreground">
-                역할별로 시작 문서와 학습 트랙을 한 번에 정리했습니다. 카드 하나만
-                선택해 바로 들어가면 됩니다.
+                정해진 순서를 강하게 따르기보다, 지금 막히는 개념부터 문서를 직접
+                찾아 읽는 흐름을 기본으로 두는 편이 덜 복잡합니다.
               </p>
             </CardHeader>
             <CardContent className="space-y-3">
-              {rolePaths.map((pathItem) => (
+              {[
+                {
+                  title: "개념이 막힐 때",
+                  description:
+                    "문서 허브나 검색에서 모달, 상태 관리, API 같은 개념 문서부터 바로 여세요.",
+                  href: "/docs",
+                  label: "문서 허브 열기",
+                },
+                {
+                  title: "용어 차이가 헷갈릴 때",
+                  description:
+                    "비교 허브에서 비슷한 용어 차이를 먼저 정리한 뒤 필요한 문서로 넘어가세요.",
+                  href: "/compare",
+                  label: "비교 허브 열기",
+                },
+                {
+                  title: "구체적인 예시가 필요할 때",
+                  description:
+                    "문서로 개념을 잡은 뒤에만 기능 가이드, 사례집, 실습으로 확장하면 덜 헷갈립니다.",
+                  href: "/guides",
+                  label: "기능 가이드 보기",
+                },
+              ].map((item) => (
                 <Link
-                  key={pathItem.role}
-                  href={pathItem.trackHref}
+                  key={item.title}
+                  href={item.href}
                   className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-2">
-                      <p className="font-semibold">{pathItem.role}</p>
+                      <p className="font-semibold">{item.title}</p>
                       <p className="text-sm leading-6 text-muted-foreground">
-                        {pathItem.description}
+                        {item.description}
                       </p>
-                      {pathItem.docs[0] ? (
-                        <p className="text-xs font-medium text-primary">
-                          대표 문서: {pathItem.docs[0].title}
-                        </p>
-                      ) : null}
+                      <p className="text-xs font-medium text-primary">{item.label}</p>
                     </div>
                     <ArrowRight className="mt-1 size-4 shrink-0 text-primary" />
                   </div>
@@ -183,7 +194,7 @@ export default function Home() {
       <SectionHeader
         eyebrow="시작 경로"
         title="처음 시작하는 사람을 위한 3가지 경로"
-        description="지금 필요한 방식에 따라 문서, 학습 트랙, 사례집 중 하나만 골라 시작하면 됩니다."
+        description="문서 허브, 대표 문서, 비교 허브 중 지금 가장 편한 시작점 하나만 골라 읽으면 됩니다."
       />
       <CardGrid>
         {quickStartCards.map((item) => (
@@ -215,7 +226,7 @@ export default function Home() {
         />
         <LearningPromiseCard
           title="이 교과서는 어떻게 읽는가"
-          description="문서로 개념을 익히고, 플레이북과 가이드로 표현을 배우고, 사례집과 실습으로 체화한 뒤 운영 가이드로 검증과 수정 루프까지 익힙니다."
+          description="먼저 문서 허브에서 필요한 개념을 직접 찾고, 더 구체적인 예시가 필요할 때만 가이드, 사례집, 실습으로 이어가면 됩니다."
         />
       </section>
 
@@ -231,11 +242,7 @@ export default function Home() {
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
-                  {casebook.roles.slice(0, 2).map((role) => (
-                    <Badge key={role} variant="outline">
-                      {role}
-                    </Badge>
-                  ))}
+                  <Badge variant="outline">완성형 사례</Badge>
                 </div>
                 <CardTitle className="text-xl">{casebook.title}</CardTitle>
                 <p className="text-sm leading-7 text-muted-foreground">
@@ -301,38 +308,6 @@ export default function Home() {
               </Link>
             </CardContent>
           </Card>
-        ))}
-      </section>
-
-      <SectionHeader
-        eyebrow="실전 운영"
-        title="요청 다음 단계를 다루는 운영 가이드"
-        description="좋은 첫 요청에서 멈추지 않고, 코드베이스 읽기, 작업 분해, 검증, 수정 요청, 리뷰까지 이어지는 실전 운영 축입니다."
-      />
-      <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-3">
-        {operations.map((guide) => (
-          <Link key={guide.slug} href={`/operations/${guide.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">{guide.level}</Badge>
-                  {guide.roleTargets.slice(0, 2).map((role) => (
-                    <Badge key={role} variant="outline">
-                      {role}
-                    </Badge>
-                  ))}
-                </div>
-                <CardTitle className="text-xl">{guide.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {guide.summary}
-                </p>
-              </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
-                운영 가이드 보기
-                <ArrowRight className="size-4" />
-              </CardContent>
-            </Card>
-          </Link>
         ))}
       </section>
 
@@ -501,17 +476,4 @@ function LearningPromiseCard({
       </CardContent>
     </Card>
   );
-}
-
-function getRoleTrackHref(role: string) {
-  switch (role) {
-    case "기획자":
-      return "/tracks#planner-track";
-    case "디자이너":
-      return "/tracks#designer-track";
-    case "주니어 개발자":
-      return "/tracks#junior-developer-track";
-    default:
-      return "/tracks";
-  }
 }

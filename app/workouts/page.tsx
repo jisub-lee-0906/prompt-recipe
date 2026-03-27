@@ -17,14 +17,11 @@ export default function WorkoutsPage() {
   const operationWorkouts = workouts.filter(
     (item) => (item.operations?.length ?? 0) > 0,
   );
-  const starterByRole = [
-    ["기획자", workouts.find((item) => item.slug === "signup-request-fix")],
-    ["디자이너", workouts.find((item) => item.slug === "state-system-request")],
-    [
-      "주니어 개발자",
-      workouts.find((item) => item.slug === "api-integration-request"),
-    ],
-  ] as const;
+  const starterWorkouts = [
+    workouts.find((item) => item.slug === "signup-request-fix"),
+    workouts.find((item) => item.slug === "state-system-request"),
+    workouts.find((item) => item.slug === "api-integration-request"),
+  ].filter((item) => item !== undefined);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
@@ -40,8 +37,8 @@ export default function WorkoutsPage() {
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
               읽는 것에서 끝내지 않고 직접 요청 문장을 고쳐보는 실습 모음입니다.
-              역할별로 자주 하는 실수를 교정하고 더 구체적인 프롬프트를 만드는
-              훈련으로 구성했습니다.
+              자주 빠지는 누락을 교정하고 더 구체적인 프롬프트를 만드는 훈련으로
+              구성했습니다.
             </p>
           </div>
         </div>
@@ -53,8 +50,7 @@ export default function WorkoutsPage() {
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">{workout.role}</Badge>
-                  <Badge variant="outline">{workout.level}</Badge>
+                  <Badge variant="secondary">{workout.level}</Badge>
                   <Badge variant="outline">실습</Badge>
                 </div>
                 <CardTitle className="text-2xl">{workout.title}</CardTitle>
@@ -75,18 +71,18 @@ export default function WorkoutsPage() {
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">
-            역할별 추천 시작 실습
+            처음 시작하기 좋은 실습
           </h2>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {starterByRole.map(([role, workout]) =>
+          {starterWorkouts.map((workout) =>
             workout ? (
               <Link
-                key={role}
+                key={workout.slug}
                 href={`/workouts/${workout.slug}`}
                 className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
               >
-                <Badge variant="secondary">{role}</Badge>
+                <Badge variant="secondary">{workout.level}</Badge>
                 <p className="mt-3 font-semibold">{workout.title}</p>
                 <p className="mt-2 text-sm leading-7 text-muted-foreground">
                   {workout.targetOutcome}
@@ -112,8 +108,7 @@ export default function WorkoutsPage() {
               className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
             >
               <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary">{workout.role}</Badge>
-                <Badge variant="outline">{workout.level}</Badge>
+                <Badge variant="secondary">{workout.level}</Badge>
                 <Badge variant="outline">운영형 실습</Badge>
               </div>
               <p className="mt-3 font-semibold">{workout.title}</p>

@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: SITE_URL, lastModified: baseDate, changeFrequency: "weekly", priority: 1 },
-    { url: `${SITE_URL}/tracks`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.98 },
+    { url: `${SITE_URL}/docs`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.99 },
     { url: `${SITE_URL}/playbooks`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },
     { url: `${SITE_URL}/guides`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },
     { url: `${SITE_URL}/operations`, lastModified: baseDate, changeFrequency: "weekly", priority: 0.96 },

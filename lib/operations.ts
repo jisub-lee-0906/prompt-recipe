@@ -1,5 +1,3 @@
-import type { DocRoleTarget } from "@/lib/mdx";
-
 export type OperationLevel = "입문" | "중급";
 
 export type OperationGuide = {
@@ -7,7 +5,6 @@ export type OperationGuide = {
   title: string;
   summary: string;
   level: OperationLevel;
-  roleTargets: DocRoleTarget[];
   situation: string;
   goal: string;
   stages: string[];
@@ -31,7 +28,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "바로 구현부터 시키지 않고, 관련 파일과 기존 패턴을 먼저 읽게 해 AI IDE의 오판을 줄이는 가이드입니다.",
     level: "입문",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "새 기능이나 수정 작업을 요청해야 하지만 현재 코드 구조, 공통 컴포넌트, 기존 패턴을 아직 모르는 상태입니다.",
     goal:
@@ -72,7 +68,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "큰 요구를 한 번에 던지지 않고 분석, 구현, 검증으로 나눠 AI IDE를 더 안정적으로 운영하는 가이드입니다.",
     level: "입문",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "로그인, 검색, 관리자 화면처럼 요구 범위가 넓어서 한 번에 지시하면 누락과 과한 변경이 동시에 생기는 상황입니다.",
     goal:
@@ -113,7 +108,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "동작 확인에서 멈추지 않고 상태, 테스트, 반응형, 접근성까지 검증하게 만드는 가이드입니다.",
     level: "중급",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "겉으로는 구현이 끝난 것처럼 보이지만, 실제로는 빈 상태, 오류 상태, 모바일, 접근성, 회귀 위험이 남아 있는 상황입니다.",
     goal:
@@ -154,7 +148,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "AI가 70점짜리 결과를 냈을 때 누락, 과한 변경, 잘못된 가정을 짚어 2차 수정 요청으로 끌어올리는 가이드입니다.",
     level: "중급",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "초안은 나왔지만 상태가 빠져 있거나, 디자인 시스템을 깨거나, 기존 패턴과 어긋나는 등 재지시가 필요한 상황입니다.",
     goal:
@@ -195,7 +188,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "구현물을 그대로 믿지 않고 요구사항 누락, 회귀 위험, 테스트 공백을 중심으로 검토하는 가이드입니다.",
     level: "중급",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "코드는 얼핏 그럴듯하지만 정말 요구사항을 충족하는지, 기존 동작을 깨지 않았는지 사람의 판단이 필요한 상황입니다.",
     goal:
@@ -236,7 +228,6 @@ const OPERATION_GUIDES: OperationGuide[] = [
     summary:
       "범위를 벗어나거나, 파일을 과하게 수정하거나, 확신 없는 추측을 할 때 작업을 다시 좁히는 가이드입니다.",
     level: "중급",
-    roleTargets: ["기획자", "디자이너", "주니어 개발자"],
     situation:
       "AI IDE가 요구하지 않은 리팩터링을 하거나, 기존 패턴을 깨거나, 모르는 부분을 추측으로 채워 넣는 상황입니다.",
     goal:
@@ -291,7 +282,21 @@ export function getRelatedOperationGuides(slug: string, limit = 3) {
   const related = OPERATION_GUIDES.filter(
     (guide) =>
       guide.slug !== slug &&
-      guide.roleTargets.some((role) => current.roleTargets.includes(role)),
+      [
+        ...guide.docs,
+        ...guide.playbooks,
+        ...guide.guides,
+        ...guide.casebooks,
+        ...guide.workouts,
+      ].some((ref) =>
+        [
+          ...current.docs,
+          ...current.playbooks,
+          ...current.guides,
+          ...current.casebooks,
+          ...current.workouts,
+        ].includes(ref),
+      ),
   );
 
   return related.slice(0, limit);

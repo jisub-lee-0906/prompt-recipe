@@ -4,36 +4,21 @@ import { ArrowRight, BookOpenText, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  getPlaybooks,
-  getPlaybooksByRole,
-  type PlaybookRole,
-} from "@/lib/playbooks";
+import { getPlaybooks } from "@/lib/playbooks";
 
 export const metadata: Metadata = {
   title: "플레이북",
   description:
-    "기획자, 디자이너, 주니어 개발자가 AI IDE에 실제 기능을 어떻게 시켜야 하는지 보여주는 실전 플레이북입니다.",
-};
-
-const ROLE_ORDER: PlaybookRole[] = ["기획자", "디자이너", "주니어 개발자"];
-
-const ROLE_DESCRIPTIONS: Record<PlaybookRole, string> = {
-  기획자:
-    "요구사항과 사용자 흐름을 구현 가능한 문장으로 바꾸는 플레이북입니다.",
-  디자이너:
-    "화면 구조, 상태 표현, 카피와 시각 우선순위를 전달하는 플레이북입니다.",
-  "주니어 개발자":
-    "상태, API, 라우팅, 예외 처리를 안정적으로 요청하는 플레이북입니다.",
+    "AI IDE에 실제 기능을 어떤 순서와 표현으로 시켜야 하는지 보여주는 실전 플레이북입니다.",
 };
 
 export default function PlaybooksPage() {
   const playbooks = getPlaybooks();
-  const roleSections = ROLE_ORDER.map((role) => ({
-    role,
-    description: ROLE_DESCRIPTIONS[role],
-    items: getPlaybooksByRole(role),
-  }));
+  const starterPlaybooks = [
+    playbooks.find((item) => item.slug === "planner-signup-page"),
+    playbooks.find((item) => item.slug === "designer-state-system"),
+    playbooks.find((item) => item.slug === "junior-api-integration"),
+  ].filter((item) => item !== undefined);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
@@ -45,7 +30,7 @@ export default function PlaybooksPage() {
           <div className="space-y-3">
             <h1 className="flex items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               <BookOpenText className="size-7 text-primary" />
-              역할별 AI IDE 작업 플레이북
+              AI IDE 작업 플레이북
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
               용어를 아는 단계에서 멈추지 않고, 실제 기능을 어떤 순서와 표현으로
@@ -61,8 +46,7 @@ export default function PlaybooksPage() {
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
               <CardHeader className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary">{playbook.role}</Badge>
-                  <Badge variant="outline">{playbook.level}</Badge>
+                  <Badge variant="secondary">{playbook.level}</Badge>
                   <Badge variant="outline">실전 시나리오</Badge>
                 </div>
                 <CardTitle className="text-2xl">{playbook.title}</CardTitle>
@@ -88,39 +72,34 @@ export default function PlaybooksPage() {
       </section>
 
       <section className="mt-8 grid gap-5 lg:grid-cols-3">
-        {roleSections.map((section) => (
+        {starterPlaybooks.map((playbook, index) => (
           <Card
-            key={section.role}
+            key={playbook.slug}
             className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
           >
             <CardHeader className="space-y-3">
               <div className="flex items-center justify-between gap-3">
-                <CardTitle className="text-xl">{section.role}</CardTitle>
-                <Badge variant="secondary">{section.items.length}개</Badge>
+                <CardTitle className="text-xl">추천 시작 {String(index + 1).padStart(2, "0")}</CardTitle>
+                <Badge variant="secondary">{playbook.level}</Badge>
               </div>
               <p className="text-sm leading-7 text-muted-foreground">
-                {section.description}
+                {playbook.summary}
               </p>
             </CardHeader>
             <CardContent className="mt-auto space-y-3">
-              {section.items.map((playbook, index) => (
-                <Link
-                  key={playbook.slug}
-                  href={`/playbooks/${playbook.slug}`}
-                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
-                >
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">
-                      {String(index + 1).padStart(2, "0")}
-                    </Badge>
-                    <Badge variant="outline">{playbook.level}</Badge>
-                  </div>
-                  <p className="mt-3 font-semibold">{playbook.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {playbook.summary}
-                  </p>
-                </Link>
-              ))}
+              <Link
+                href={`/playbooks/${playbook.slug}`}
+                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+              >
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">대표 예시</Badge>
+                  <Badge variant="outline">{playbook.level}</Badge>
+                </div>
+                <p className="mt-3 font-semibold">{playbook.title}</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {playbook.outcome}
+                </p>
+              </Link>
             </CardContent>
           </Card>
         ))}
@@ -135,8 +114,8 @@ export default function PlaybooksPage() {
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <GuideTip
-            title="상황과 역할에 맞는 플레이북 선택"
-            description="지금 맡은 역할과 가장 가까운 시나리오부터 시작하면 어떤 말을 먼저 붙여야 하는지 빠르게 익힐 수 있습니다."
+            title="가까운 상황부터 고르기"
+            description="지금 만들거나 고치고 있는 기능과 가장 가까운 시나리오부터 시작하면 어떤 말을 먼저 붙여야 하는지 빠르게 익힐 수 있습니다."
           />
           <GuideTip
             title="짧은 요청과 긴 요청 비교"

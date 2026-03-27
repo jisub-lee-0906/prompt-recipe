@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getFeatureGuideBySlug, getFeatureGuides } from "@/lib/guides";
 import { getDocsBySlugs } from "@/lib/mdx";
-import { getPlaybookBySlug, getPlaybooksByRole } from "@/lib/playbooks";
+import { getPlaybookBySlug } from "@/lib/playbooks";
 
 type GuidePageProps = {
   params: Promise<{
@@ -61,10 +61,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const relatedPlaybooks = guide.playbooks
     .map((playbookSlug) => getPlaybookBySlug(playbookSlug))
     .filter((item) => item !== null);
-  const primaryAudience = guide.audience[0];
-  const nextPlaybooks = primaryAudience
-    ? getPlaybooksByRole(primaryAudience).slice(0, 2)
-    : [];
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12">
@@ -72,11 +68,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
         <header className="space-y-5 border-b border-border/70 pb-8">
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{guide.level}</Badge>
-            {guide.audience.map((role) => (
-              <Badge key={role} variant="outline">
-                {role}
-              </Badge>
-            ))}
             <Badge variant="outline">기능 가이드</Badge>
           </div>
           <div className="space-y-3">
@@ -158,12 +149,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
           <RelatedSection title="관련 플레이북">
             {relatedPlaybooks.map((playbook) => (
-              <RelatedCard
-                key={playbook.slug}
-                href={`/playbooks/${playbook.slug}`}
-                title={playbook.title}
-                summary={playbook.summary}
-                badges={[playbook.role, playbook.level]}
+                <RelatedCard
+                  key={playbook.slug}
+                  href={`/playbooks/${playbook.slug}`}
+                  title={playbook.title}
+                  summary={playbook.summary}
+                badges={[playbook.level, "플레이북"]}
               />
             ))}
           </RelatedSection>
@@ -184,13 +175,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
               ))}
             </div>
           </div>
-
-          {nextPlaybooks.length > 0 ? (
-            <Callout type="info" title="같은 역할의 다음 플레이북">
-              {primaryAudience} 관점에서 이어서 보기 좋은 플레이북으로{" "}
-              {nextPlaybooks.map((item) => item.title).join(", ")}을 추천합니다.
-            </Callout>
-          ) : null}
         </section>
 
         <footer className="mt-12 border-t border-border/70 pt-8">
@@ -297,7 +281,7 @@ function getGuideStageQuestion(slug: string, index: number) {
   if (slug === "auth-feature") {
     switch (index) {
       case 0:
-        return "로그인 성공 화면보다 먼저, 어떤 화면이 보호 대상인지와 역할별 차이를 분명히 적는 것이 중요합니다.";
+        return "로그인 성공 화면보다 먼저, 어떤 화면이 보호 대상인지와 권한 차이를 분명히 적는 것이 중요합니다.";
       case 1:
         return "세션 만료와 비로그인 접근을 같은 상태로 뭉개지 않았는지 점검해보세요.";
       case 2:
