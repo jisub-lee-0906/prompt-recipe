@@ -13,10 +13,9 @@ export function Header({ docs }: { docs: DocEntry[] }) {
           <MobileNav docs={docs} />
           <Link
             href="/"
-            className="flex items-center text-sm font-semibold tracking-tight"
+            className="flex items-center text-xs font-semibold tracking-tight sm:text-sm"
           >
-            <span className="inline sm:hidden">프롬프트</span>
-            <span className="hidden sm:inline">AI 프롬프팅 가이드</span>
+            <span>AI 프롬프팅 가이드</span>
           </Link>
         </div>
 
