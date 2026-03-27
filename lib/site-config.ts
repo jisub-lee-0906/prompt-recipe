@@ -7,9 +7,9 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://prompting-docs.example.com";
 export const SITE_UPDATED_AT = "2026-03-27";
 export const FEEDBACK_URL =
-  "mailto:feedback@example.com?subject=AI%20%ED%94%84%EB%A1%AC%ED%94%84%ED%8C%85%20%EA%B0%80%EC%9D%B4%EB%93%9C%20%ED%94%BC%EB%93%9C%EB%B0%B1";
+  "mailto:jisub0906@gmail.com?subject=AI%20%ED%94%84%EB%A1%AC%ED%94%84%ED%8C%85%20%EA%B0%80%EC%9D%B4%EB%93%9C%20%ED%94%BC%EB%93%9C%EB%B0%B1";
 export const REQUEST_TERM_URL =
-  "mailto:feedback@example.com?subject=%EB%88%84%EB%9D%BD%EB%90%9C%20%EC%9A%A9%EC%96%B4%20%EC%9A%94%EC%B2%AD";
+  "mailto:jisub0906@gmail.com?subject=%EB%88%84%EB%9D%BD%EB%90%9C%20%EC%9A%A9%EC%96%B4%20%EC%9A%94%EC%B2%AD";
 
 export const CATEGORY_META: Record<
   DocCategory,

@@ -242,6 +242,9 @@ export default async function DocPage({ params }: DocPageProps) {
               <p className="text-sm leading-7 text-muted-foreground">
                 문서가 유용했는지, 빠진 용어가 있는지 알려주시면 다음 업데이트에 반영하겠습니다.
               </p>
+              <p className="text-sm leading-7 text-muted-foreground">
+                피드백 메일: <a href={FEEDBACK_URL} className="font-medium text-primary underline-offset-4 hover:underline">jisub0906@gmail.com</a>
+              </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <a href={FEEDBACK_URL} className="inline-flex">

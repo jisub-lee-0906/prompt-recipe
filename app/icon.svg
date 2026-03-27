@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI 프롬프팅 가이드 아이콘">
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#10261c" />
+  <path
+    d="M21 16.5h15l7 7v24a4.5 4.5 0 0 1-4.5 4.5H21a4.5 4.5 0 0 1-4.5-4.5V21A4.5 4.5 0 0 1 21 16.5Z"
+    fill="#f7f6ef"
+  />
+  <path d="M36 16.5v8a2 2 0 0 0 2 2h8" fill="#d8e7dc" />
+  <path
+    d="M28 29h8M24 35h12M24 41h9"
+    stroke="#10261c"
+    stroke-linecap="round"
+    stroke-width="2.5"
+  />
+  <path
+    d="M39.5 34.5 50 46l-5.1 1.2-1.2 5.3-10.5-18Z"
+    fill="#66d28f"
+    stroke="#10261c"
+    stroke-linejoin="round"
+    stroke-width="2.5"
+  />
+</svg>
