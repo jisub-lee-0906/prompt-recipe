@@ -33,7 +33,7 @@ export function MobileNav({ docs }: MobileNavProps) {
             type="button"
             variant="outline"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             aria-label="문서 메뉴 열기"
           />
         }

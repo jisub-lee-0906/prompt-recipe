@@ -81,27 +81,6 @@ export default function Home() {
       })),
     },
   ];
-  const quickStartCards = [
-    {
-      title: "문서 허브에서 시작",
-      description: "정해진 순서를 따르기보다, 지금 막히는 개념부터 직접 찾아 읽는 시작점입니다.",
-      href: "/docs",
-      label: "문서 허브 보기",
-    },
-    {
-      title: "대표 문서로 시작",
-      description: "입문자가 가장 먼저 읽기 좋은 핵심 문서부터 가볍게 시작합니다.",
-      href: "/docs/ui-ux/modal",
-      label: "대표 문서 보기",
-    },
-    {
-      title: "비교 허브로 시작",
-      description: "용어가 헷갈릴 때 비교 허브에서 차이를 정리한 뒤 필요한 문서로 넘어갑니다.",
-      href: "/compare",
-      label: "비교 허브 보기",
-    },
-  ];
-
   return (
     <main className="bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.08),transparent_30%),linear-gradient(to_bottom,transparent,rgba(15,23,42,0.03))]">
       <section className="mx-auto flex min-h-[calc(100vh-var(--header-height))] w-full max-w-7xl items-center px-6 py-16">
@@ -190,30 +169,6 @@ export default function Home() {
           </Card>
         </div>
       </section>
-
-      <SectionHeader
-        eyebrow="시작 경로"
-        title="처음 시작하는 사람을 위한 3가지 경로"
-        description="문서 허브, 대표 문서, 비교 허브 중 지금 가장 편한 시작점 하나만 골라 읽으면 됩니다."
-      />
-      <CardGrid>
-        {quickStartCards.map((item) => (
-          <Link key={item.href} href={item.href} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-3">
-                <CardTitle className="text-xl">{item.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {item.description}
-                </p>
-              </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
-                {item.label}
-                <ArrowRight className="size-4" />
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </CardGrid>
 
       <section className="mx-auto grid w-full max-w-7xl gap-5 px-6 pb-12 lg:grid-cols-3">
         <LearningPromiseCard
