@@ -231,13 +231,16 @@ export function SearchModal({
     [filteredItems],
   );
   const groupedItems = React.useMemo(() => {
-    const source = query ? filteredItems : filteredItems;
+    const source =
+      !query && selectedKind === "전체"
+        ? filteredItems.filter((item) => item.kind === "docs")
+        : filteredItems;
 
     return GROUP_ORDER.map((kind) => ({
       kind,
       items: source.filter((item) => item.kind === kind),
     })).filter((group) => group.items.length > 0);
-  }, [filteredItems, query]);
+  }, [filteredItems, query, selectedKind]);
 
   if (!open) {
     return null;

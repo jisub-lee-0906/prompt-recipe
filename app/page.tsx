@@ -7,7 +7,10 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { HomeSearchButton } from "@/components/search/home-search-button";
+import {
+  HomeSearchButton,
+  SearchGuideButton,
+} from "@/components/search/home-search-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -130,46 +133,37 @@ export default function Home() {
               </p>
             </CardHeader>
             <CardContent className="space-y-3">
-              {[ 
-                {
-                  title: "개념이 막힐 때",
-                  description:
-                    "문서 허브나 검색에서 모달, 상태 관리, API 같은 개념 문서부터 바로 여세요.",
-                  href: "/docs",
-                  label: "문서 허브 열기",
-                },
-                {
-                  title: "바로 검색하고 싶을 때",
-                  description:
-                    "헤더 검색에서 문서 제목, 태그, 선행 개념을 바로 찾아 원하는 문서로 이동하세요.",
-                  href: "/docs",
-                  label: "검색 열기",
-                },
-                {
-                  title: "구체적인 예시가 필요할 때",
-                  description:
-                    "문서를 먼저 읽고 난 뒤에만 가이드, 사례집, 실습으로 확장하면 학습 흐름이 덜 흐트러집니다.",
-                  href: "/docs",
-                  label: "문서부터 읽기",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.href}
-                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-2">
-                      <p className="font-semibold">{item.title}</p>
-                      <p className="text-sm leading-6 text-muted-foreground">
-                        {item.description}
-                      </p>
-                      <p className="text-xs font-medium text-primary">{item.label}</p>
-                    </div>
-                    <ArrowRight className="mt-1 size-4 shrink-0 text-primary" />
+              <Link
+                href="/docs"
+                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="font-semibold">개념이 막힐 때</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      문서 허브나 검색에서 모달, 상태 관리, API 같은 개념 문서부터 바로 여세요.
+                    </p>
+                    <p className="text-xs font-medium text-primary">문서 허브 열기</p>
                   </div>
-                </Link>
-              ))}
+                  <ArrowRight className="mt-1 size-4 shrink-0 text-primary" />
+                </div>
+              </Link>
+              <SearchGuideButton />
+              <Link
+                href="/docs"
+                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="font-semibold">구체적인 예시가 필요할 때</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      문서를 먼저 읽고 난 뒤에만 가이드, 사례집, 실습으로 확장하면 학습 흐름이 덜 흐트러집니다.
+                    </p>
+                    <p className="text-xs font-medium text-primary">문서부터 읽기</p>
+                  </div>
+                  <ArrowRight className="mt-1 size-4 shrink-0 text-primary" />
+                </div>
+              </Link>
             </CardContent>
           </Card>
         </div>
