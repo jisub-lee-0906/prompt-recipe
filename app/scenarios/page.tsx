@@ -13,7 +13,7 @@ import { getWorkoutBySlug } from "@/lib/workouts";
 export const metadata: Metadata = {
   title: "상황 허브",
   description:
-    "회원가입, 검색, 관리자 화면처럼 실제 기능 상황별로 무엇부터 읽고 어떤 순서로 이어가야 하는지 안내하는 탐색 허브입니다.",
+    "회원가입, 검색, 관리자 화면처럼 실제 기능 상황에서 무엇부터 읽을지 막막할 때 참고하는 보조 탐색 허브입니다.",
 };
 
 export default function ScenariosPage() {
@@ -29,11 +29,11 @@ export default function ScenariosPage() {
           <div className="space-y-3">
             <h1 className="flex items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               <Compass className="size-7 text-primary" />
-              이럴 때는 무엇부터 읽을까
+              막막할 때 참고하는 상황 허브
             </h1>
             <p className="max-w-3xl text-base leading-8 text-muted-foreground">
               회원가입, 검색, 업로드처럼 실제 기능 상황을 기준으로 문서,
-              가이드, 사례집, 실습까지 한 번에 연결하는 진입 허브입니다.
+              가이드, 사례집, 실습까지 한 번에 연결해 주는 보조 탐색 도구입니다.
             </p>
           </div>
         </div>
@@ -100,11 +100,12 @@ export default function ScenariosPage() {
       </section>
 
       <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
-        <h2 className="text-xl font-semibold tracking-tight">상황 허브 활용 팁</h2>
+        <h2 className="text-xl font-semibold tracking-tight">이 보조 허브를 쓰는 순간</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
-          기능을 바로 만들기 전에 이 허브에서 문서 하나, 가이드 하나, 사례집 하나를
-          먼저 읽어보면 요청 품질이 크게 좋아집니다. 막막할수록 문서 수를 늘리기보다
-          상황별 추천 경로를 짧게 따라가는 편이 훨씬 빠릅니다.
+          기능을 바로 만들기 전에 무엇부터 읽어야 할지 막막할 때만 이 허브에서
+          문서 하나, 가이드 하나, 사례집 하나를 짧게 고르면 됩니다. 시작점은
+          문서 허브이고, 상황 허브는 그 다음 선택을 돕는 보조 도구로 쓰는 편이
+          더 자연스럽습니다.
         </p>
       </section>
     </main>

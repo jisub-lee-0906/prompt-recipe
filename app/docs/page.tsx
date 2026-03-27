@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Compass } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, LifeBuoy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -135,6 +135,73 @@ export default function DocsHubPage() {
             </CardContent>
           </Card>
         ))}
+      </section>
+
+      <section className="mt-10 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <div className="flex items-center gap-2">
+          <LifeBuoy className="size-5 text-primary" />
+          <h2 className="text-xl font-semibold tracking-tight">막힐 때 쓰는 보조 탐색</h2>
+        </div>
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
+          문서로 개념을 먼저 잡은 뒤에도 용어 차이나 실제 기능 흐름이 헷갈릴 때만
+          아래 보조 도구로 확장하면 됩니다.
+        </p>
+        <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          <Link href="/compare" className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
+              <CardHeader className="flex-1 space-y-3">
+                <CardTitle className="text-xl">비교 허브</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  모달과 다이얼로그처럼 비슷한 용어 차이를 빠르게 확인해야 할 때
+                  쓰는 보조 도구입니다.
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto border-t border-border/70 pt-4 text-sm font-medium text-primary">
+                비교 허브 열기
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href="/scenarios" className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
+              <CardHeader className="flex-1 space-y-3">
+                <CardTitle className="text-xl">상황 허브</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  회원가입, 검색처럼 실제 기능 단위에서 어떤 문서와 실전 자료를
+                  먼저 볼지 막막할 때 쓰는 보조 도구입니다.
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto border-t border-border/70 pt-4 text-sm font-medium text-primary">
+                상황 허브 열기
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-4 lg:grid-cols-3">
+          {[
+            {
+              title: "기능 가이드",
+              description: "문서 개념을 실제 화면·상태·API 흐름으로 이어서 보고 싶을 때 봅니다.",
+              href: "/guides",
+            },
+            {
+              title: "사례집",
+              description: "실제 기능을 AI IDE에 끝까지 시키는 완성형 예시를 보고 싶을 때 봅니다.",
+              href: "/casebooks",
+            },
+            {
+              title: "실습 훈련",
+              description: "직접 요청문을 고치며 연습하고 싶을 때 마지막 단계로 넘어갑니다.",
+              href: "/workouts",
+            },
+          ].map((item) => (
+            <Link key={item.href} href={item.href} className="flex min-h-32 flex-col rounded-2xl border border-border/70 bg-card/80 px-4 py-4 transition-colors hover:bg-muted/60">
+              <p className="font-semibold">{item.title}</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {item.description}
+              </p>
+            </Link>
+          ))}
+        </div>
       </section>
     </main>
   );

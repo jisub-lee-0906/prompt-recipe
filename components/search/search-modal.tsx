@@ -28,13 +28,12 @@ type KindFilter =
 
 const STARTER_HREFS = new Set([
   "/docs/ui-ux/modal",
-  "/docs/frontend/component",
+  "/docs/ui-ux/accessibility",
+  "/docs/frontend/state-management",
   "/docs/backend/api",
-  "/playbooks/planner-signup-page",
-  "/guides/signup-feature",
-  "/operations/codebase-reading",
-  "/casebooks/signup-project",
-  "/workouts/signup-request-fix",
+  "/docs/backend/request-response-schema",
+  "/docs/frontend/component",
+  "/docs/ui-ux/acceptance-criteria",
 ]);
 
 const KIND_LABELS: Record<SearchRecord["kind"], string> = {
@@ -48,12 +47,12 @@ const KIND_LABELS: Record<SearchRecord["kind"], string> = {
 };
 
 const GROUP_ORDER: SearchRecord["kind"][] = [
+  "docs",
+  "operations",
+  "guides",
+  "playbooks",
   "casebooks",
   "workouts",
-  "guides",
-  "operations",
-  "playbooks",
-  "docs",
   "hubs",
 ];
 
@@ -281,12 +280,12 @@ export function SearchModal({
               [
                 ["전체", "전체"],
                 ["docs", "문서"],
-                ["playbooks", "플레이북"],
                 ["guides", "가이드"],
                 ["operations", "운영"],
+                ["playbooks", "플레이북"],
                 ["casebooks", "사례집"],
                 ["workouts", "실습"],
-                ["hubs", "허브"],
+                ["hubs", "보조 허브"],
               ] as const
             ).map(([value, label]) => (
               <Button
@@ -304,7 +303,7 @@ export function SearchModal({
 
         <Command.List className="max-h-[32rem] overflow-y-auto p-3">
           <Command.Empty className="space-y-4 px-3 py-10 text-center text-sm text-muted-foreground">
-            <p>검색 결과가 없습니다.</p>
+            <p>검색 결과가 없습니다. 막히는 용어 차이나 기능 상황은 아래 보조 탐색으로 이어서 볼 수 있습니다.</p>
             <div className="flex flex-wrap justify-center gap-2">
               <Button
                 type="button"
@@ -332,7 +331,7 @@ export function SearchModal({
           </Command.Empty>
 
           {!query ? (
-            <Command.Group heading="추천 시작">
+            <Command.Group heading="문서부터 시작">
               {starterItems.map((item) => (
                 <SearchItem
                   key={item.href}

@@ -25,10 +25,6 @@ export function Header({ docs }: { docs: DocEntry[] }) {
 
         <div className="flex items-center gap-2">
           <NavLink href="/docs" label="문서 허브" className="lg:inline-flex" />
-          <NavLink href="/guides" label="기능 가이드" className="xl:inline-flex" />
-          <NavLink href="/casebooks" label="사례집" className="xl:inline-flex" />
-          <NavLink href="/workouts" label="실습 훈련" className="2xl:inline-flex" />
-          <NavLink href="/compare" label="비교 허브" className="2xl:inline-flex" />
           <SearchTrigger className="h-9 w-auto min-w-0 justify-between gap-3 px-3 text-muted-foreground sm:min-w-64" />
           <ThemeToggle />
         </div>

@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { useSearchModal } from "@/components/search/search-provider";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -24,6 +25,7 @@ type MobileNavProps = {
 
 export function MobileNav({ docs }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
+  const { open: openSearch } = useSearchModal();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -44,7 +46,7 @@ export function MobileNav({ docs }: MobileNavProps) {
         <SheetHeader className="border-b border-border/70 px-4 py-4">
           <SheetTitle>문서 메뉴</SheetTitle>
           <SheetDescription>
-            문서, 사례집, 실습, 비교 허브를 한 번에 탐색할 수 있습니다.
+            문서 허브와 검색을 먼저 쓰고, 필요할 때만 보조 도구로 확장할 수 있습니다.
           </SheetDescription>
         </SheetHeader>
         <div className="min-h-0 flex-1 p-4">
@@ -56,20 +58,30 @@ export function MobileNav({ docs }: MobileNavProps) {
                     빠른 이동
                   </p>
                   <p className="text-sm leading-6 text-muted-foreground">
-                    문서 허브와 실전 사례, 실습 훈련, 카테고리 문서를 빠르게 열 수
+                    문서 허브와 검색에서 먼저 시작하고, 카테고리 문서로 바로 이동할 수
                     있습니다.
                   </p>
                 </div>
 
                 <div className="grid gap-2 px-3">
                   <QuickLink href="/docs" label="문서 허브 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/playbooks" label="플레이북 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/guides" label="기능 가이드 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/operations" label="운영 가이드 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/casebooks" label="사례집 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/workouts" label="실습 훈련 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/compare" label="비교 허브 보기" onClick={() => setOpen(false)} />
-                  <QuickLink href="/scenarios" label="상황 허브 보기" onClick={() => setOpen(false)} />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-11 justify-between rounded-2xl px-4 text-muted-foreground"
+                    onClick={() => {
+                      setOpen(false);
+                      openSearch();
+                    }}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Search className="size-4" />
+                      검색 열기
+                    </span>
+                    <span className="rounded-md border border-border/80 bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground/80">
+                      Ctrl/Cmd + K
+                    </span>
+                  </Button>
                 </div>
 
                 {DOC_CATEGORIES.map((category) => {
@@ -89,6 +101,29 @@ export function MobileNav({ docs }: MobileNavProps) {
                     />
                   );
                 })}
+
+                <div className="space-y-2 px-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    다음 단계
+                  </p>
+                  <div className="grid gap-2">
+                    <QuickLink href="/guides" label="기능 가이드" onClick={() => setOpen(false)} />
+                    <QuickLink href="/casebooks" label="사례집" onClick={() => setOpen(false)} />
+                    <QuickLink href="/workouts" label="실습 훈련" onClick={() => setOpen(false)} />
+                    <QuickLink href="/playbooks" label="플레이북" onClick={() => setOpen(false)} />
+                    <QuickLink href="/operations" label="운영 가이드" onClick={() => setOpen(false)} />
+                  </div>
+                </div>
+
+                <div className="space-y-2 px-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    보조 도구
+                  </p>
+                  <div className="grid gap-2">
+                    <QuickLink href="/compare" label="비교 허브" onClick={() => setOpen(false)} />
+                    <QuickLink href="/scenarios" label="상황 허브" onClick={() => setOpen(false)} />
+                  </div>
+                </div>
               </div>
             </ScrollArea>
           </aside>
