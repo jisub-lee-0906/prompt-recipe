@@ -105,15 +105,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <Link
               key={doc.slug}
               href={doc.href}
-              className="rounded-[1.5rem] border border-border/70 bg-card/80 px-5 py-5 transition-colors hover:bg-muted/60"
+              className="flex min-h-36 flex-col rounded-[1.5rem] border border-border/70 bg-card/80 px-5 py-5 transition-colors hover:bg-muted/60"
             >
               <div className="flex items-center gap-2">
                 <Badge variant="outline">{String(index + 1).padStart(2, "0")}</Badge>
                 <Badge variant="secondary">{doc.priority}</Badge>
                 <Badge variant="outline">{doc.difficulty}</Badge>
               </div>
-              <p className="mt-3 font-semibold">{doc.title}</p>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="mt-3 line-clamp-2 font-semibold">{doc.title}</p>
+              <p className="mt-2 line-clamp-4 text-sm leading-6 text-muted-foreground">
                 {doc.description}
               </p>
             </Link>
@@ -123,20 +123,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       <section className="grid gap-4">
         {docs.map((doc, index) => (
-          <Link key={doc.href} href={doc.href}>
-            <Card className="rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-              <CardHeader className="space-y-4 px-6 py-6">
+          <Link key={doc.href} href={doc.href} className="block h-full">
+            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+              <CardHeader className="flex-1 space-y-4 px-6 py-6">
                 <div className="flex flex-wrap items-center gap-3">
                   <Badge variant="outline">{String(index + 1).padStart(2, "0")}</Badge>
                   <Badge variant="secondary">{doc.priority}</Badge>
                   <Badge variant="outline">{doc.difficulty}</Badge>
-                  <CardTitle className="text-xl">{doc.title}</CardTitle>
                 </div>
-                <p className="text-sm leading-7 text-muted-foreground">
+                <CardTitle className="line-clamp-2 text-xl">{doc.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {doc.description}
                 </p>
               </CardHeader>
-              <CardContent className="space-y-3 border-t border-border/70 px-6 py-4">
+              <CardContent className="mt-auto space-y-3 border-t border-border/70 px-6 py-4">
                 <div className="flex flex-wrap gap-2">
                   {doc.prerequisites.length > 0 ? (
                     doc.prerequisites.map((slug) => {

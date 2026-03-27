@@ -75,7 +75,7 @@ export default function DocsHubPage() {
           {starterDocs.map((doc) => (
             <Link key={doc.slug} href={doc.href} className="block h-full">
               <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
-                <CardHeader className="space-y-3">
+                <CardHeader className="flex-1 space-y-3">
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="secondary">{doc.priority}</Badge>
                     <Badge variant="outline">{doc.difficulty}</Badge>
@@ -83,10 +83,10 @@ export default function DocsHubPage() {
                       {DOC_CATEGORY_LABELS[doc.category]}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl">{doc.title}</CardTitle>
+                  <CardTitle className="line-clamp-2 text-xl">{doc.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="mt-auto">
-                  <p className="text-sm leading-7 text-muted-foreground">
+                <CardContent className="mt-auto border-t border-border/70 pt-4">
+                  <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                     {doc.description}
                   </p>
                 </CardContent>
@@ -98,39 +98,39 @@ export default function DocsHubPage() {
 
       <section className="mt-8 grid gap-5 lg:grid-cols-3">
         {categoryCards.map((item) => (
-          <Card
-            key={item.category}
-            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
-          >
-            <CardHeader className="space-y-3">
-              <CardTitle className="text-xl">{item.title}</CardTitle>
-              <p className="text-sm leading-7 text-muted-foreground">
-                {item.description}
-              </p>
-            </CardHeader>
-            <CardContent className="mt-auto space-y-3">
-              {item.docs.map((doc) => (
-                <Link
-                  key={doc.slug}
-                  href={doc.href}
-                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
-                >
+            <Card
+              key={item.category}
+              className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
+            >
+              <CardHeader className="flex-1 space-y-3">
+                <CardTitle className="text-xl">{item.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
+                  {item.description}
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto space-y-3">
+                {item.docs.map((doc) => (
+                  <Link
+                    key={doc.slug}
+                    href={doc.href}
+                    className="flex min-h-32 flex-col rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                  >
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline">{doc.priority}</Badge>
                     <Badge variant="outline">{doc.difficulty}</Badge>
                   </div>
-                  <p className="mt-2 font-semibold">{doc.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {doc.description}
-                  </p>
-                </Link>
-              ))}
-              <Link
-                href={`/docs/${item.category}`}
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary"
-              >
-                카테고리 전체 보기
-                <ArrowRight className="size-4" />
+                    <p className="mt-2 line-clamp-2 font-semibold">{doc.title}</p>
+                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                      {doc.description}
+                    </p>
+                  </Link>
+                ))}
+                <Link
+                  href={`/docs/${item.category}`}
+                  className="inline-flex items-center gap-2 border-t border-border/70 pt-1 text-sm font-medium text-primary"
+                >
+                  카테고리 전체 보기
+                  <ArrowRight className="size-4" />
               </Link>
             </CardContent>
           </Card>

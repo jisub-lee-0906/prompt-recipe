@@ -194,17 +194,17 @@ export default function Home() {
         {casebooks.map((casebook) => (
           <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`} className="block h-full">
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
+              <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
                   <Badge variant="outline">완성형 사례</Badge>
                 </div>
-                <CardTitle className="text-xl">{casebook.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
+                <CardTitle className="line-clamp-2 text-xl">{casebook.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {casebook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 border-t border-border/70 pt-4 text-sm font-medium text-primary">
                 <BookCopy className="size-4" />
                 사례집 보기
               </CardContent>
@@ -235,31 +235,31 @@ export default function Home() {
             key={section.title}
             className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
           >
-            <CardHeader className="space-y-3">
-              <CardTitle className="text-xl">{section.title}</CardTitle>
-              <p className="text-sm leading-7 text-muted-foreground">
-                {section.description}
-              </p>
-            </CardHeader>
-            <CardContent className="mt-auto space-y-3">
-              {section.items.map((item) => (
+              <CardHeader className="flex-1 space-y-3">
+                <CardTitle className="text-xl">{section.title}</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  {section.description}
+                </p>
+              </CardHeader>
+              <CardContent className="mt-auto space-y-3">
+                {section.items.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex min-h-28 flex-col rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                  >
+                    <p className="line-clamp-2 font-semibold">{item.title}</p>
+                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
+                      {item.summary}
+                    </p>
+                  </Link>
+                ))}
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                  href={section.href}
+                  className="inline-flex items-center gap-2 border-t border-border/70 pt-1 text-sm font-medium text-primary"
                 >
-                  <p className="font-semibold">{item.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground line-clamp-2">
-                    {item.summary}
-                  </p>
-                </Link>
-              ))}
-              <Link
-                href={section.href}
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary"
-              >
-                {section.label}
-                <ArrowRight className="size-4" />
+                  {section.label}
+                  <ArrowRight className="size-4" />
               </Link>
             </CardContent>
           </Card>
@@ -333,10 +333,10 @@ export default function Home() {
           return (
             <Link key={item.category} href={`/docs/${item.category}`} className="block h-full">
               <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-                <CardHeader className="flex flex-row items-start justify-between gap-4 px-6 py-6">
+                <CardHeader className="flex min-h-44 flex-1 flex-row items-start justify-between gap-4 px-6 py-6">
                   <div className="space-y-3">
                     <CardTitle className="text-xl">{item.title}</CardTitle>
-                    <p className="text-sm leading-7 text-muted-foreground">
+                    <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                       {item.description}
                     </p>
                   </div>
@@ -422,11 +422,11 @@ function LearningPromiseCard({
   description: string;
 }) {
   return (
-    <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80">
-      <CardHeader className="space-y-3">
+      <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80">
+      <CardHeader className="flex-1 space-y-3">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="mt-auto">
+      <CardContent className="mt-auto border-t border-border/70 pt-4">
         <p className="text-sm leading-7 text-muted-foreground">{description}</p>
       </CardContent>
     </Card>

@@ -52,18 +52,18 @@ export default function CasebooksPage() {
         {casebooks.map((casebook) => (
           <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`} className="block h-full">
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
+              <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
                   <Badge variant="outline">완성형 사례</Badge>
                 </div>
-                <CardTitle className="text-xl">{casebook.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
+                <CardTitle className="line-clamp-2 text-xl">{casebook.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {casebook.summary}
                 </p>
               </CardHeader>
-              <CardContent className="mt-auto space-y-3">
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="mt-auto space-y-3 border-t border-border/70 pt-4">
+                <p className="line-clamp-3 text-sm text-muted-foreground">
                   대표 결과물: {casebook.deliverables[0]}
                 </p>
                 <div className="inline-flex items-center gap-2 text-sm font-medium text-primary">
@@ -89,11 +89,11 @@ export default function CasebooksPage() {
               <Link
                 key={casebook.slug}
                 href={`/casebooks/${casebook.slug}`}
-                className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+                className="flex min-h-36 flex-col rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
               >
                 <Badge variant="secondary">{casebook.level}</Badge>
-                <p className="mt-3 font-semibold">{casebook.title}</p>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 line-clamp-2 font-semibold">{casebook.title}</p>
+                <p className="mt-2 line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {casebook.goal}
                 </p>
               </Link>

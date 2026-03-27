@@ -48,17 +48,17 @@ export default function WorkoutsPage() {
         {workouts.map((workout) => (
           <Link key={workout.slug} href={`/workouts/${workout.slug}`} className="block h-full">
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
+              <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{workout.level}</Badge>
                   <Badge variant="outline">실습</Badge>
                 </div>
-                <CardTitle className="text-2xl">{workout.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
+                <CardTitle className="line-clamp-2 text-2xl">{workout.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {workout.problem}
                 </p>
               </CardHeader>
-              <CardContent className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary">
+              <CardContent className="mt-auto inline-flex items-center gap-2 border-t border-border/70 pt-4 text-sm font-medium text-primary">
                 실습 시작하기
                 <ArrowRight className="size-4" />
               </CardContent>
@@ -80,11 +80,11 @@ export default function WorkoutsPage() {
               <Link
                 key={workout.slug}
                 href={`/workouts/${workout.slug}`}
-                className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+                className="flex min-h-36 flex-col rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
               >
                 <Badge variant="secondary">{workout.level}</Badge>
-                <p className="mt-3 font-semibold">{workout.title}</p>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 line-clamp-2 font-semibold">{workout.title}</p>
+                <p className="mt-2 line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {workout.targetOutcome}
                 </p>
               </Link>
@@ -105,14 +105,14 @@ export default function WorkoutsPage() {
             <Link
               key={workout.slug}
               href={`/workouts/${workout.slug}`}
-              className="rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+              className="flex min-h-36 flex-col rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
             >
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary">{workout.level}</Badge>
                 <Badge variant="outline">운영형 실습</Badge>
               </div>
-              <p className="mt-3 font-semibold">{workout.title}</p>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
+              <p className="mt-3 line-clamp-2 font-semibold">{workout.title}</p>
+              <p className="mt-2 line-clamp-4 text-sm leading-7 text-muted-foreground">
                 {workout.targetOutcome}
               </p>
             </Link>

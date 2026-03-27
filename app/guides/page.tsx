@@ -71,20 +71,20 @@ export default function GuidesPage() {
         {guides.map((guide) => (
           <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block h-full">
             <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
-              <CardHeader className="space-y-4">
+              <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{guide.level}</Badge>
                   <Badge variant="outline">기능 단위</Badge>
                 </div>
-                <CardTitle className="text-2xl">{guide.title}</CardTitle>
-                <p className="text-sm leading-7 text-muted-foreground">
+                <CardTitle className="line-clamp-2 text-2xl">{guide.title}</CardTitle>
+                <p className="line-clamp-4 text-sm leading-7 text-muted-foreground">
                   {guide.summary}
                 </p>
               </CardHeader>
-              <CardContent className="mt-auto space-y-4">
+              <CardContent className="mt-auto space-y-4 border-t border-border/70 pt-4">
                 <div>
                   <p className="text-sm font-medium">기능 목표</p>
-                  <p className="mt-1 text-sm leading-7 text-muted-foreground">
+                  <p className="mt-1 line-clamp-3 text-sm leading-7 text-muted-foreground">
                     {guide.goal}
                   </p>
                 </div>
