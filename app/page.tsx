@@ -90,7 +90,7 @@ export default function Home() {
     },
   ];
   return (
-    <main className="bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.08),transparent_30%),linear-gradient(to_bottom,transparent,rgba(15,23,42,0.03))]">
+    <main className="bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.04),transparent_24%),linear-gradient(to_bottom,transparent,rgba(15,23,42,0.015))]">
       <section className="mx-auto flex min-h-[calc(100vh-var(--header-height))] w-full max-w-7xl items-center px-6 py-16">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div className="space-y-8">
@@ -121,7 +121,7 @@ export default function Home() {
             </div>
           </div>
 
-          <Card className="rounded-[1.75rem] border border-border/70 bg-card/80">
+          <Card className="rounded-[1.5rem] border border-border/80 bg-card/78">
             <CardHeader className="space-y-3">
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Sparkles className="size-4 text-primary" />
@@ -135,7 +135,7 @@ export default function Home() {
             <CardContent className="space-y-3">
               <Link
                 href="/docs"
-                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                className="block rounded-[1.25rem] border border-border/80 bg-background/72 px-4 py-4 transition-colors hover:bg-muted/45"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-2">
@@ -151,7 +151,7 @@ export default function Home() {
               <SearchGuideButton />
               <Link
                 href="/docs"
-                className="block rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                className="block rounded-[1.25rem] border border-border/80 bg-background/72 px-4 py-4 transition-colors hover:bg-muted/45"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-2">
@@ -195,7 +195,7 @@ export default function Home() {
 
           return (
             <Link key={item.category} href={`/docs/${item.category}`} className="block h-full">
-              <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 py-0 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78 py-0 transition-colors duration-200 hover:bg-muted/35">
                 <CardHeader className="flex min-h-44 flex-1 flex-row items-start justify-between gap-4 px-6 py-6">
                   <div className="space-y-3">
                     <CardTitle className="text-xl">{item.title}</CardTitle>
@@ -203,7 +203,7 @@ export default function Home() {
                       {item.description}
                     </p>
                   </div>
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-primary/8 text-primary">
                     <Icon className="size-5" />
                   </div>
                 </CardHeader>
@@ -225,7 +225,7 @@ export default function Home() {
         {compactSections.map((section) => (
           <Card
             key={section.title}
-            className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
+            className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78"
           >
             <CardHeader className="flex-1 space-y-3">
               <CardTitle className="text-xl">{section.title}</CardTitle>
@@ -238,7 +238,7 @@ export default function Home() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex min-h-28 flex-col rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                  className="flex min-h-28 flex-col rounded-[1.25rem] border border-border/80 bg-background/72 px-4 py-4 transition-colors hover:bg-muted/45"
                 >
                   <p className="line-clamp-2 font-semibold">{item.title}</p>
                   <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
@@ -259,7 +259,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto w-full max-w-7xl px-6 pb-12">
-        <div className="rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+        <div className="rounded-[1.5rem] border border-dashed border-border/80 bg-background/55 px-6 py-6">
           <p className="text-sm font-medium text-foreground">막힐 때 쓰는 보조 도구</p>
           <p className="mt-2 max-w-4xl text-sm leading-7 text-muted-foreground">
             용어 차이가 헷갈릴 때는 비교 허브, 실제 기능 상황에서 무엇부터 읽어야
@@ -284,7 +284,7 @@ export default function Home() {
         description="문서와 학습 허브가 어떻게 발전하고 있는지 빠르게 확인할 수 있습니다."
       />
       <section className="mx-auto w-full max-w-7xl px-6 pb-24">
-        <div className="rounded-[1.75rem] border border-border/70 bg-card/80 p-6">
+        <div className="rounded-[1.5rem] border border-border/80 bg-card/78 p-6">
           <div className="space-y-4">
             {CHANGELOG_ENTRIES.slice(0, 3).map((entry) => (
               <div
@@ -339,7 +339,7 @@ function LearningPromiseCard({
   description: string;
 }) {
   return (
-      <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80">
+      <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78">
       <CardHeader className="flex-1 space-y-3">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>

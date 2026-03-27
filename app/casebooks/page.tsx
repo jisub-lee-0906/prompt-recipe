@@ -23,7 +23,7 @@ export default function CasebooksPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
-      <section className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
+      <section className="rounded-[1.5rem] border border-border/80 bg-card/72 px-6 py-8 sm:px-10 sm:py-10">
         <div className="space-y-4">
           <Badge variant="secondary" className="w-fit">
             프로젝트 사례집
@@ -51,7 +51,7 @@ export default function CasebooksPage() {
       <section className="mt-8 grid gap-5 lg:grid-cols-3">
         {casebooks.map((casebook) => (
           <Link key={casebook.slug} href={`/casebooks/${casebook.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78 transition-colors duration-200 hover:bg-muted/45">
               <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{casebook.level}</Badge>
@@ -76,7 +76,7 @@ export default function CasebooksPage() {
         ))}
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-border/80 bg-background/68 px-6 py-6">
         <div className="flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">
@@ -89,7 +89,7 @@ export default function CasebooksPage() {
               <Link
                 key={casebook.slug}
                 href={`/casebooks/${casebook.slug}`}
-                className="flex min-h-36 flex-col rounded-2xl border border-border/70 bg-card/80 p-5 transition-colors hover:bg-muted/60"
+                className="flex min-h-36 flex-col rounded-[1.25rem] border border-border/80 bg-card/78 p-5 transition-colors hover:bg-muted/45"
               >
                 <Badge variant="secondary">{casebook.level}</Badge>
                 <p className="mt-3 line-clamp-2 font-semibold">{casebook.title}</p>
@@ -102,7 +102,7 @@ export default function CasebooksPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-border/80 bg-background/68 px-6 py-6">
         <h2 className="text-xl font-semibold tracking-tight">사례집 읽는 법</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <InfoBlock
@@ -120,7 +120,7 @@ export default function CasebooksPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-dashed border-border/80 bg-background/55 px-6 py-6">
         <h2 className="text-xl font-semibold tracking-tight">사례집을 읽을 때의 기준</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
           사례집은 예쁜 화면 예시가 아니라, 실제 기능을 처음부터 끝까지 어떻게

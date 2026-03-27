@@ -17,7 +17,7 @@ export default function GuidesPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
-      <section className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
+      <section className="rounded-[1.5rem] border border-border/80 bg-card/72 px-6 py-8 sm:px-10 sm:py-10">
         <div className="space-y-4">
           <Badge variant="secondary" className="w-fit">
             기능 가이드
@@ -35,7 +35,7 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-border/80 bg-background/68 px-6 py-6">
         <div className="flex items-center gap-2">
           <Workflow className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">
@@ -58,7 +58,7 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-dashed border-border/80 bg-background/55 px-6 py-6">
         <h2 className="text-xl font-semibold tracking-tight">가이드를 읽을 때 놓치기 쉬운 것</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
           기능 가이드는 순서대로 읽는 것이 중요합니다. 뒤 단계의 상태나 모바일 조건만
@@ -70,7 +70,7 @@ export default function GuidesPage() {
       <section className="mt-8 grid gap-5 lg:grid-cols-2">
         {guides.map((guide) => (
           <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78 transition-colors duration-200 hover:bg-muted/45">
               <CardHeader className="flex-1 space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{guide.level}</Badge>

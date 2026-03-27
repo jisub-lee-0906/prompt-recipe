@@ -25,7 +25,7 @@ export default function DocsHubPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
-      <section className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
+      <section className="rounded-[1.5rem] border border-border/80 bg-card/72 px-6 py-8 sm:px-10 sm:py-10">
         <div className="space-y-4">
           <Badge variant="secondary" className="w-fit">
             문서 허브
@@ -43,7 +43,7 @@ export default function DocsHubPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[1.75rem] border border-border/70 bg-background/70 px-6 py-6">
+      <section className="mt-8 rounded-[1.5rem] border border-border/80 bg-background/68 px-6 py-6">
         <div className="flex items-center gap-2">
           <Compass className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">이 페이지를 쓰는 법</h2>
@@ -74,7 +74,7 @@ export default function DocsHubPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {starterDocs.map((doc) => (
             <Link key={doc.slug} href={doc.href} className="block h-full">
-              <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
+              <Card className="flex h-full flex-col rounded-[1.375rem] border border-border/80 bg-card/78 transition-colors hover:bg-muted/45">
                 <CardHeader className="flex-1 space-y-3">
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="secondary">{doc.priority}</Badge>
@@ -100,7 +100,7 @@ export default function DocsHubPage() {
         {categoryCards.map((item) => (
             <Card
               key={item.category}
-              className="flex h-full flex-col rounded-[1.75rem] border border-border/70 bg-card/80"
+              className="flex h-full flex-col rounded-[1.5rem] border border-border/80 bg-card/78"
             >
               <CardHeader className="flex-1 space-y-3">
                 <CardTitle className="text-xl">{item.title}</CardTitle>
@@ -113,7 +113,7 @@ export default function DocsHubPage() {
                   <Link
                     key={doc.slug}
                     href={doc.href}
-                    className="flex min-h-32 flex-col rounded-2xl border border-border/70 bg-background/70 px-4 py-4 transition-colors hover:bg-muted/60"
+                    className="flex min-h-32 flex-col rounded-[1.25rem] border border-border/80 bg-background/72 px-4 py-4 transition-colors hover:bg-muted/45"
                   >
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline">{doc.priority}</Badge>
@@ -137,7 +137,7 @@ export default function DocsHubPage() {
         ))}
       </section>
 
-      <section className="mt-10 rounded-[1.75rem] border border-dashed border-border/70 bg-background/60 px-6 py-6">
+      <section className="mt-10 rounded-[1.5rem] border border-dashed border-border/80 bg-background/55 px-6 py-6">
         <div className="flex items-center gap-2">
           <LifeBuoy className="size-5 text-primary" />
           <h2 className="text-xl font-semibold tracking-tight">막힐 때 쓰는 보조 탐색</h2>
@@ -148,7 +148,7 @@ export default function DocsHubPage() {
         </p>
         <div className="mt-5 grid gap-4 lg:grid-cols-2">
           <Link href="/compare" className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
+            <Card className="flex h-full flex-col rounded-[1.375rem] border border-border/80 bg-card/78 transition-colors hover:bg-muted/45">
               <CardHeader className="flex-1 space-y-3">
                 <CardTitle className="text-xl">비교 허브</CardTitle>
                 <p className="text-sm leading-7 text-muted-foreground">
@@ -162,7 +162,7 @@ export default function DocsHubPage() {
             </Card>
           </Link>
           <Link href="/scenarios" className="block h-full">
-            <Card className="flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/80 transition-colors hover:bg-muted/60">
+            <Card className="flex h-full flex-col rounded-[1.375rem] border border-border/80 bg-card/78 transition-colors hover:bg-muted/45">
               <CardHeader className="flex-1 space-y-3">
                 <CardTitle className="text-xl">상황 허브</CardTitle>
                 <p className="text-sm leading-7 text-muted-foreground">
@@ -194,7 +194,7 @@ export default function DocsHubPage() {
               href: "/workouts",
             },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="flex min-h-32 flex-col rounded-2xl border border-border/70 bg-card/80 px-4 py-4 transition-colors hover:bg-muted/60">
+            <Link key={item.href} href={item.href} className="flex min-h-32 flex-col rounded-[1.25rem] border border-border/80 bg-card/78 px-4 py-4 transition-colors hover:bg-muted/45">
               <p className="font-semibold">{item.title}</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {item.description}
