@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { ChevronUp, Gauge, Pause, Play, Square, Volume2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, Gauge, Pause, Play, Square, Volume2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -20,11 +20,59 @@ type TtsBlock = {
   kind: string;
 };
 
+type TtsSegment = {
+  blockIndex: number;
+  text: string;
+};
+
 const BLOCK_SELECTOR = "[data-tts-block='true']";
 const RATE_STEPS = [0.95, 1, 1.15] as const;
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function splitTextToSegments(text: string) {
+  const normalized = normalizeText(text);
+
+  if (!normalized) {
+    return [];
+  }
+
+  const sentenceChunks = normalized
+    .split(/(?<=[.!?。！？])\s+/)
+    .map(normalizeText)
+    .filter(Boolean);
+
+  const sourceChunks = sentenceChunks.length > 0 ? sentenceChunks : [normalized];
+  const segments: string[] = [];
+
+  for (const chunk of sourceChunks) {
+    if (chunk.length <= 90) {
+      segments.push(chunk);
+      continue;
+    }
+
+    const phraseChunks = chunk
+      .split(/(?<=[,;:·])\s+/)
+      .map(normalizeText)
+      .filter(Boolean);
+
+    const queue = phraseChunks.length > 0 ? phraseChunks : [chunk];
+
+    for (const phrase of queue) {
+      if (phrase.length <= 90) {
+        segments.push(phrase);
+        continue;
+      }
+
+      for (let start = 0; start < phrase.length; start += 90) {
+        segments.push(phrase.slice(start, start + 90).trim());
+      }
+    }
+  }
+
+  return segments.filter(Boolean);
 }
 
 function getBlocks(targetId: string) {
@@ -35,6 +83,7 @@ function getBlocks(targetId: string) {
   }
 
   return Array.from(root.querySelectorAll<HTMLElement>(BLOCK_SELECTOR))
+    .filter((element) => !element.parentElement?.closest(BLOCK_SELECTOR))
     .map((element) => ({
       element,
       text: normalizeText(element.innerText),
@@ -66,6 +115,7 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
   const [blocks, setBlocks] = React.useState<TtsBlock[]>([]);
   const [voices, setVoices] = React.useState<SpeechSynthesisVoice[]>([]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentSegmentIndex, setCurrentSegmentIndex] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false);
   const [rate, setRate] = React.useState<(typeof RATE_STEPS)[number]>(1);
@@ -80,6 +130,17 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
   const startTimeoutRef = React.useRef<number | null>(null);
 
   const selectedVoice = React.useMemo(() => chooseKoreanVoice(voices), [voices]);
+  const segments = React.useMemo<TtsSegment[]>(
+    () =>
+      blocks.flatMap((block, blockIndex) =>
+        splitTextToSegments(block.text).map((text) => ({
+          blockIndex,
+          text,
+        })),
+      ),
+    [blocks],
+  );
+  const currentSegment = segments[currentSegmentIndex] ?? null;
 
   React.useEffect(() => {
     blocksRef.current = blocks;
@@ -141,18 +202,25 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
 
       if (resetIndex) {
         setCurrentIndex(0);
+        setCurrentSegmentIndex(0);
       }
     },
     [clearActiveBlock, clearStartTimeout],
   );
 
   const playFrom = React.useCallback(
-    function playFrom(index: number, allowVoiceFallback = true) {
+    function playFrom(segmentIndex: number, allowVoiceFallback = true) {
       const nextBlocks = blocksRef.current;
-      const block = nextBlocks[index];
+      const nextSegments = nextBlocks.flatMap((block, blockIndex) =>
+        splitTextToSegments(block.text).map((text) => ({
+          blockIndex,
+          text,
+        })),
+      );
+      const segment = nextSegments[segmentIndex];
       const voice = voiceRef.current;
 
-      if (!block) {
+      if (!segment) {
         stopPlayback(true);
         return;
       }
@@ -164,15 +232,16 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
       clearStartTimeout();
       window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(block.text);
+      const utterance = new SpeechSynthesisUtterance(segment.text);
       if (voice && allowVoiceFallback) {
         utterance.voice = voice;
       }
       utterance.lang = voice?.lang ?? "ko-KR";
       utterance.rate = rateRef.current;
 
-      setCurrentIndex(index);
-      setActiveBlock(index);
+      setCurrentSegmentIndex(segmentIndex);
+      setCurrentIndex(segment.blockIndex);
+      setActiveBlock(segment.blockIndex);
       setIsPlaying(true);
       setIsPaused(false);
 
@@ -208,9 +277,9 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
 
         clearStartTimeout();
 
-        const nextIndex = index + 1;
+        const nextIndex = segmentIndex + 1;
 
-        if (nextIndex < nextBlocks.length) {
+        if (nextIndex < nextSegments.length) {
           playFrom(nextIndex);
           return;
         }
@@ -238,7 +307,7 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
         window.speechSynthesis.cancel();
 
         if (allowVoiceFallback) {
-          playFrom(index, false);
+          playFrom(segmentIndex, false);
           return;
         }
 
@@ -286,13 +355,46 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
     setCurrentIndex(0);
   }, [blocks, currentIndex]);
 
+  React.useEffect(() => {
+    if (currentSegmentIndex < segments.length) {
+      return;
+    }
+
+    setCurrentSegmentIndex(0);
+  }, [currentSegmentIndex, segments.length]);
+
+  const getSegmentIndexForBlock = React.useCallback(
+    (blockIndex: number) => segments.findIndex((segment) => segment.blockIndex === blockIndex),
+    [segments],
+  );
+
+  const jumpToBlock = React.useCallback(
+    (blockIndex: number) => {
+      const nextBlockIndex = Math.max(0, Math.min(blockIndex, blocks.length - 1));
+      const nextSegmentIndex = getSegmentIndexForBlock(nextBlockIndex);
+
+      if (nextSegmentIndex === -1) {
+        return;
+      }
+
+      setCurrentIndex(nextBlockIndex);
+      setCurrentSegmentIndex(nextSegmentIndex);
+      setActiveBlock(nextBlockIndex);
+
+      if (isPlaying) {
+        playFrom(nextSegmentIndex);
+      }
+    },
+    [blocks.length, getSegmentIndexForBlock, isPlaying, playFrom, setActiveBlock],
+  );
+
   const handleTogglePlayback = React.useCallback(() => {
     if (!isSupported) {
       toast.error("이 브라우저에서는 음성 읽기를 지원하지 않습니다.");
       return;
     }
 
-    if (blocks.length === 0) {
+    if (segments.length === 0) {
       toast.error("읽을 수 있는 본문을 찾지 못했습니다.");
       return;
     }
@@ -315,8 +417,8 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
 
     setIsPlaying(true);
     setIsPaused(false);
-    playFrom(currentIndex);
-  }, [blocks.length, currentIndex, isPaused, isPlaying, isSupported, playFrom, selectedVoice]);
+    playFrom(currentSegmentIndex);
+  }, [currentSegmentIndex, isPaused, isPlaying, isSupported, playFrom, segments.length, selectedVoice]);
 
   const handleStop = React.useCallback(() => {
     if (!isSupported) {
@@ -332,14 +434,12 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
     setRate(nextRate);
 
     if (isPlaying && !isPaused) {
-      playFrom(currentIndex);
+      playFrom(currentSegmentIndex);
     }
-  }, [currentIndex, isPaused, isPlaying, playFrom, rate]);
+  }, [currentSegmentIndex, isPaused, isPlaying, playFrom, rate]);
 
   const currentBlock = blocks[currentIndex];
   const progressLabel = blocks.length > 0 ? `${currentIndex + 1}/${blocks.length}` : "0/0";
-  const voiceLabel = selectedVoice ? `${selectedVoice.name} · ${selectedVoice.lang}` : "음성 준비 중";
-
   if (!isMounted || !isSupported || blocks.length === 0) {
     return null;
   }
@@ -362,7 +462,7 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
         <span className="min-w-0 text-left">
           <span className="block truncate text-sm font-semibold tracking-tight">본문 듣기</span>
           <span className="block truncate text-xs text-muted-foreground">
-            {currentBlock?.text ?? `${progressLabel} · ${docTitle}`}
+            {currentSegment?.text ?? currentBlock?.text ?? `${progressLabel} · ${docTitle}`}
           </span>
         </span>
         <ChevronUp className="size-4 shrink-0 text-muted-foreground" />
@@ -382,9 +482,35 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
                 <p className="truncate text-xs text-muted-foreground">{docTitle}</p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="shrink-0 rounded-full border border-border/70 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                  {progressLabel}
-                </span>
+                <div className="flex items-center rounded-full border border-border/70 bg-background/70 p-1">
+                  <button
+                    type="button"
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                      "rounded-full text-muted-foreground",
+                    )}
+                    onClick={() => jumpToBlock(currentIndex - 1)}
+                    aria-label="이전 문단"
+                    disabled={currentIndex === 0}
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <span className="min-w-[3.5rem] px-1 text-center text-[11px] font-medium text-muted-foreground">
+                    {progressLabel}
+                  </span>
+                  <button
+                    type="button"
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                      "rounded-full text-muted-foreground",
+                    )}
+                    onClick={() => jumpToBlock(currentIndex + 1)}
+                    aria-label="다음 문단"
+                    disabled={currentIndex >= blocks.length - 1}
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
+                </div>
                 <button
                   type="button"
                   className={cn(
@@ -404,13 +530,12 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
                 currentBlock && "text-foreground/80",
               )}
             >
-              {currentBlock?.text ?? `${readingTime}분 분량 문서를 음성으로 읽습니다.`}
+              {currentSegment?.text ?? currentBlock?.text ?? `${readingTime}분 분량 문서를 음성으로 읽습니다.`}
             </p>
           </div>
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+        <div className="mt-3 flex items-center gap-2">
             <button
               type="button"
               className={cn(
@@ -455,10 +580,6 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
               <Gauge className="size-4" />
               {rate.toFixed(2).replace(/\.00$/, "")}x
             </button>
-          </div>
-          <p className="max-w-[11rem] truncate text-[11px] text-muted-foreground">
-            {voiceLabel}
-          </p>
         </div>
       </div>
     </div>
