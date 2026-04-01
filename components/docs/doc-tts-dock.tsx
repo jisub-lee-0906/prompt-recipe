@@ -110,6 +110,23 @@ function chooseKoreanVoice(voices: SpeechSynthesisVoice[]) {
   return voices[0] ?? null;
 }
 
+function scrollBlockIntoView(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const topThreshold = viewportHeight * 0.18;
+  const bottomThreshold = viewportHeight * 0.78;
+  const isOutOfView = rect.top < topThreshold || rect.bottom > bottomThreshold;
+
+  if (!isOutOfView) {
+    return;
+  }
+
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+}
+
 export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps) {
   const [isSupported, setIsSupported] = React.useState(false);
   const [blocks, setBlocks] = React.useState<TtsBlock[]>([]);
@@ -183,6 +200,7 @@ export function DocTtsDock({ docTitle, readingTime, targetId }: DocTtsDockProps)
 
       block.element.setAttribute("data-tts-active", "true");
       activeIndexRef.current = index;
+      scrollBlockIntoView(block.element);
     },
     [clearActiveBlock],
   );
