@@ -78,21 +78,33 @@ export const mdxComponents: MDXComponents = {
   h2: ({ className, ...props }) => (
     <h2
       className={cn(
-        "mt-14 scroll-m-24 border-t border-border/70 pt-8 text-2xl font-semibold tracking-tight first:mt-0 first:border-t-0 first:pt-0",
+        "mt-14 scroll-m-24 rounded-2xl border-t border-border/70 px-2 py-2 pt-8 text-2xl font-semibold tracking-tight transition-colors first:mt-0 first:border-t-0 first:pt-2 data-[tts-active=true]:bg-primary/8 data-[tts-active=true]:text-primary",
         className,
       )}
+      data-tts-block="true"
+      data-tts-kind="heading"
       {...props}
     />
   ),
   h3: ({ className, ...props }) => (
     <h3
-      className={cn("mt-10 scroll-m-24 text-xl font-semibold tracking-tight", className)}
+      className={cn(
+        "mt-10 scroll-m-24 rounded-2xl px-2 py-2 text-xl font-semibold tracking-tight transition-colors data-[tts-active=true]:bg-primary/8 data-[tts-active=true]:text-primary",
+        className,
+      )}
+      data-tts-block="true"
+      data-tts-kind="heading"
       {...props}
     />
   ),
   p: ({ className, ...props }) => (
     <p
-      className={cn("text-base leading-8 text-foreground/90", className)}
+      className={cn(
+        "-mx-1.5 rounded-2xl px-1.5 py-1 text-base leading-8 text-foreground/90 transition-colors data-[tts-active=true]:bg-primary/8 data-[tts-active=true]:text-foreground",
+        className,
+      )}
+      data-tts-block="true"
+      data-tts-kind="paragraph"
       {...props}
     />
   ),
@@ -103,7 +115,15 @@ export const mdxComponents: MDXComponents = {
     <ol className={cn("my-6 space-y-2 marker:text-muted-foreground", className)} {...props} />
   ),
   li: ({ className, ...props }) => (
-    <li className={cn("pl-1 text-base leading-8 text-foreground/90", className)} {...props} />
+    <li
+      className={cn(
+        "-ml-1 rounded-2xl px-2 py-1 pl-1 text-base leading-8 text-foreground/90 transition-colors data-[tts-active=true]:bg-primary/8 data-[tts-active=true]:text-foreground",
+        className,
+      )}
+      data-tts-block="true"
+      data-tts-kind="list-item"
+      {...props}
+    />
   ),
   a: ({ className, href = "", ...props }) => {
     const isInternal = href.startsWith("/");
@@ -137,9 +157,11 @@ export const mdxComponents: MDXComponents = {
   blockquote: ({ className, ...props }) => (
     <blockquote
       className={cn(
-        "my-6 rounded-r-2xl border-l-4 border-primary/40 bg-muted/40 px-5 py-4 text-base italic text-muted-foreground",
+        "my-6 rounded-r-2xl border-l-4 border-primary/40 bg-muted/40 px-5 py-4 text-base italic text-muted-foreground transition-colors data-[tts-active=true]:bg-primary/10 data-[tts-active=true]:text-foreground",
         className,
       )}
+      data-tts-block="true"
+      data-tts-kind="blockquote"
       {...props}
     />
   ),

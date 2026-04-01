@@ -15,6 +15,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
 import { Toc } from "@/components/layout/toc";
+import { DocTtsDock } from "@/components/docs/doc-tts-dock";
 import { mdxComponents } from "@/components/mdx-components";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -101,7 +102,7 @@ export default async function DocPage({ params }: DocPageProps) {
   return (
     <div className="mx-auto flex w-full max-w-[1180px] gap-8">
       <main className="min-w-0 flex-1">
-        <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 shadow-sm backdrop-blur sm:px-10 sm:py-10">
+        <article className="rounded-[2rem] border border-border/70 bg-card/70 px-6 py-8 pb-32 shadow-sm backdrop-blur sm:px-10 sm:py-10 sm:pb-36">
           <header className="space-y-5 border-b border-border/70 pb-8">
             <div className="flex flex-wrap gap-2">
               <Link href={`/docs/${doc.category}`}>
@@ -146,7 +147,10 @@ export default async function DocPage({ params }: DocPageProps) {
             </div>
           </header>
 
-          <div className="prose prose-zinc mt-10 max-w-none dark:prose-invert prose-headings:font-semibold prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
+          <div
+            id="doc-tts-content"
+            className="prose prose-zinc mt-10 max-w-none dark:prose-invert prose-headings:font-semibold prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none"
+          >
             <MDXRemote
               source={doc.content}
               components={mdxComponents}
@@ -170,6 +174,12 @@ export default async function DocPage({ params }: DocPageProps) {
               }}
             />
           </div>
+
+          <DocTtsDock
+            docTitle={doc.title}
+            readingTime={doc.readingTime}
+            targetId="doc-tts-content"
+          />
 
           {recommendedDocs.length > 0 ? (
             <section className="mt-12 border-t border-border/70 pt-8">
