@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prompt Recipe
 
-## Getting Started
+Prompt Recipe is a Next.js 16 App Router reference site for practical AI-assisted product, frontend, backend, and UI/UX work. Content in `content/` is rendered through route pages and typed catalogues in `lib/`.
 
-First, run the development server:
+## Run locally
+
+Use the lockfile and avoid lifecycle scripts during an audit or other isolated install:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci --ignore-scripts
+npm run audit:docs
+npm run lint
+npm run build
+npm run dev:local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). `npm run dev:local` binds only to localhost; `npm run preview` requires a successful production build first. The preview, smoke, and capture scripts start a local server and are not required for static content validation.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks and limits
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run audit:docs` verifies content metadata and internal catalogue references.
+- `npm run lint` and `npm run build` require installed dependencies.
+- This repository contains no application database, authentication service, or external API integration. Documentation examples describe patterns, not deployed implementations.
+- A successful static build does not verify browser behavior, accessibility, or production hosting.
 
-## Learn More
+## Project layout
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/`: Next.js routes and metadata
+- `components/`: UI, MDX, layout, and search components
+- `content/`: MDX reference content
+- `lib/`: content loaders and typed catalogue data
+- `scripts/`: documentation audit, inventory, and local preview helpers
