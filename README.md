@@ -2,6 +2,11 @@
 
 Prompt Recipe is a Next.js 16 App Router reference site for practical AI-assisted product, frontend, backend, and UI/UX work. Content in `content/` is rendered through route pages and typed catalogues in `lib/`.
 
+## Public-readiness status
+
+- Status: **reference documentation site (locally validated)**. The recorded local checks are `npm run audit:docs`, lint, and a production build.
+- Those results validate local content and build behavior only. Browser E2E, accessibility review, deployed service behavior, and production hosting have not been verified.
+
 ## Run locally
 
 Use the lockfile and avoid lifecycle scripts during an audit or other isolated install:
@@ -30,3 +35,7 @@ Open [http://localhost:3000](http://localhost:3000). `npm run dev:local` binds o
 - `content/`: MDX reference content
 - `lib/`: content loaders and typed catalogue data
 - `scripts/`: documentation audit, inventory, and local preview helpers
+
+## Automated verification (2026-09-23)
+
+No GitHub Actions workflows or runs are configured/recorded. The local test/build records above are not a remote CI pass.
